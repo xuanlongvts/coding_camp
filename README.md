@@ -1,4 +1,4 @@
-# Sell Luxyru Brand
+# Sell Luxury Brand
 
     1. Account tips
     	struct tips {
