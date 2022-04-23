@@ -36,9 +36,7 @@ pub struct Product {
     // pub tips: {
     //     user_pubkey: Tips // HashMap, use Pubkey make user_pubkey (for aim index and update)
     // }
-    pub tips: {
-        use_pubkey: HashMap<Pubkey, Tips>
-    }
+    pub tips: HashMap<Pubkey, Tips>
 }
 
 #[account]
