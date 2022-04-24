@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use anchor_lang::prelude::*;
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
@@ -8,7 +6,48 @@ declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 pub mod sc_luxury_brand {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    pub fn initialize(ctx: Context<Initialize>, products: Vec<Product>) -> Result<()> {
+        let base_acc = &mut ctx.accounts.base_account;
+        base_acc.list_products = products;
+        Ok(())
+    }
+
+    pub fn add_one_product(ctx: Context<CrudOneProduct>, product: Product) -> Result<()> {
+        let base_acc = &mut ctx.accounts.base_account;
+
+        let find_index_prod = base_acc
+            .list_products
+            .iter()
+            .position(|item| item.id == product.id);
+        if find_index_prod == None {
+            base_acc.list_products.push(product);
+        }
+
+        Ok(())
+    }
+
+    pub fn update_one_product(ctx: Context<CrudOneProduct>, product: Product) -> Result<()> {
+        let base_acc = &mut ctx.accounts.base_account;
+
+        let find_index_prod = base_acc
+            .list_products
+            .iter()
+            .position(|item| item.id == product.id);
+        if find_index_prod != None {
+            let get_id = find_index_prod.unwrap();
+            base_acc.list_products[get_id] = product;
+        }
+        Ok(())
+    }
+
+    pub fn delete_one_product(ctx: Context<CrudOneProduct>, id: String) -> Result<()> {
+        let base_acc = &mut ctx.accounts.base_account;
+
+        let find_index_prod = base_acc.list_products.iter().position(|item| item.id == id);
+        if find_index_prod != None {
+            let get_id = find_index_prod.unwrap();
+            base_acc.list_products.remove(get_id);
+        }
         Ok(())
     }
 }
@@ -20,29 +59,31 @@ pub struct Unit {
 }
 
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
-pub struct Tips {
+pub struct CustomerTips {
+    pub user_pubkey: Pubkey,
     pub counts: u8,
     pub unit: Unit,
 }
 
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
+pub struct Imgs {
+    links: Vec<String>,
+}
+
+#[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct Product {
+    pub id: String,
     pub title: String,
-    pub imgs: {
-        links: Vec<String>
-    },
+    pub imgs: Imgs,
     pub price: u8,
     pub description: String,
-    // pub tips: {
-    //     user_pubkey: Tips // HashMap, use Pubkey make user_pubkey (for aim index and update)
-    // }
-    pub tips: HashMap<Pubkey, Tips>
+    pub tips: Vec<CustomerTips>,
+    pub owner: Pubkey, // Account receive tip from customer on itself product
 }
 
 #[account]
 pub struct Products {
-    pub lists: Vec<Product>,
-    pub owner: Pubkey,
+    pub list_products: Vec<Product>,
 }
 
 #[derive(Accounts)]
@@ -53,4 +94,11 @@ pub struct Initialize<'info> {
     #[account(mut)]
     pub signer: Signer<'info>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct CrudOneProduct<'info> {
+    #[account(mut)]
+    pub base_account: Account<'info, Products>,
+    pub signer: Signer<'info>,
 }
