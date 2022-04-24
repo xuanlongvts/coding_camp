@@ -19,6 +19,7 @@ pub mod sc_luxury_brand {
             .list_products
             .iter()
             .position(|item| item.id == product.id);
+
         if find_index_prod == None {
             base_acc.list_products.push(product);
         }
@@ -100,5 +101,7 @@ pub struct Initialize<'info> {
 pub struct CrudOneProduct<'info> {
     #[account(mut)]
     pub base_account: Account<'info, Products>,
+
+    #[account(mut)]
     pub signer: Signer<'info>,
 }
