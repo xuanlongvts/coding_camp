@@ -1,6 +1,9 @@
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, Connection, ConfirmOptions, Commitment } from '@solana/web3.js';
+import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
 
 const ENV = require('../../env.json').ENV;
+
+export default ENV;
 
 export enum ENUM_envName {
     local = 'local',
@@ -22,9 +25,9 @@ type T_envName = {
 };
 export const envName: T_envName = {
     [ENUM_envName.local]: 'local',
-    [ENUM_envName.dev]: 'dev',
-    [ENUM_envName.test]: 'qc',
-    [ENUM_envName.production]: 'production',
+    [ENUM_envName.dev]: 'devnet',
+    [ENUM_envName.test]: 'testnet',
+    [ENUM_envName.production]: 'mainnet-beta',
 };
 
 export const Config = {
@@ -45,6 +48,59 @@ export const Config = {
         [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.mainnet-beta.solana.com',
     },
 };
+
+export const getConfig = (envParams = ENV, protocol = SOLANA_PROTOCOLS.API_SERVER) => {
+    return Config[envParams as string][protocol];
+};
+
+const optsConn: Commitment = 'processed';
+const opts: ConfirmOptions = {
+    preflightCommitment: 'processed',
+};
+
+export const getProvider = (cluster: string) => {
+    const conn = new Connection(cluster, optsConn);
+    const provider = new AnchorProvider(conn, (window as any)?.solana, opts);
+
+    return provider;
+};
+
+export const accountExplorer = (address: string) => {
+    let cluster = envName.dev;
+    ENV === ENUM_envName.test && (cluster = envName.test);
+    ENV === ENUM_envName.production && (cluster = envName.production);
+    return `https://explorer.solana.com/address/${address}?cluster=${cluster}`;
+};
+
+export const transactionExplorer = (signature: string) => {
+    let cluster = envName.dev;
+    ENV === ENUM_envName.test && (cluster = envName.test);
+    ENV === ENUM_envName.production && (cluster = envName.production);
+    return `https://explorer.solana.com/tx/${signature}?cluster=${cluster}`;
+};
+
+// SOL Pay Section
+export const WalletRecipient = 'BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT'; // phantom wallet of recipient
+
+export const PubkeyRecipient = new PublicKey(WalletRecipient); // transform to Pubkey
+
+export const requiredConfirmations = 10;
+
+export enum PaymentStatus {
+    Pending = 'Pending',
+    Confirmed = 'Confirmed',
+    Valid = 'Valid',
+    InValid = 'InValid',
+    Finalized = 'Finalized',
+}
+
+export enum PROGRESS_STATUS {
+    ProgressStatus = 'ProgressStatus',
+}
+
+// Mint DUMMY tokens on devnet @ https://spl-token-faucet.com
+export const DEVNET_DUMMY_MINT = new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr');
+export const MAINNET_USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
 export type Digits = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
@@ -82,45 +138,4 @@ export type Confirmations =
     | 30
     | 31
     | 32;
-
-export const WalletRecipient = 'BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT'; // phantom wallet of recipient
-
-export const PubkeyRecipient = new PublicKey(WalletRecipient); // transform to Pubkey
-
-export const requiredConfirmations = 10;
-
-export enum PaymentStatus {
-    Pending = 'Pending',
-    Confirmed = 'Confirmed',
-    Valid = 'Valid',
-    InValid = 'InValid',
-    Finalized = 'Finalized',
-}
-
-export enum PROGRESS_STATUS {
-    ProgressStatus = 'ProgressStatus',
-}
-
-// Mint DUMMY tokens on devnet @ https://spl-token-faucet.com
-export const DEVNET_DUMMY_MINT = new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr');
-export const MAINNET_USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
-
-export const getConfig = (envParams = ENV, protocol = SOLANA_PROTOCOLS.API_SERVER) => {
-    return Config[envParams as string][protocol];
-};
-
-export const accountExplorer = (address: string) => {
-    let cluster = 'devnet';
-    ENV === ENUM_envName.test && (cluster = 'testnet');
-    ENV === ENUM_envName.production && (cluster = 'mainnet-beta');
-    return `https://explorer.solana.com/address/${address}?cluster=${cluster}`;
-};
-
-export const transactionExplorer = (signature: string) => {
-    let cluster = 'devnet';
-    ENV === ENUM_envName.test && (cluster = 'testnet');
-    ENV === ENUM_envName.production && (cluster = 'mainnet-beta');
-    return `https://explorer.solana.com/tx/${signature}?cluster=${cluster}`;
-};
-
-export default ENV;
+// SOL Pay Section
