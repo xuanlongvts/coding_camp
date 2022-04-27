@@ -1,0 +1,47 @@
+.content {
+    margin-top: 20px;
+
+    .acts {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.geneQrCode {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+
+    .numSOL {
+        font-size: 30px;
+    }
+}
+
+.sol-usdc {
+    > span {
+        cursor: pointer;
+        &:last-child {
+            margin-left: 10px !important;
+        }
+    }
+
+    &.sol {
+        .img_usdc {
+            opacity: 0.2;
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    &.usdc {
+        .img_sol {
+            opacity: 0.2;
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    }
+}
