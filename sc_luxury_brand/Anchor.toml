@@ -1,7 +1,7 @@
 [features]
 seeds = false
 [programs.localnet]
-sc_luxury_brand = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+sc_luxury_brand = "3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC"
 
 [registry]
 url = "https://anchor.projectserum.com"

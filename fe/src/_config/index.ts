@@ -1,5 +1,5 @@
 import { PublicKey, Connection, ConfirmOptions, Commitment } from '@solana/web3.js';
-import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
+import { Program, AnchorProvider, Provider, web3 } from '@project-serum/anchor';
 
 const ENV = require('../../env.json').ENV;
 
@@ -11,6 +11,12 @@ export enum ENUM_envName {
     test = 'test',
     production = 'production',
 }
+export const ConstEnvName = {
+    [ENUM_envName.local]: 'local',
+    [ENUM_envName.dev]: 'dev',
+    [ENUM_envName.test]: 'test',
+    [ENUM_envName.production]: 'production',
+};
 
 export enum SOLANA_PROTOCOLS {
     API_SERVER = 'API_SERVER',
@@ -31,20 +37,20 @@ export const envName: T_envName = {
 };
 
 export const Config = {
-    [envName.local]: {
-        [SOLANA_PROTOCOLS.API_SERVER]: 'http://localhost:8899',
-        [SOLANA_PROTOCOLS.HUB_WS]: 'ws://localhost:8900',
+    [ConstEnvName.local]: {
+        [SOLANA_PROTOCOLS.API_SERVER]: 'http://127.0.0.1:8899',
+        [SOLANA_PROTOCOLS.HUB_WS]: 'ws://127.0.0.1:8900',
     },
-    [envName.dev]: {
+    [ConstEnvName.dev]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.devnet.solana.com',
         [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.devnet.solana.com',
     },
-    [envName.test]: {
+    [ConstEnvName.test]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.testnet.solana.com',
         [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.testnet.solana.com',
     },
-    [envName.production]: {
-        [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.mainnet-beta.solana.com',
+    [ConstEnvName.production]: {
+        [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.mainnet-beta.solana.com', // https://solana-api.projectserum.com
         [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.mainnet-beta.solana.com',
     },
 };
@@ -53,16 +59,21 @@ export const getConfig = (envParams = ENV, protocol = SOLANA_PROTOCOLS.API_SERVE
     return Config[envParams as string][protocol];
 };
 
-const optsConn: Commitment = 'processed';
+const optsConn: Commitment = 'confirmed';
 const opts: ConfirmOptions = {
-    preflightCommitment: 'processed',
+    preflightCommitment: 'confirmed', // confirmed, processed
 };
 
 export const getProvider = (cluster: string) => {
     const conn = new Connection(cluster, optsConn);
     const provider = new AnchorProvider(conn, (window as any)?.solana, opts);
+    // const provider = new AnchorProvider(conn, (window as any)?.solana, opts);
 
     return provider;
+};
+
+export const getProgram = (idl: any, pubkey: PublicKey) => {
+    return new Program(idl, pubkey, getProvider(getConfig()));
 };
 
 export const accountExplorer = (address: string) => {

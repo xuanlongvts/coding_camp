@@ -31,7 +31,7 @@ export const products = [
     },
 ];
 
-export const addOneProduct = {
+export const addOneProductData = {
     id: 'ikl',
     title: 'Mouse magic',
     imgs: {
@@ -45,7 +45,7 @@ export const addOneProduct = {
     owner: baseAcc.publicKey,
 };
 
-export const updateOneProduct = {
+export const updateOneProductData = {
     id: 'edf',
     title: 'Macbook Pro M2',
     imgs: {
@@ -60,6 +60,6 @@ export const updateOneProduct = {
     owner: baseAcc.publicKey,
 };
 
-export const deleteOneProduct = {
+export const deleteOneProductData = {
     id: 'edf',
 };
