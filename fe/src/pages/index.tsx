@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 
 import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
@@ -16,20 +17,27 @@ const baseAcc = anchor.web3.Keypair.generate();
 const Home: NextPage = () => {
     const { publicKey } = useWallet();
 
+    useEffect(() => {
+        (async () => {
+            const program = getProgram(idl, programID);
+            const account = publicKey && (await program.account.products.fetch(publicKey));
+            console.log('Query: data', account);
+        })();
+    }, []);
+
     const initProducts = async () => {
         const program = getProgram(idl, programID);
         publicKey &&
             (await program.methods
                 .initialize(products)
                 .accounts({
-                    baseAccount: baseAcc.publicKey,
+                    baseAccount: publicKey,
                     signer: publicKey.toString(),
                     systemProgram: anchor.web3.SystemProgram.programId,
                 })
-                .signers([baseAcc])
                 .rpc());
 
-        const account = await program.account.products.fetch(baseAcc.publicKey);
+        const account = publicKey && (await program.account.products.fetch(publicKey));
         console.log('account: init', account);
     };
 

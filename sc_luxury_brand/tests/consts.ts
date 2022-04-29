@@ -32,7 +32,7 @@ export const products = [
 ];
 
 export const addOneProduct = {
-    id: "ikl",
+    id: "ikl", // ikl
     title: "Mouse magic",
     imgs: {
         links: [
@@ -45,8 +45,8 @@ export const addOneProduct = {
     owner: baseAcc.publicKey,
 };
 
-export const updateOneProduct = {
-    id: "edf",
+export const updateOneProduct = (id?: string) => ({
+    id: id || "edf",
     title: "Macbook Pro M2",
     imgs: {
         links: [
@@ -58,8 +58,9 @@ export const updateOneProduct = {
     description: "Macbook Pro M2 will release at 2025",
     tips: [],
     owner: baseAcc.publicKey,
-};
+});
 
 export const deleteOneProduct = {
     id: "edf",
+    id_error: "edf_error",
 };

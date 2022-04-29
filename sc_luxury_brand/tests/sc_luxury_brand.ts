@@ -1,6 +1,6 @@
 import * as anchor from "@project-serum/anchor";
-import { Program } from "@project-serum/anchor";
-import { expect } from "chai";
+import { Program, AnchorError } from "@project-serum/anchor";
+import chai, { expect } from "chai";
 
 import { ScLuxuryBrand } from "../target/types/sc_luxury_brand";
 import {
@@ -33,6 +33,22 @@ describe("sc_luxury_brand", () => {
             baseAcc.publicKey
         );
         expect(accState.listProducts.length).to.equal(2);
+
+        try {
+            await program.methods
+                .initialize(products)
+                .accounts({
+                    baseAccount: baseAcc.publicKey,
+                })
+                .signers([baseAcc])
+                .rpc();
+            chai.assert(
+                false,
+                "Should've failed but din't. The products had initial"
+            );
+        } catch (_err) {
+            console.log("_err: ---> ", _err.logs);
+        }
     });
 
     it("Add one product!", async () => {
@@ -45,13 +61,27 @@ describe("sc_luxury_brand", () => {
         const accState = await program.account.products.fetch(
             baseAcc.publicKey
         );
-        // console.log("Add: ===> ", accState.listProducts);
         expect(accState.listProducts.length).to.equal(3);
+
+        try {
+            await program.methods
+                .addOneProduct(addOneProduct)
+                .accounts({
+                    baseAccount: baseAcc.publicKey,
+                })
+                .rpc();
+            chai.assert(false, "Should've failed but din't.");
+        } catch (_err) {
+            expect(_err).to.be.instanceOf(AnchorError);
+            const err: AnchorError = _err;
+            expect(err.error.errorCode.code).to.equal("AlreadyExistProduct");
+            expect(err.error.errorCode.number).to.equal(6002);
+        }
     });
 
     it("Update one product!", async () => {
         await program.methods
-            .updateOneProduct(updateOneProduct)
+            .updateOneProduct(updateOneProduct())
             .accounts({
                 baseAccount: baseAcc.publicKey,
             })
@@ -59,11 +89,25 @@ describe("sc_luxury_brand", () => {
         const accState = await program.account.products.fetch(
             baseAcc.publicKey
         );
-        // console.log("Update: ===> ", accState.listProducts);
         expect(accState.listProducts[1].price).to.equal(
-            Number(updateOneProduct.price)
+            Number(updateOneProduct().price)
         );
         expect(accState.listProducts[1].imgs.links.length).to.equal(2);
+
+        try {
+            await program.methods
+                .updateOneProduct(updateOneProduct("edf_error"))
+                .accounts({
+                    baseAccount: baseAcc.publicKey,
+                })
+                .rpc();
+            chai.assert(false, "Should've failed but din't.");
+        } catch (_err) {
+            expect(_err).to.be.instanceOf(AnchorError);
+            const err: AnchorError = _err;
+            expect(err.error.errorCode.code).to.equal("NotFoundProduct");
+            expect(err.error.errorCode.number).to.equal(6000);
+        }
     });
 
     it("Delete one product!", async () => {
@@ -76,6 +120,22 @@ describe("sc_luxury_brand", () => {
         const accState = await program.account.products.fetch(
             baseAcc.publicKey
         );
-        console.log("Delete: ===> ", accState.listProducts);
+        expect(accState.listProducts.length).to.equal(2);
+        // console.log("Delete: ===> ", accState.listProducts);
+
+        try {
+            await program.methods
+                .deleteOneProduct(deleteOneProduct.id_error)
+                .accounts({
+                    baseAccount: baseAcc.publicKey,
+                })
+                .rpc();
+            chai.assert(false, "Should've failed but din't.");
+        } catch (_err) {
+            expect(_err).to.be.instanceOf(AnchorError);
+            const err: AnchorError = _err;
+            expect(err.error.errorCode.code).to.equal("NotFoundProduct");
+            expect(err.error.errorCode.number).to.equal(6000);
+        }
     });
 });
