@@ -40,11 +40,6 @@
                     "name": "baseAccount",
                     "isMut": true,
                     "isSigner": false
-                },
-                {
-                    "name": "signer",
-                    "isMut": true,
-                    "isSigner": true
                 }
             ],
             "args": [
@@ -64,11 +59,6 @@
                     "name": "baseAccount",
                     "isMut": true,
                     "isSigner": false
-                },
-                {
-                    "name": "signer",
-                    "isMut": true,
-                    "isSigner": true
                 }
             ],
             "args": [
@@ -88,11 +78,6 @@
                     "name": "baseAccount",
                     "isMut": true,
                     "isSigner": false
-                },
-                {
-                    "name": "signer",
-                    "isMut": true,
-                    "isSigner": true
                 }
             ],
             "args": [
@@ -216,6 +201,23 @@
                     }
                 ]
             }
+        }
+    ],
+    "errors": [
+        {
+            "code": 6000,
+            "name": "NotFoundProduct",
+            "msg": "The product not exist"
+        },
+        {
+            "code": 6001,
+            "name": "AlreadyInitProducts",
+            "msg": "The products already initial"
+        },
+        {
+            "code": 6002,
+            "name": "AlreadyExistProduct",
+            "msg": "The product already exist"
         }
     ],
     "metadata": {

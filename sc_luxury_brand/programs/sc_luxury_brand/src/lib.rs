@@ -9,6 +9,19 @@ pub mod sc_luxury_brand {
     pub fn initialize(ctx: Context<Initialize>, products: Vec<Product>) -> Result<()> {
         let base_acc = &mut ctx.accounts.base_account;
 
+        // let item = Product {
+        //         id: products[0].id.to_string(),
+        //         title: products[0].title.to_string(),
+        //         imgs: Imgs {
+        //             links: products[0].imgs.links.to_vec()
+        //         },
+        //         price: products[0].price,
+        //         description: products[0].description.to_string(),
+        //         tips: Vec::new(),
+        //         owner: products[0].owner,
+        //     };
+
+        // base_acc.list_products = products;
         base_acc.list_products = products;
         Ok(())
     }
@@ -22,6 +35,17 @@ pub mod sc_luxury_brand {
             .position(|item| item.id == product.id); // Make sure not the same id product
 
         if find_index_prod == None {
+            // let item = Product {
+            //     id: product.id.to_string(),
+            //     title: product.title.to_string(),
+            //     imgs: Imgs {
+            //         links: Vec::from(product.imgs.links)
+            //     },
+            //     price: product.price,
+            //     description: product.description.to_string(),
+            //     tips: Vec::new(),
+            //     owner: product.owner,
+            // };
             base_acc.list_products.push(product);
         } else {
             return Err(ErrorMess::AlreadyExistProduct.into());
@@ -85,7 +109,7 @@ pub struct Imgs {
 pub struct Product {
     pub id: String,
     pub title: String,
-    pub imgs: Imgs,
+    pub imgs: Imgs, // Imgs
     pub price: u8,
     pub description: String,
     pub tips: Vec<CustomerTips>,
@@ -99,7 +123,7 @@ pub struct Products {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = signer, space = 8 + 9000)]
+    #[account(init, payer = signer, space = 5000)]
     pub base_account: Account<'info, Products>,
 
     #[account(mut)]

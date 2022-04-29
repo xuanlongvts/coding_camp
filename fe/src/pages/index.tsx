@@ -13,29 +13,38 @@ import Header from '_commComp/header';
 
 const programID = new PublicKey(idl.metadata.address);
 
-const baseAcc = anchor.web3.Keypair.generate();
+// const baseAcc = anchor.web3.Keypair.generate();
 const Home: NextPage = () => {
     const { publicKey } = useWallet();
 
     useEffect(() => {
         (async () => {
             const program = getProgram(idl, programID);
-            const account = publicKey && (await program.account.products.fetch(publicKey));
-            console.log('Query: data', account);
+            // console.log('programId', program.programId);
+            try {
+                const account = publicKey && (await program.account.products.fetch(publicKey));
+                console.log('Query: data', account);
+            } catch (err) {
+                console.log('err: ', err);
+            }
         })();
-    }, []);
+    }, [publicKey]);
 
     const initProducts = async () => {
         const program = getProgram(idl, programID);
-        publicKey &&
-            (await program.methods
-                .initialize(products)
-                .accounts({
-                    baseAccount: publicKey,
-                    signer: publicKey.toString(),
-                    systemProgram: anchor.web3.SystemProgram.programId,
-                })
-                .rpc());
+        try {
+            publicKey &&
+                (await program.methods
+                    .initialize(products)
+                    .accounts({
+                        baseAccount: publicKey,
+                        signer: publicKey,
+                        systemProgram: anchor.web3.SystemProgram.programId,
+                    })
+                    .rpc());
+        } catch (_err) {
+            console.log('_err: ', _err);
+        }
 
         const account = publicKey && (await program.account.products.fetch(publicKey));
         console.log('account: init', account);
@@ -43,15 +52,18 @@ const Home: NextPage = () => {
 
     const handleAddOneProduct = async () => {
         const program = getProgram(idl, programID);
-        publicKey &&
-            (await program.methods
-                .addOneProduct(addOneProductData)
-                .accounts({
-                    baseAccount: baseAcc.publicKey,
-                    signer: publicKey.toString(),
-                })
-                .rpc());
-        const account = await program.account.products.fetch(baseAcc.publicKey);
+        try {
+            publicKey &&
+                (await program.methods
+                    .addOneProduct(addOneProductData)
+                    .accounts({
+                        baseAccount: publicKey,
+                    })
+                    .rpc());
+        } catch (_err) {
+            console.log('_err: ', _err);
+        }
+        const account = publicKey && (await program.account.products.fetch(publicKey));
         console.log('account: Add ---> ', account);
     };
     const handleUpdateOneProduct = async () => {
@@ -60,11 +72,10 @@ const Home: NextPage = () => {
             (await program.methods
                 .updateOneProduct(updateOneProductData)
                 .accounts({
-                    baseAccount: baseAcc.publicKey,
-                    signer: publicKey.toString(),
+                    baseAccount: publicKey,
                 })
                 .rpc());
-        const account = await program.account.products.fetch(baseAcc.publicKey);
+        const account = publicKey && (await program.account.products.fetch(publicKey));
         console.log('account: Update ---> ', account);
     };
     const handleDeleteOneProduct = async () => {
@@ -73,11 +84,10 @@ const Home: NextPage = () => {
             (await program.methods
                 .deleteOneProduct(deleteOneProductData.id)
                 .accounts({
-                    baseAccount: baseAcc.publicKey,
-                    signer: publicKey.toString(),
+                    baseAccount: publicKey,
                 })
                 .rpc());
-        const account = await program.account.products.fetch(baseAcc.publicKey);
+        const account = publicKey && (await program.account.products.fetch(publicKey));
         console.log('account: Update ---> ', account);
     };
 

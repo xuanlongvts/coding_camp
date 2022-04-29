@@ -11,6 +11,7 @@ export const products = [
                 "https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g",
             ],
         },
+        // imgs: "https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g",
         price: new anchor.BN(3),
         description: "Iphone 15 will release at 2024",
         tips: [],
@@ -24,6 +25,7 @@ export const products = [
                 "https://media4.giphy.com/media/l2JhBGQsSk3JnG1vW/giphy.gif?cid=ecf05e475elwxakg045lmax1mzz1bsi6izt0pwrgrywzd9t1&rid=giphy.gif&ct=g",
             ],
         },
+        // imgs: "https://media4.giphy.com/media/l2JhBGQsSk3JnG1vW/giphy.gif?cid=ecf05e475elwxakg045lmax1mzz1bsi6izt0pwrgrywzd9t1&rid=giphy.gif&ct=g",
         price: new anchor.BN(5),
         description: "Macbook Pro M2 will release at 2024",
         tips: [],
@@ -39,6 +41,7 @@ export const addOneProduct = {
             "https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g",
         ],
     },
+    // imgs: "https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g",
     price: new anchor.BN(1),
     description: "Mouse magic will release at 2024",
     tips: [],
@@ -46,7 +49,7 @@ export const addOneProduct = {
 };
 
 export const updateOneProduct = (id?: string) => ({
-    id: id || "edf",
+    id: id || products[1].id, // "edf"
     title: "Macbook Pro M2",
     imgs: {
         links: [
@@ -54,6 +57,7 @@ export const updateOneProduct = (id?: string) => ({
             "https://media3.giphy.com/media/3o7TKRiAXqGIJFtdfy/giphy.gif?cid=ecf05e47vq37hnywwxqg3w37yog1krznkgip9leycplvad5x&rid=giphy.gif&ct=g",
         ],
     },
+    // imgs: "https://media3.giphy.com/media/3o7TKRiAXqGIJFtdfy/giphy.gif?cid=ecf05e47vq37hnywwxqg3w37yog1krznkgip9leycplvad5x&rid=giphy.gif&ct=g",
     price: new anchor.BN(99),
     description: "Macbook Pro M2 will release at 2025",
     tips: [],

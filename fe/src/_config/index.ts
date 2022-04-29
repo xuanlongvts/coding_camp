@@ -67,7 +67,6 @@ const opts: ConfirmOptions = {
 export const getProvider = (cluster: string) => {
     const conn = new Connection(cluster, optsConn);
     const provider = new AnchorProvider(conn, (window as any)?.solana, opts);
-    // const provider = new AnchorProvider(conn, (window as any)?.solana, opts);
 
     return provider;
 };
