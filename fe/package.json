@@ -18,9 +18,6 @@
         "prettier": "cross-env find . \\( -name node_modules -o -name contracts -o -name __generated__ -o -name .next \\) -prune -or \\( -name '*.js' -o -name '*.jsx' -o -name '*.tsx' -o -name '*.ts' -o -name '*.tsx' -o -name '*.ts' -o -name '*.html' -o -name '*.scss' -o -name '*.css' -o -name '*.json' -o -name '*.md' \\) -print | xargs prettier --write"
     },
     "dependencies": {
-        "next": "12.1.5",
-        "react": "18.1.0",
-        "react-dom": "18.1.0",
         "@emotion/cache": "^11.7.1",
         "@emotion/react": "^11.9.0",
         "@emotion/server": "^11.4.0",
@@ -39,16 +36,17 @@
         "@solana/wallet-adapter-react-ui": "^0.9.6",
         "@solana/wallet-adapter-wallets": "^0.16.0",
         "@styled-jsx/plugin-sass": "^4.0.2",
-        "@types/mz": "^2.7.4",
         "@types/react-redux": "^7.1.24",
         "axios": "^0.27.2",
         "bignumber.js": "^9.0.2",
         "borsh": "^0.7.0",
         "clsx": "^1.1.1",
         "date-fns": "^2.28.0",
-        "mz": "^2.7.0",
+        "next": "12.1.5",
         "next-redux-wrapper": "^7.0.5",
+        "react": "18.1.0",
         "react-dark-mode-toggle-2": "^2.0.2",
+        "react-dom": "18.1.0",
         "react-hook-form": "^7.30.0",
         "react-redux": "^8.0.1",
         "redux-injectors": "^1.3.0",
@@ -61,12 +59,12 @@
         "@types/node": "17.0.29",
         "@types/react": "18.0.8",
         "@types/react-dom": "18.0.0",
+        "cross-env": "^7.0.3",
         "eslint": "8.14.0",
         "eslint-config-next": "12.1.5",
-        "typescript": "4.6.3",
-        "cross-env": "^7.0.3",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.0.0",
-        "prettier": "^2.6.2"
+        "prettier": "^2.6.2",
+        "typescript": "4.6.3"
     }
 }

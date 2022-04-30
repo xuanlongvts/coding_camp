@@ -47,6 +47,20 @@ export const addOneProductData = {
     tips: [],
     owner: baseAcc.publicKey,
 };
+export const addOneProductDataOther = {
+    id: 'ikl1',
+    title: 'Mouse magic',
+    imgs: {
+        links: [
+            'https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g',
+        ],
+    },
+    // imgs: 'https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g',
+    price: new anchor.BN(1),
+    description: 'Mouse magic will release at 2024',
+    tips: [],
+    owner: baseAcc.publicKey,
+};
 
 export const updateOneProductData = {
     id: 'edf',
@@ -66,4 +80,5 @@ export const updateOneProductData = {
 
 export const deleteOneProductData = {
     id: 'edf',
+    id_1: 'ikl1',
 };

@@ -7,7 +7,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 import { getProgram, getProvider, getConfig } from '_config';
 import idl from '_config/idl.json';
-import { products, addOneProductData, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
+import { products, addOneProductData, addOneProductDataOther, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
 import Header from '_commComp/header';
 
 import kp from '_keys/keypair.json';
@@ -61,40 +61,49 @@ const Home: NextPage = () => {
         try {
             publicKey &&
                 (await program.methods
-                    .addOneProduct(addOneProductData)
+                    .addOneProduct(addOneProductDataOther)
                     .accounts({
                         baseAccount: baseAccount.publicKey,
                     })
                     .rpc());
+            const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
+            console.log('account: Add ---> ', account);
         } catch (_err) {
             console.log('_err: ', _err);
         }
-        const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
-        console.log('account: Add ---> ', account);
     };
     const handleUpdateOneProduct = async () => {
         const program = getProgram(idl, programID);
-        publicKey &&
-            (await program.methods
-                .updateOneProduct(updateOneProductData)
-                .accounts({
-                    baseAccount: baseAccount.publicKey,
-                })
-                .rpc());
-        const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
-        console.log('account: Update ---> ', account);
+
+        try {
+            publicKey &&
+                (await program.methods
+                    .updateOneProduct(updateOneProductData)
+                    .accounts({
+                        baseAccount: baseAccount.publicKey,
+                    })
+                    .rpc());
+            const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
+            console.log('account: Update ---> ', account);
+        } catch (_err) {
+            console.log('_err: ', _err);
+        }
     };
     const handleDeleteOneProduct = async () => {
         const program = getProgram(idl, programID);
-        publicKey &&
-            (await program.methods
-                .deleteOneProduct(deleteOneProductData.id)
-                .accounts({
-                    baseAccount: baseAccount.publicKey,
-                })
-                .rpc());
-        const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
-        console.log('account: Update ---> ', account);
+        try {
+            publicKey &&
+                (await program.methods
+                    .deleteOneProduct(deleteOneProductData.id_1)
+                    .accounts({
+                        baseAccount: baseAccount.publicKey,
+                    })
+                    .rpc());
+            const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
+            console.log('account: Update ---> ', account);
+        } catch (_err) {
+            console.log('_err: ', _err);
+        }
     };
 
     return (
