@@ -10,7 +10,6 @@ body,
 #__next {
     height: 100%;
     width: 100%;
-    overflow: hidden;
 }
 
 html {
@@ -47,13 +46,13 @@ main {
     padding-bottom: 20px;
 }
 
-section {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
+// section {
+//     padding: 15px;
+//     display: flex;
+//     flex-direction: column;
 
-    justify-content: flex-start;
-}
+//     justify-content: flex-start;
+// }
 
 kbd {
     font: 11px Consolas, Liberation Mono, Menlo, monospace;
@@ -84,6 +83,7 @@ code {
 }
 
 footer {
+    padding: 30px 0;
     display: flex;
     justify-content: center;
 }
