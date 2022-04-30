@@ -43,7 +43,6 @@ aside {
 main {
     width: 100%;
     overflow-y: auto;
-    padding-bottom: 20px;
 }
 
 // section {
@@ -84,6 +83,8 @@ code {
 
 footer {
     padding: 30px 0;
+    background: #212121;
     display: flex;
     justify-content: center;
+    color: #fff;
 }

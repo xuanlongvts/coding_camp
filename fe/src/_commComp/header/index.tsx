@@ -8,7 +8,6 @@ import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-// import { WalletMultiButton } from '@solana/wallet-adapter-material-ui';
 
 // const SwitchThemeMode = dynamic(() => import('themes/darkMode'), { ssr: false });
 import { LocalStorageServices } from '_utils/localStorage';

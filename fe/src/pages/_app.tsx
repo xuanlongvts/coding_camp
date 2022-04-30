@@ -92,7 +92,7 @@ const App = (props: T_APP) => {
                             <main>
                                 <Component {...pageProps} />
 
-                                <footer>&copy; xuanlongvts</footer>
+                                <footer>&copy; xuanlongvts - 05/2022</footer>
                             </main>
                             <LoadingApp />
                         </ThemeProvider>
