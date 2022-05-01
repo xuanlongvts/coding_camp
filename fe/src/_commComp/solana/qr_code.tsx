@@ -44,7 +44,7 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
         setAmountSol(getAmount);
     }, []);
 
-    const size = matches ? 320 : 400;
+    const size = matches ? 320 : 350;
     const options = useMemo(() => createQROptions(url, size, 'transparent', '#2a2a2a'), [url, size]);
 
     const qr = useMemo(() => new QRCodeStyling(), []);
@@ -59,9 +59,9 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
 
     return (
         <div className="geneQrCode">
-            <p>
+            <div>
                 <strong className="numSOL">{amountSol} </strong> {unitPayParse}
-            </p>
+            </div>
 
             <div ref={ref} />
         </div>

@@ -1,9 +1,9 @@
-export type T_UnitPay = {
+export interface I_UnitPay {
     sol: string;
     usdc: string;
-};
+}
 
-export const unitPay: T_UnitPay = {
+export const unitPay: I_UnitPay = {
     sol: 'sol',
     usdc: 'usdc',
 };
