@@ -27,7 +27,7 @@ export const labelField = Yup.string()
     .max(LBL_FILED.max, `Lable max is ${LBL_FILED.max} characters`)
     .required('Label required');
 
-const QUANTITY_PRODUCT_FILED = {
+export const QUANTITY_PRODUCT_FILED = {
     min: 1,
     max: 100,
 };
@@ -37,7 +37,7 @@ export const quantityProductFiled = Yup.number()
     .required('Quantity product required');
 
 const AMOUNT_FILED = {
-    min: 0.0005,
+    min: 1,
     max: 1_000_000,
 };
 export const amountFiled = (unit: string) => {

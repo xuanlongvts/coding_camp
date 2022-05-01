@@ -17,7 +17,7 @@ const Item = styled(Card)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const BasicMasonry = ({ products, handleQuickBuy }: { products: T_PRODUCT[]; handleQuickBuy: (unit: string, price: number) => void }) => {
+const BasicMasonry = ({ products, handleQuickBuy }: { products: T_PRODUCT[]; handleQuickBuy: (unit: string, id: string) => void }) => {
     if (!products.length) {
         return null;
     }
@@ -26,7 +26,7 @@ const BasicMasonry = ({ products, handleQuickBuy }: { products: T_PRODUCT[]; han
         <Container sx={{ py: 4 }} maxWidth="lg">
             <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={{ xs: 2, sm: 3, md: 4 }}>
                 {products.map((item: T_PRODUCT, _key: number) => {
-                    const priceUsdc = changeRate(Number(item.price), unitPay.sol);
+                    const priceUsdc = changeRate(Number(item.price), unitPay.usdc);
                     return (
                         <Item key={item.id}>
                             <CardMedia component="img" image={item.imgs.links[0]} alt="random" />
@@ -37,11 +37,11 @@ const BasicMasonry = ({ products, handleQuickBuy }: { products: T_PRODUCT[]; han
                                 <Typography>{item.description}</Typography>
                             </CardContent>
                             <CardActions disableSpacing>
-                                <Button size="medium" onClick={() => handleQuickBuy(unitPay.sol, Number(item.price))}>
+                                <Button size="medium" onClick={() => handleQuickBuy(unitPay.sol, item.id)}>
                                     <Typography variant="subtitle2">{Number(item.price).toFixed(1)}</Typography>&nbsp;-&nbsp;
                                     <Typography variant="caption">sol</Typography>
                                 </Button>
-                                <Button size="medium" onClick={() => handleQuickBuy(unitPay.usdc, priceUsdc)}>
+                                <Button size="medium" onClick={() => handleQuickBuy(unitPay.usdc, item.id)}>
                                     <Typography variant="subtitle2">{priceUsdc}</Typography>&nbsp;-&nbsp;
                                     <Typography variant="caption">usdc</Typography>
                                 </Button>
