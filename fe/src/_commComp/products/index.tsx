@@ -141,9 +141,15 @@ const ListProduct = () => {
             // console.log('newPrice: ', newPrice);
 
             if (getQuantity && Number(newPrice) !== lastTotalMoney) {
-                // console.log('vao day');
                 setLastTotalMoney(newPrice);
                 setValue(ENUM_FIELDS.amount, newPrice);
+
+                const newMemo = {
+                    id: idBuyProduct,
+                    quantityProduct: getQuantity,
+                };
+                const stringifyMemo = encodeURI(JSON.stringify(newMemo));
+                setValue(ENUM_FIELDS.memo, stringifyMemo);
             }
         }
     }, [watch(ENUM_FIELDS.quantityProduct)]);
