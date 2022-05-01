@@ -26,40 +26,40 @@ const CircularProgressWithLabel = (props: CircularProgressProps & { value: numbe
     const divi = Number(Math.floor(props.value / 20) - 1);
     const colorIndex = divi <= 0 ? 0 : divi;
 
-    const classes = useStyles(colorIndex);
-    const cls = classes();
+    // const classes = useStyles(colorIndex);
+    // const cls = classes();
 
-    if (props.is_continue) {
-        const setColor = props.is_continue === PaymentStatus.Finalized ? cls.cls_success : cls.cls_invalid;
+    // if (props.is_continue) {
+    //     const setColor = props.is_continue === PaymentStatus.Finalized ? cls.cls_success : cls.cls_invalid;
 
-        return (
-            <NoSsr>
-                <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                    <CircularProgress variant="determinate" {...props} size={150} className={setColor} />
-                    <Box
-                        sx={{
-                            top: 0,
-                            left: 0,
-                            bottom: 0,
-                            right: 0,
-                            position: 'absolute',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Typography variant="h6" component="div" color="text.secondary">
-                            {props.is_continue}
-                        </Typography>
-                    </Box>
-                </Box>
-            </NoSsr>
-        );
-    }
+    //     return (
+    //         <NoSsr>
+    //             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+    //                 <CircularProgress variant="determinate" {...props} size={150} className={setColor} />
+    //                 <Box
+    //                     sx={{
+    //                         top: 0,
+    //                         left: 0,
+    //                         bottom: 0,
+    //                         right: 0,
+    //                         position: 'absolute',
+    //                         display: 'flex',
+    //                         alignItems: 'center',
+    //                         justifyContent: 'center',
+    //                     }}
+    //                 >
+    //                     <Typography variant="h6" component="div" color="text.secondary">
+    //                         {props.is_continue}
+    //                     </Typography>
+    //                 </Box>
+    //             </Box>
+    //         </NoSsr>
+    //     );
+    // }
     return (
         <NoSsr>
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                <CircularProgress variant="determinate" {...props} size={150} className={cls.cls_color} />
+                <CircularProgress variant="determinate" {...props} size={150} />
                 <Box
                     sx={{
                         top: 0,
