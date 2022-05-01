@@ -9,57 +9,19 @@ import { PaymentStatus, PROGRESS_STATUS } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 
 const colors = ['#8752f3', '#5497d5', '#43b4ca', '#28e0b9', '#19fb9b'];
-const useStyles = (i: number) =>
-    makeStyles({
-        cls_color: {
-            color: colors[i],
-        },
-        cls_invalid: {
-            color: '#ccc',
-        },
-        cls_success: {
-            color: colors[4],
-        },
-    });
 
-const CircularProgressWithLabel = (props: CircularProgressProps & { value: number; statusmess: string; is_continue: string | null }) => {
+const CircularProgressWithLabel = (props: CircularProgressProps & { value: number; statusmess: string }) => {
     const divi = Number(Math.floor(props.value / 20) - 1);
     const colorIndex = divi <= 0 ? 0 : divi;
 
-    // const classes = useStyles(colorIndex);
-    // const cls = classes();
+    let styleChange = {
+        color: colors[colorIndex],
+    };
 
-    // if (props.is_continue) {
-    //     const setColor = props.is_continue === PaymentStatus.Finalized ? cls.cls_success : cls.cls_invalid;
-
-    //     return (
-    //         <NoSsr>
-    //             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-    //                 <CircularProgress variant="determinate" {...props} size={150} className={setColor} />
-    //                 <Box
-    //                     sx={{
-    //                         top: 0,
-    //                         left: 0,
-    //                         bottom: 0,
-    //                         right: 0,
-    //                         position: 'absolute',
-    //                         display: 'flex',
-    //                         alignItems: 'center',
-    //                         justifyContent: 'center',
-    //                     }}
-    //                 >
-    //                     <Typography variant="h6" component="div" color="text.secondary">
-    //                         {props.is_continue}
-    //                     </Typography>
-    //                 </Box>
-    //             </Box>
-    //         </NoSsr>
-    //     );
-    // }
     return (
         <NoSsr>
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                <CircularProgress variant="determinate" {...props} size={150} />
+                <CircularProgress variant="determinate" {...props} size={150} style={styleChange} />
                 <Box
                     sx={{
                         top: 0,
@@ -96,16 +58,14 @@ type T_Progress = {
 };
 const Progress = ({ progress, status }: T_Progress) => {
     const useClasses = useBoxProgress();
-    const [isProgressContinues, setIsProgressContinues] = useState<string | null>(null);
 
     useEffect(() => {
-        const getInforProgress = LocalStorageServices.getItemJson(PROGRESS_STATUS.ProgressStatus);
-        if (getInforProgress) {
-            setIsProgressContinues(getInforProgress);
-        }
+        return () => {
+            LocalStorageServices.removeAll();
+        };
     }, []);
 
-    const [value, statusMess] = useMemo(() => {
+    let [value, statusMess] = useMemo(() => {
         let newStatus: any = PaymentStatus.Pending;
         switch (status) {
             case PaymentStatus.Finalized:
@@ -131,11 +91,7 @@ const Progress = ({ progress, status }: T_Progress) => {
 
     return (
         <div className={useClasses.box_progress}>
-            <CircularProgressWithLabel
-                value={isProgressContinues ? 100 : value}
-                statusmess={statusMess}
-                is_continue={isProgressContinues}
-            />
+            <CircularProgressWithLabel value={value} statusmess={statusMess} />
         </div>
     );
 };

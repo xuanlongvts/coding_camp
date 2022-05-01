@@ -49,7 +49,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
             const run = async () => {
                 try {
                     const getAmount = new BigNumber(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
-                    const getLabel = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.label));
                     const getMemo = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.memo));
 
                     const splToken = undefined;
@@ -65,7 +64,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     }
                 } catch (err) {
                     console.log('0. Wallet on Broswer Pay --->: ', err);
-                    timeout = setTimeout(run, 3000);
+                    timeout = setTimeout(run, 300);
                 }
             };
             let timeout = setTimeout(run, 0);
@@ -226,6 +225,8 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
         setReference(null);
         setQrCodeValid(false);
         setStatus(PaymentStatus.Pending);
+        setSignature(undefined);
+        setConfirmations(0);
 
         handleClose();
     };

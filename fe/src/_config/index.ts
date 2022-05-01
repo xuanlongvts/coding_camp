@@ -90,7 +90,9 @@ export const transactionExplorer = (signature: string) => {
 };
 
 // SOL Pay Section
-export const WalletRecipient = 'BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT'; // phantom wallet of recipient
+// wallet 1 = BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT
+// wallet 2 = FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i
+export const WalletRecipient = 'FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i'; // phantom wallet of recipient wallet 1
 
 export const PubkeyRecipient = new PublicKey(WalletRecipient); // transform to Pubkey
 
