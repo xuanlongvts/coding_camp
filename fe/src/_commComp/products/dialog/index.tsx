@@ -47,41 +47,50 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
     // 0. Wallet Pay on Browser
-    // useEffect(() => {
-    //     if (publicKey && status === PaymentStatus.Pending) {
-    //         let changed = false;
+    useEffect(() => {
+        if (publicKey && status === PaymentStatus.Pending) {
+            const run = async () => {
+                try {
+                    const getAmount = new BigNumber(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
+                    const getLabel = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.label));
+                    const getMemo = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.memo));
 
-    //         const run = async () => {
-    //             try {
-    //                 const getAmount = new BigNumber(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
-    //                 const getMemo = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.memo));
+                    if (!getAmount || !getLabel) {
+                        return;
+                    }
 
-    //                 const splToken = undefined;
-    //                 const transaction =
-    //                     reference &&
-    //                     (await createTransaction(connection, publicKey, PubkeyRecipient, getAmount, {
-    //                         splToken,
-    //                         reference,
-    //                         memo: getMemo,
-    //                     }));
+                    const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
+                    let isSplToken = undefined;
+                    if (getUnitPay === unitPayConst.usdc) {
+                        isSplToken = DEVNET_DUMMY_MINT;
+                    }
+                    const transaction =
+                        reference &&
+                        PubkeyRecipient &&
+                        (await createTransfer(connection, publicKey, {
+                            recipient: PubkeyRecipient,
+                            amount: getAmount,
+                            splToken: isSplToken,
+                            reference,
+                            memo: getMemo,
+                        }));
 
-    //                 if (!changed) {
-    //                     transaction && (await sendTransaction(transaction, connection));
-    //                 }
-    //             } catch (err) {
-    //                 console.log('0. Wallet on Broswer Pay --->: ', err);
-    //                 timeout = setTimeout(run, 3000);
-    //             }
-    //         };
-    //         let timeout = setTimeout(run, 0);
+                    if (qrCodeValid) {
+                        console.log('qrCodeValid true: --> ', qrCodeValid);
+                        transaction && (await sendTransaction(transaction, connection));
+                    }
+                } catch (err) {
+                    console.log('0. Wallet on Broswer Pay --->: ', err);
+                    timeout = setTimeout(run, 3000);
+                }
+            };
+            let timeout = setTimeout(run, 0);
 
-    //         return () => {
-    //             LocalStorageServices.removeAll();
-    //             changed = true;
-    //             clearTimeout(timeout);
-    //         };
-    //     }
-    // }, [status, publicKey, sendTransaction]);
+            return () => {
+                clearTimeout(timeout);
+            };
+        }
+    }, [status, publicKey, sendTransaction, qrCodeValid]);
 
     // 1. Status pending
     useEffect(() => {
@@ -140,7 +149,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                 if (getUnitPay === unitPayConst.usdc) {
                     isSplToken = DEVNET_DUMMY_MINT;
                 }
-                console.log('isSplToken: ', isSplToken);
                 reference &&
                     PubkeyRecipient &&
                     (await validateTransfer(connection, signature, {
@@ -153,7 +161,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                 if (!changed) {
                     // console.log('status: ', status);
                     setStatus(PaymentStatus.Valid);
-                    changed = true;
                 }
             } catch (err: any) {
                 if (err instanceof ValidateTransferError && (err.message === 'not found' || err.message === 'missing meta')) {

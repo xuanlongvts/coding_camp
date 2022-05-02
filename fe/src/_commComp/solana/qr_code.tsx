@@ -1,4 +1,5 @@
 import { FC, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import BigNumber from 'bignumber.js';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -11,6 +12,25 @@ import { WalletRecipient, DEVNET_DUMMY_MINT } from '_config';
 import { ENUM_FIELDS } from '_validate';
 
 import { unitPay as unitPayConst } from '_commComp/products/const';
+
+interface AmountProps {
+    amount: BigNumber;
+    unitPay: string;
+}
+
+const Amount = ({ amount, unitPay }: AmountProps) => {
+    if (amount.isLessThanOrEqualTo(0)) {
+        return 0;
+    }
+    const minDecimals = 2;
+    const decimals = unitPay === unitPayConst.usdc ? 6 : 9;
+
+    const value = useMemo(() => {
+        return amount.toFormat(amount.decimalPlaces() < minDecimals ? minDecimals : amount.decimalPlaces());
+    }, [amount, unitPay]);
+
+    return value;
+};
 
 const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
     const matches = useMediaQuery('(max-width:450px)');
@@ -29,6 +49,7 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
         const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
         if (getUnitPay === unitPayConst.usdc) {
             url += `&splToken=${DEVNET_DUMMY_MINT}`;
+            // url += `&spl-token=${DEVNET_DUMMY_MINT}`; // old version detect usdc
             setUnitPayParse(unitPayConst.usdc);
         }
 
