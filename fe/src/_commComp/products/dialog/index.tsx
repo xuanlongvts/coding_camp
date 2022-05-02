@@ -26,7 +26,7 @@ import { web3 } from '@project-serum/anchor';
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
 
-import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT } from '_config';
+import { PubkeyRecipient, WalletRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
 import { unitPay as unitPayConst } from '_commComp/products/const';
@@ -110,14 +110,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     clearInterval(interval);
                     setSignature(signature.signature);
                     setStatus(PaymentStatus.Confirmed);
-
-                    LocalStorageServices.removeManyItems([
-                        ENUM_FIELDS.amount,
-                        ENUM_FIELDS.label,
-                        ENUM_FIELDS.message,
-                        ENUM_FIELDS.memo,
-                        ENUM_FIELDS.unitPay,
-                    ]);
                 }
             } catch (err: any) {
                 // If the RPC node doesn't have the transaction signature yet, try again
@@ -145,18 +137,30 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
         const run = async () => {
             try {
                 const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
+                const getMemo = LocalStorageServices.getItemJson(ENUM_FIELDS.memo) || undefined;
+
+                console.log('getUnitPay: ', getUnitPay);
                 let isSplToken = undefined;
                 if (getUnitPay === unitPayConst.usdc) {
                     isSplToken = DEVNET_DUMMY_MINT;
                 }
+
                 reference &&
                     PubkeyRecipient &&
-                    (await validateTransfer(connection, signature, {
-                        recipient: PubkeyRecipient,
-                        amount: getAmount,
-                        splToken: isSplToken,
-                        reference,
-                    }));
+                    (await validateTransfer(
+                        connection,
+                        signature,
+                        {
+                            recipient: PubkeyRecipient,
+                            amount: getAmount,
+                            splToken: isSplToken,
+                            reference,
+                            memo: getMemo,
+                        },
+                        {
+                            commitment: 'confirmed',
+                        },
+                    ));
 
                 if (!changed) {
                     // console.log('status: ', status);
@@ -171,7 +175,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
                 console.warn('2.1 Validate --->>> Error: ', err);
                 setStatus(PaymentStatus.InValid);
-                LocalStorageServices.removeAll();
             }
         };
         timeout = setTimeout(run, 0);

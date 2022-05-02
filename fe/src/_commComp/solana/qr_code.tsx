@@ -15,19 +15,18 @@ import { unitPay as unitPayConst } from '_commComp/products/const';
 
 interface AmountProps {
     amount: BigNumber;
-    unitPay: string;
 }
 
-const Amount = ({ amount, unitPay }: AmountProps) => {
+const Amount = ({ amount }: AmountProps) => {
     if (amount.isLessThanOrEqualTo(0)) {
-        return 0;
+        return new BigNumber(0);
     }
     const minDecimals = 2;
-    const decimals = unitPay === unitPayConst.usdc ? 6 : 9;
+    // const decimals = unitPay === unitPayConst.usdc ? 6 : 9;
 
     const value = useMemo(() => {
         return amount.toFormat(amount.decimalPlaces() < minDecimals ? minDecimals : amount.decimalPlaces());
-    }, [amount, unitPay]);
+    }, [amount]);
 
     return value;
 };
@@ -36,11 +35,11 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
     const matches = useMediaQuery('(max-width:450px)');
 
     const [url, setUrl] = useState<string>('');
-    const [amountSol, setAmountSol] = useState<Number>();
+    const [amountSol, setAmountSol] = useState<number>();
     const [unitPayParse, setUnitPayParse] = useState<string>(unitPayConst.sol);
 
     useEffect(() => {
-        const getAmount = Number(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
+        let getAmount = Number(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
         const getLabel = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.label));
 
         let url = `solana:${WalletRecipient}?amount=${getAmount}&reference=${refPubkey.toBase58()}`;
@@ -48,8 +47,7 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
 
         const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
         if (getUnitPay === unitPayConst.usdc) {
-            url += `&splToken=${DEVNET_DUMMY_MINT}`;
-            // url += `&spl-token=${DEVNET_DUMMY_MINT}`; // old version detect usdc
+            url += `&spl-token=${DEVNET_DUMMY_MINT}`;
             setUnitPayParse(unitPayConst.usdc);
         }
 

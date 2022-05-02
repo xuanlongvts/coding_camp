@@ -100,7 +100,6 @@ const Progress = ({ progress, status, handlePreClose }: T_Progress) => {
 
         return () => {
             clearInterval(intervalTick);
-            LocalStorageServices.removeAll();
         };
     }, []);
 
