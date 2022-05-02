@@ -2,13 +2,17 @@ import { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 
 import {
-    createTransaction,
-    findTransactionSignature,
-    FindTransactionSignatureError,
-    validateTransactionSignature,
-    ValidateTransactionSignatureError,
+    createTransfer,
+    encodeURL,
+    fetchTransaction,
+    findReference,
+    FindReferenceError,
+    parseURL,
+    validateTransfer,
+    ValidateTransferError,
 } from '@solana/pay';
-import { ConfirmedSignatureInfo, Keypair, PublicKey, TransactionSignature } from '@solana/web3.js';
+
+import { ConfirmedSignatureInfo, PublicKey, TransactionSignature } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import BigNumber from 'bignumber.js';
 
@@ -22,9 +26,10 @@ import { web3 } from '@project-serum/anchor';
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
 
-import { PubkeyRecipient, PaymentStatus, WalletRecipient, requiredConfirmations, Confirmations, PROGRESS_STATUS } from '_config';
+import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
+import { unitPay as unitPayConst } from '_commComp/products/const';
 
 import FrmGenegrate from './frmGenegrate';
 import { I_DiglogBox } from './const';
@@ -42,40 +47,41 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
     // 0. Wallet Pay on Browser
-    useEffect(() => {
-        if (publicKey && status === PaymentStatus.Pending) {
-            let changed = false;
+    // useEffect(() => {
+    //     if (publicKey && status === PaymentStatus.Pending) {
+    //         let changed = false;
 
-            const run = async () => {
-                try {
-                    const getAmount = new BigNumber(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
-                    const getMemo = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.memo));
+    //         const run = async () => {
+    //             try {
+    //                 const getAmount = new BigNumber(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
+    //                 const getMemo = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.memo));
 
-                    const splToken = undefined;
-                    const transaction =
-                        reference &&
-                        (await createTransaction(connection, publicKey, PubkeyRecipient, getAmount, {
-                            splToken,
-                            reference,
-                            memo: getMemo,
-                        }));
-                    if (!changed) {
-                        transaction && (await sendTransaction(transaction, connection));
-                    }
-                } catch (err) {
-                    console.log('0. Wallet on Broswer Pay --->: ', err);
-                    timeout = setTimeout(run, 3000);
-                }
-            };
-            let timeout = setTimeout(run, 0);
+    //                 const splToken = undefined;
+    //                 const transaction =
+    //                     reference &&
+    //                     (await createTransaction(connection, publicKey, PubkeyRecipient, getAmount, {
+    //                         splToken,
+    //                         reference,
+    //                         memo: getMemo,
+    //                     }));
 
-            return () => {
-                LocalStorageServices.removeAll();
-                changed = true;
-                clearTimeout(timeout);
-            };
-        }
-    }, [status, publicKey, sendTransaction]);
+    //                 if (!changed) {
+    //                     transaction && (await sendTransaction(transaction, connection));
+    //                 }
+    //             } catch (err) {
+    //                 console.log('0. Wallet on Broswer Pay --->: ', err);
+    //                 timeout = setTimeout(run, 3000);
+    //             }
+    //         };
+    //         let timeout = setTimeout(run, 0);
+
+    //         return () => {
+    //             LocalStorageServices.removeAll();
+    //             changed = true;
+    //             clearTimeout(timeout);
+    //         };
+    //     }
+    // }, [status, publicKey, sendTransaction]);
 
     // 1. Status pending
     useEffect(() => {
@@ -87,7 +93,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
         const interval = setInterval(async () => {
             let signature: ConfirmedSignatureInfo;
             try {
-                signature = await findTransactionSignature(connection, reference, undefined, 'confirmed');
+                signature = await findReference(connection, reference);
 
                 console.log('signature: ---> ', signature);
 
@@ -106,7 +112,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                 }
             } catch (err: any) {
                 // If the RPC node doesn't have the transaction signature yet, try again
-                if (!(err instanceof FindTransactionSignatureError)) {
+                if (!(err instanceof FindReferenceError)) {
                     console.log('1. Error: ', err);
                 }
             }
@@ -129,24 +135,28 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
         const run = async () => {
             try {
-                // splToken (later version)
+                const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
+                let isSplToken = undefined;
+                if (getUnitPay === unitPayConst.usdc) {
+                    isSplToken = DEVNET_DUMMY_MINT;
+                }
+                console.log('isSplToken: ', isSplToken);
                 reference &&
-                    (await validateTransactionSignature(
-                        connection,
-                        signature,
-                        PubkeyRecipient,
-                        getAmount,
-                        undefined,
+                    PubkeyRecipient &&
+                    (await validateTransfer(connection, signature, {
+                        recipient: PubkeyRecipient,
+                        amount: getAmount,
+                        splToken: isSplToken,
                         reference,
-                        'confirmed',
-                    ));
+                    }));
+
                 if (!changed) {
                     // console.log('status: ', status);
                     setStatus(PaymentStatus.Valid);
                     changed = true;
                 }
             } catch (err: any) {
-                if (err instanceof ValidateTransactionSignatureError && (err.message === 'not found' || err.message === 'missing meta')) {
+                if (err instanceof ValidateTransferError && (err.message === 'not found' || err.message === 'missing meta')) {
                     console.warn('2.0 Error validate: ', err);
                     timeout = setTimeout(run, 50);
                     return;

@@ -28,7 +28,7 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
 
         const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
         if (getUnitPay === unitPayConst.usdc) {
-            url += `&spl-token=${DEVNET_DUMMY_MINT}`;
+            url += `&splToken=${DEVNET_DUMMY_MINT}`;
             setUnitPayParse(unitPayConst.usdc);
         }
 

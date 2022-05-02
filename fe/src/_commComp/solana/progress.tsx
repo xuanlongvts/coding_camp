@@ -29,6 +29,8 @@ const CircularProgressWithLabel = (props: CircularProgressProps & { value: numbe
             },
         };
 
+        console.log('props.is_continue: ', props.is_continue);
+
         setColor = props.is_continue === PaymentStatus.Finalized ? styleInvSuc.cls_success : styleInvSuc.cls_invalid;
     }
 
