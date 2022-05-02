@@ -64,7 +64,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     }
                 } catch (err) {
                     console.log('0. Wallet on Broswer Pay --->: ', err);
-                    timeout = setTimeout(run, 300);
+                    timeout = setTimeout(run, 3000);
                 }
             };
             let timeout = setTimeout(run, 0);
@@ -255,9 +255,9 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     ) : status === PaymentStatus.Pending && qrCodeValid ? (
                         <QRCode refPubkey={reference} />
                     ) : (
-                        <Progress status={status} progress={progress} />
+                        <Progress status={status} progress={progress} handlePreClose={handlePreClose} />
                     )}
-                    {/* <Progress status={status} progress={progress} /> */}
+                    {/* <Progress status={status} progress={progress} handlePreClose={handlePreClose} /> */}
                 </DialogContent>
             </Dialog>
         </>

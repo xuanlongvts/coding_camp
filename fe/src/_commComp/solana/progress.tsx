@@ -10,7 +10,7 @@ import { LocalStorageServices } from '_utils/localStorage';
 
 const colors = ['#8752f3', '#5497d5', '#43b4ca', '#28e0b9', '#19fb9b'];
 
-const CircularProgressWithLabel = (props: CircularProgressProps & { value: number; statusmess: string }) => {
+const CircularProgressWithLabel = (props: CircularProgressProps & { value: number; statusmess: string; is_continue: string | null }) => {
     const divi = Number(Math.floor(props.value / 20) - 1);
     const colorIndex = divi <= 0 ? 0 : divi;
 
@@ -18,10 +18,24 @@ const CircularProgressWithLabel = (props: CircularProgressProps & { value: numbe
         color: colors[colorIndex],
     };
 
+    let setColor = null;
+    if (props.is_continue) {
+        let styleInvSuc = {
+            cls_invalid: {
+                color: '#ccc',
+            },
+            cls_success: {
+                color: colors[4],
+            },
+        };
+
+        setColor = props.is_continue === PaymentStatus.Finalized ? styleInvSuc.cls_success : styleInvSuc.cls_invalid;
+    }
+
     return (
         <NoSsr>
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                <CircularProgress variant="determinate" {...props} size={150} style={styleChange} />
+                <CircularProgress variant="determinate" {...props} size={150} style={setColor || styleChange} />
                 <Box
                     sx={{
                         top: 0,
@@ -35,7 +49,7 @@ const CircularProgressWithLabel = (props: CircularProgressProps & { value: numbe
                     }}
                 >
                     <Typography variant="h6" component="div" color="text.secondary">
-                        {props.statusmess}
+                        {props.is_continue || props.statusmess}
                     </Typography>
                 </Box>
             </Box>
@@ -52,15 +66,38 @@ const useBoxProgress = makeStyles({
     },
 });
 
+const timeConst = 5;
 type T_Progress = {
     progress: number;
     status: string;
+    handlePreClose: () => void;
 };
-const Progress = ({ progress, status }: T_Progress) => {
+const Progress = ({ progress, status, handlePreClose }: T_Progress) => {
     const useClasses = useBoxProgress();
 
+    let [timeOutTick, setTimeOutTick] = useState<number | null>(null);
+    const [isProgressContinues, setIsProgressContinues] = useState<string | null>(null);
+
+    let intervalTick: any;
+
+    const tick = () => {
+        if (typeof timeOutTick === 'number') {
+            if (timeOutTick === 1) {
+                setTimeOutTick(null);
+                handlePreClose();
+            }
+            timeOutTick > 0 && setTimeOutTick(--timeOutTick);
+        }
+    };
+
     useEffect(() => {
+        const getInforProgress = LocalStorageServices.getItemJson(PROGRESS_STATUS.ProgressStatus);
+        if (getInforProgress && getInforProgress === PaymentStatus.InValid) {
+            setIsProgressContinues(getInforProgress);
+        }
+
         return () => {
+            clearInterval(intervalTick);
             LocalStorageServices.removeAll();
         };
     }, []);
@@ -82,6 +119,7 @@ const Progress = ({ progress, status }: T_Progress) => {
                 }
             case PaymentStatus.InValid:
                 newStatus = PaymentStatus.InValid;
+                console.log('status: ===> ', status);
                 LocalStorageServices.setItemJson(PROGRESS_STATUS.ProgressStatus, PaymentStatus.InValid);
                 return [0, newStatus];
             default:
@@ -89,10 +127,24 @@ const Progress = ({ progress, status }: T_Progress) => {
         }
     }, [status, progress]);
 
+    useEffect(() => {
+        !timeOutTick && setTimeOutTick(timeConst);
+        if (value === 100 && timeOutTick === timeConst) {
+            intervalTick = setInterval(() => tick(), 1000);
+        }
+    }, [value]);
+
     return (
-        <div className={useClasses.box_progress}>
-            <CircularProgressWithLabel value={value} statusmess={statusMess} />
-        </div>
+        <>
+            <Box className={useClasses.box_progress}>
+                <CircularProgressWithLabel value={value} statusmess={statusMess} is_continue={isProgressContinues} />
+            </Box>
+            {value === 100 ? (
+                <Typography variant="h5" component="p" align="center">
+                    {timeOutTick}
+                </Typography>
+            ) : null}
+        </>
     );
 };
 
