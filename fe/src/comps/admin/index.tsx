@@ -19,10 +19,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 import Footer from '_commComp/footer';
+import { setCookie } from '_utils/cookieStorage';
 
 import LoginSchemaValidate from './validateLogin';
 import Slice from './slice';
-import { adminHardcode } from './const';
+import { adminHardcode, EnumAccountInfor } from './const';
 
 interface T_HOOKS_FOMR {
     username: string;
@@ -53,7 +54,13 @@ const LoginPage = () => {
         } else {
             setErrorMess(undefined);
             dispatch(appLoadingActions.loadingOpen());
-            await new Promise(res => setTimeout(res, 2000));
+
+            const getDate = Date.now() + 1000 * 60 * 60 * 24 * 30 * 3; // 3 months
+
+            setCookie(EnumAccountInfor.user, username, getDate);
+            setCookie(EnumAccountInfor.pass, password, getDate);
+
+            await new Promise(res => setTimeout(res, 1000));
 
             router.push('/admin/products');
         }

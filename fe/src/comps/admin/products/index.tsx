@@ -1,5 +1,3 @@
-const ProductManagment = () => {
-    return <section>ProductManagment</section>;
-};
+import AsyncComponent from '_asynComponent';
 
-export default ProductManagment;
+export default AsyncComponent(() => import('./comp'));
