@@ -26,7 +26,7 @@ function HideOnScroll(props: Props) {
     );
 }
 
-const Header = ({ props }: { props: Props }) => {
+const Header = ({ props }: { props?: Props }) => {
     const matches = useMediaQuery('(max-width:450px)');
 
     return (
