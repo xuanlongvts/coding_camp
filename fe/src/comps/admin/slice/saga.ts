@@ -1,3 +1,3 @@
 export default function* root() {
-    yield console.log('account');
+    yield console.log('saga account');
 }

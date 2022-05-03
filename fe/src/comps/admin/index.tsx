@@ -1,5 +1,6 @@
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -11,22 +12,26 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import FormHelperText from '@mui/material/FormHelperText';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { appLoadingActions } from '_commComp/loadingApp/slice';
 import Footer from '_commComp/footer';
 
 import LoginSchemaValidate from './validateLogin';
 import Slice from './slice';
-import { selectError } from './slice/selector';
+import { adminHardcode } from './const';
 
 interface T_HOOKS_FOMR {
     username: string;
     password: string;
 }
 const LoginPage = () => {
-    // const { actions } = Slice();
+    const { actions } = Slice();
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     const {
         register,
@@ -38,13 +43,29 @@ const LoginPage = () => {
         resolver: yupResolver(LoginSchemaValidate),
     });
 
-    const [isViewPass, setViewPass] = useState(false);
+    const [errorMess, setErrorMess] = useState<string | undefined>();
 
-    const onSubmitForm = (data: T_HOOKS_FOMR) => {
+    const onSubmitForm = async (data: T_HOOKS_FOMR) => {
         const { username, password } = data;
+
+        if (username.toLowerCase() !== adminHardcode.user || password.toLowerCase() !== adminHardcode.pass) {
+            setErrorMess('Wrong username or password');
+        } else {
+            setErrorMess(undefined);
+            dispatch(appLoadingActions.loadingOpen());
+            await new Promise(res => setTimeout(res, 2000));
+
+            router.push('/admin/products');
+        }
     };
 
     const disabledBtn = !!(errors.username || errors.password || !watch().username || !watch().password);
+
+    useEffect(() => {
+        if (disabledBtn && errorMess) {
+            setErrorMess(undefined);
+        }
+    }, [disabledBtn, errorMess]);
 
     return (
         <Grid container component="div" sx={{ height: '100vh' }}>
@@ -91,6 +112,7 @@ const LoginPage = () => {
                         sx={{
                             mx: 1,
                             minHeight: '500px',
+                            // width: '100%',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -99,10 +121,8 @@ const LoginPage = () => {
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-                        <Box sx={{ mt: 1 }}>
+
+                        <Box sx={{ mt: 3, mx: 1, width: '88%' }}>
                             <TextField
                                 required
                                 fullWidth
@@ -129,12 +149,20 @@ const LoginPage = () => {
                                 error={!!errors.password}
                                 helperText={errors?.password?.message}
                             />
-                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            {errorMess && <FormHelperText error={!!errorMess}>{errorMess}</FormHelperText>}
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                disabled={disabledBtn}
+                                onClick={handleSubmit(onSubmitForm)}
+                            >
                                 Login
                             </Button>
 
                             <Box sx={{ mt: 5, textAlign: 'center' }} className="hintPass">
-                                admin - 123
+                                {adminHardcode.user} - {adminHardcode.pass}
                             </Box>
                         </Box>
                     </Box>
