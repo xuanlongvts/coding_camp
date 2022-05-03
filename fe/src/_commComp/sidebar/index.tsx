@@ -18,6 +18,7 @@ import navConfig from './consts';
 
 const SwitchThemeMode = dynamic(() => import('themes/darkMode'), { ssr: false });
 
+const drawerWidth = 280;
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         order: {
@@ -36,10 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '& a': {
                 cursor: 'pointer',
                 textDecoration: 'none',
-                color:
-                    theme.palette.mode === darkThemeModes.dark
-                        ? theme.palette.primary.dark
-                        : theme.palette.secondary.contrastText,
+                color: theme.palette.mode === darkThemeModes.dark ? theme.palette.primary.dark : theme.palette.secondary.contrastText,
             },
         },
     }),
@@ -67,11 +65,7 @@ const Sidebar = () => {
                 <List component="nav" aria-label="Nav">
                     {navConfig.map((i, k) => {
                         return (
-                            <ListItemLink
-                                selected={router.pathname === i.link}
-                                key={k}
-                                onClick={() => handleClickLink(i.link)}
-                            >
+                            <ListItemLink selected={router.pathname === i.link} key={k} onClick={() => handleClickLink(i.link)}>
                                 <ListItemIcon>{k + 1}</ListItemIcon>
 
                                 <ListItemText primary={i.title} />

@@ -1,8 +1,10 @@
 header {
-    height: 70px;
-    padding: 10px 15px;
+    width: 100%;
+    min-height: 50px;
+    padding: 5px 0;
     position: relative;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, .1);
+    background-color: #fff !important;
 
     // &.noBack {
     //     justify-content: center;

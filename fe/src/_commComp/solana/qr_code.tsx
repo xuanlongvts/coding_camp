@@ -57,7 +57,7 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
         const getMemo = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.memo));
         getMemo && (url += `&memo=${getMemo}`);
 
-        console.log('url genegrate: ', url);
+        // console.log('url genegrate: ', url);
 
         setUrl(url);
         setAmountSol(getAmount);

@@ -1,43 +1,48 @@
-import { useCallback } from 'react';
-import { useRouter } from 'next/router';
-
-// import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-
-import useMediaQuery from '@mui/material/useMediaQuery';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
-// const SwitchThemeMode = dynamic(() => import('themes/darkMode'), { ssr: false });
-import { LocalStorageServices } from '_utils/localStorage';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Slide from '@mui/material/Slide';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-const Header = ({ noBack }: { noBack?: boolean | null }) => {
-    const router = useRouter();
-    const matches = useMediaQuery('(max-width:450px)');
+interface Props {
+    window?: () => Window;
+    children: React.ReactElement;
+}
 
-    const hanldeOnBack = useCallback(() => {
-        router.push('/');
-        LocalStorageServices.removeAll();
-    }, []);
+function HideOnScroll(props: Props) {
+    const { children, window } = props;
+    const trigger = useScrollTrigger({
+        target: window ? window() : undefined,
+    });
 
     return (
-        <header className={noBack ? 'noBack' : ''}>
-            {!noBack ? (
-                <span className="back" onClick={hanldeOnBack}>
-                    <ArrowLeftIcon /> Back
-                </span>
-            ) : null}
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    );
+}
 
-            <Link href="/">
-                <a className="logo">
-                    <Image src="/imgs/SolanaPayLogo.svg" alt="Solana Pay" width={100} height={50} />
-                </a>
-            </Link>
+const Header = ({ props }: { props: Props }) => {
+    const matches = useMediaQuery('(max-width:450px)');
 
-            {!matches ? <WalletMultiButton /> : null}
-            {/* <SwitchThemeMode /> */}
-        </header>
+    return (
+        <HideOnScroll {...props}>
+            <AppBar>
+                <Toolbar>
+                    <Link href="/">
+                        <a className="logo">
+                            <Image src="/imgs/SolanaPayLogo.svg" alt="Solana Pay" width={100} height={50} />
+                        </a>
+                    </Link>
+
+                    {!matches ? <WalletMultiButton /> : null}
+                </Toolbar>
+            </AppBar>
+        </HideOnScroll>
     );
 };
 

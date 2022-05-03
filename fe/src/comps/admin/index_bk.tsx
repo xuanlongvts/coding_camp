@@ -7,7 +7,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 import { getProgram, getProvider, getConfig } from '_config';
 import idl from '_config/idl.json';
-import { products, addOneProductData, addOneProductDataOther, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
+import { products, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
 import Header from '_commComp/header';
 
 import kp from '_keys/keypair.json';
@@ -18,7 +18,7 @@ const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccount = anchor.web3.Keypair.fromSecretKey(secret);
 
-const Home: NextPage = () => {
+const AdminComp: NextPage = () => {
     const { publicKey } = useWallet();
 
     useEffect(() => {
@@ -59,13 +59,12 @@ const Home: NextPage = () => {
     const handleAddOneProduct = async () => {
         const program = getProgram(idl, programID);
         try {
-            publicKey &&
-                (await program.methods
-                    .addOneProduct(addOneProductDataOther)
-                    .accounts({
-                        baseAccount: baseAccount.publicKey,
-                    })
-                    .rpc());
+            await program.methods
+                .addOneProduct(updateOneProductData)
+                .accounts({
+                    baseAccount: baseAccount.publicKey,
+                })
+                .rpc();
             const account = publicKey && (await program.account.products.fetch(baseAccount.publicKey));
             console.log('account: Add ---> ', account);
         } catch (_err) {
@@ -123,4 +122,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default AdminComp;

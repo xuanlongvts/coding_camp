@@ -89,11 +89,8 @@ const App = (props: T_APP) => {
                         <ThemeProvider theme={theme(darkState)}>
                             <CssBaseline />
 
-                            <main>
-                                <Component {...pageProps} />
+                            <Component {...pageProps} />
 
-                                <footer>&copy; xuanlongvts - 05/2022</footer>
-                            </main>
                             <LoadingApp />
                         </ThemeProvider>
                     </WalletModalProvider>
