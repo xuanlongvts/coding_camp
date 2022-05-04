@@ -4,7 +4,7 @@ import { web3 } from '@project-serum/anchor';
 import { PublicKey } from '@solana/web3.js';
 
 import { getProgram } from '_config';
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 
 import idl from '_config/idl.json';
 import kp from '_keys/keypair.json';

@@ -29,7 +29,7 @@ import Progress from '_commComp/solana/progress';
 import { PubkeyRecipient, WalletRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
-import { unitPay as unitPayConst } from '_commComp/products/const';
+import { unitPay as unitPayConst } from 'comps/01-home/products/const';
 
 import FrmGenegrate from './frmGenegrate';
 import { I_DiglogBox } from './const';

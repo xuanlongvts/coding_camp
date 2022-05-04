@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import type { NextPage } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
@@ -9,25 +8,16 @@ import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 
-import { getProgram } from '_config';
-import { T_PRODUCT } from '_commComp/products/type';
-
-import idl from '_config/idl.json';
-import kp from '_keys/keypair.json';
-
+import { T_PRODUCT } from 'comps/01-home/products/type';
 import { products, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
 
 import Slice from './slice';
-
-const programID = new PublicKey(idl.metadata.address);
-
-const arr = Object.values(kp._keypair.secretKey);
-const secret = new Uint8Array(arr);
-const baseAccount = anchor.web3.Keypair.fromSecretKey(secret);
+import { selectError } from './slice/selector';
 
 const ProductsManagment = () => {
     const { actions } = Slice();
     const dispatch = useDispatch();
+    const errMess = useSelector(selectError);
 
     const { publicKey } = useWallet();
     const [products, setProducts] = useState<T_PRODUCT[]>([]);
@@ -38,9 +28,12 @@ const ProductsManagment = () => {
 
     return (
         <>
-            <Box>
-                <AddIcon />
-            </Box>
+            {errMess ? (
+                <Box>
+                    <AddIcon />
+                </Box>
+            ) : null}
+
             <Paper sx={{ p: 2 }}>
                 product
                 <br />

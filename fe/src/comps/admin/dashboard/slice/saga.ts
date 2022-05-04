@@ -2,7 +2,7 @@ import { put, takeLatest, call, select } from 'redux-saga/effects';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 
 import { Obj } from '_types/index';
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 
 import { productsActions } from '.';
 import { selectProductInit } from './selector';

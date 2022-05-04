@@ -1,4 +1,4 @@
-import Product from '_commComp/products';
+import Product from 'comps/01-home/products';
 
 const HomeComp = () => {
     return <Product />;

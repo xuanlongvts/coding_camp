@@ -3,7 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { NSP_PRODUCTS } from '_types/root_state_type';
 import { Obj } from '_types/index';
 import { createSlice, useInjectReducer, useInjectSaga } from '_redux';
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 
 import * as TYPES_KEYS from './types';
 import saga from './saga';
@@ -22,7 +22,7 @@ const slice = createSlice({
         productsInitCall(state, action: PayloadAction<T_PRODUCT[]>) {
             state[TYPES_KEYS.KEY_PRODUCT_INIT] = action.payload;
         },
-        productsCall(state) {
+        productsCall() {
             console.log('productsCall');
         },
         productsCallSuccess(state, action: PayloadAction<T_PRODUCT[]>) {

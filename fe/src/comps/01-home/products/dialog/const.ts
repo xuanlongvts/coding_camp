@@ -1,4 +1,4 @@
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 
 export interface I_ProductByt {
     idProductBuy: string;

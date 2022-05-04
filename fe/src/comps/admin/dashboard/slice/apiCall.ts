@@ -6,7 +6,7 @@ import { getProgram, getProvider, getConfig } from '_config';
 import { KeyPairDemo } from 'comps/admin/const';
 
 import idl from '_config/idl.json';
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 import kp from '_keys/keypair.json';
 
 const programID = new PublicKey(idl.metadata.address);

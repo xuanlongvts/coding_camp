@@ -12,9 +12,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import FundAccSchema, { T_HOOKS_FOMR_GENE_QR_CODE, ENUM_FIELDS, QUANTITY_PRODUCT_FILED } from '_validate';
 import { LocalStorageServices } from '_utils/localStorage';
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 
-import { unitPay as unitPayConst, changeRate } from '_commComp/products/const';
+import { unitPay as unitPayConst, changeRate } from 'comps/01-home/products/const';
 
 import { I_FrmGenegrate } from './const';
 

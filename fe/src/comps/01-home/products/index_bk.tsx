@@ -21,7 +21,7 @@ import { PublicKey } from '@solana/web3.js';
 
 import { LocalStorageServices } from '_utils/localStorage';
 import { getProgram } from '_config';
-import { T_PRODUCT } from '_commComp/products/type';
+import { T_PRODUCT } from 'comps/01-home/products/type';
 import QRCode from '_commComp/solana/qr_code';
 
 import idl from '_config/idl.json';

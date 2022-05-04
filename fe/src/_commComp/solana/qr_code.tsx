@@ -11,7 +11,7 @@ import { LocalStorageServices } from '_utils/localStorage';
 import { WalletRecipient, DEVNET_DUMMY_MINT } from '_config';
 import { ENUM_FIELDS } from '_validate';
 
-import { unitPay as unitPayConst } from '_commComp/products/const';
+import { unitPay as unitPayConst } from 'comps/01-home/products/const';
 
 interface AmountProps {
     amount: BigNumber;
