@@ -1,3 +1,5 @@
+import { PublicKey } from '@solana/web3.js';
+
 type T_Unit = {
     sol: number;
     usdc: number;
@@ -18,5 +20,5 @@ export type T_PRODUCT = {
     price: number;
     description: string;
     tips: T_CustomerTips[];
-    owner: string;
+    owner: PublicKey;
 };

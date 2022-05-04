@@ -15,7 +15,7 @@ const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccountDefault: Keypair = web3.Keypair.fromSecretKey(secret);
 
-const getKeypairDemo = (): Keypair | null => {
+export const getKeypairDemo = (): Keypair | null => {
     let getKeypairDemo = getCookie(KeyPairDemo);
     getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
     let baseAccountDemo: Keypair | null = null;

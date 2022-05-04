@@ -1,8 +1,13 @@
 import * as anchor from '@project-serum/anchor';
 
-export const baseAcc = anchor.web3.Keypair.generate();
+import { T_PRODUCT } from 'comps/01-home/products/type';
+import { getKeypairDemo } from 'comps/admin/dashboard/slice/apiCall';
 
-export const products = [
+const baseAcc = anchor.web3.Keypair.generate();
+
+const ownerPubkey = (getKeypairDemo() && getKeypairDemo()?.publicKey) || baseAcc.publicKey;
+
+export const productsInit: T_PRODUCT[] = [
     {
         id: 'abc',
         title: 'Iphone 15',
@@ -11,11 +16,10 @@ export const products = [
                 'https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g',
             ],
         },
-        // imgs: 'https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g',
-        price: new anchor.BN(3),
+        price: 3,
         description: 'Iphone 15 will release at 2024',
         tips: [],
-        owner: baseAcc.publicKey,
+        owner: ownerPubkey,
     },
     {
         id: 'edf',
@@ -25,15 +29,14 @@ export const products = [
                 'https://media4.giphy.com/media/l2JhBGQsSk3JnG1vW/giphy.gif?cid=ecf05e475elwxakg045lmax1mzz1bsi6izt0pwrgrywzd9t1&rid=giphy.gif&ct=g',
             ],
         },
-        // imgs: 'https://media4.giphy.com/media/l2JhBGQsSk3JnG1vW/giphy.gif?cid=ecf05e475elwxakg045lmax1mzz1bsi6izt0pwrgrywzd9t1&rid=giphy.gif&ct=g',
-        price: new anchor.BN(5),
+        price: 5,
         description: 'Macbook Pro M2 will release at 2024',
         tips: [],
-        owner: baseAcc.publicKey,
+        owner: ownerPubkey,
     },
 ];
 
-export const addOneProductDataArr = [
+export const addOneProductDataArr: T_PRODUCT[] = [
     {
         id: 'ikl',
         title: 'Mouse magic',
@@ -42,10 +45,10 @@ export const addOneProductDataArr = [
                 'https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g',
             ],
         },
-        price: new anchor.BN(1),
+        price: 1,
         description: 'Mouse magic will release at 2024',
         tips: [],
-        owner: baseAcc.publicKey,
+        owner: ownerPubkey,
     },
     {
         id: 'ikl1',
@@ -55,10 +58,10 @@ export const addOneProductDataArr = [
                 'https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g',
             ],
         },
-        price: new anchor.BN(1),
+        price: 1,
         description: 'Mouse magic will release at 2024',
         tips: [],
-        owner: baseAcc.publicKey,
+        owner: ownerPubkey,
     },
     {
         id: 'ikl2',
@@ -68,14 +71,14 @@ export const addOneProductDataArr = [
                 'https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g',
             ],
         },
-        price: new anchor.BN(1),
+        price: 1,
         description: 'Mouse magic will release at 2024',
         tips: [],
-        owner: baseAcc.publicKey,
+        owner: ownerPubkey,
     },
 ];
 
-export const updateOneProductData = {
+export const updateOneProductData: T_PRODUCT = {
     id: 'edf',
     title: 'Macbook Pro M2',
     imgs: {
@@ -84,10 +87,10 @@ export const updateOneProductData = {
             'https://media3.giphy.com/media/3o7TKRiAXqGIJFtdfy/giphy.gif?cid=ecf05e47vq37hnywwxqg3w37yog1krznkgip9leycplvad5x&rid=giphy.gif&ct=g',
         ],
     },
-    price: new anchor.BN(99),
+    price: 99,
     description: 'Macbook Pro M2 will release at 2025',
     tips: [],
-    owner: baseAcc.publicKey,
+    owner: ownerPubkey,
 };
 
 export const deleteOneProductData = {

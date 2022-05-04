@@ -23,7 +23,7 @@ const slice = createSlice({
             state[TYPES_KEYS.KEY_PRODUCT_INIT] = action.payload;
         },
         productsCall() {
-            console.log('productsCall');
+            // console.log('productsCall');
         },
         productsCallSuccess(state, action: PayloadAction<T_PRODUCT[]>) {
             state[TYPES_KEYS.KEY_ERR_MESS] = initErrMess;

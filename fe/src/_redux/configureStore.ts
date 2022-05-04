@@ -5,7 +5,7 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import ENV, { envName } from '_config';
 
-import rootSaga from './sagas';
+// import rootSaga from './sagas';
 import createReducer from './reducers';
 
 const storeConfig = (initialState = {}) => {
@@ -28,7 +28,7 @@ const storeConfig = (initialState = {}) => {
         enhancers,
     });
 
-    sagaMiddleware.run(rootSaga);
+    // sagaMiddleware.run(rootSaga); run saga for Default
 
     return store;
 };

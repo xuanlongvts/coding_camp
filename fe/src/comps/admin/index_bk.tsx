@@ -7,7 +7,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 import { getProgram, getProvider, getConfig } from '_config';
 import idl from '_config/idl.json';
-import { products, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
+import { productsInit, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
 import Header from '_commComp/header';
 
 import kp from '_keys/keypair.json';
@@ -40,7 +40,7 @@ const AdminComp: NextPage = () => {
         try {
             publicKey &&
                 (await program.methods
-                    .initialize(products)
+                    .initialize(productsInit)
                     .accounts({
                         baseAccount: baseAccount.publicKey,
                         signer: provider.wallet.publicKey,

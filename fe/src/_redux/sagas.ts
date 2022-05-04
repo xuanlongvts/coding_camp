@@ -1,7 +1,7 @@
-// import { all, fork } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 
-// import accSaga from 'app/_routers/account/signin/slice/saga';
+import productsSaga from 'comps/admin/dashboard/slice/saga';
 
 export default function* rootSaga() {
-    yield console.log('rootSaga');
+    // yield all([fork(productsSaga)]);
 }
