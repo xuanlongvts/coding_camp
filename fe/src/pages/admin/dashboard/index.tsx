@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 
-import ProductsManagment from 'comps/admin/products';
+import DashboardComp from 'comps/admin/dashboard';
 
 const ProductAdminPage: NextPage = () => {
-    return <ProductsManagment />;
+    return <DashboardComp />;
 };
 
 export default ProductAdminPage;

@@ -62,7 +62,7 @@ const LoginPage = () => {
 
             await new Promise(res => setTimeout(res, 1000));
 
-            router.push('/admin/products');
+            router.push('/admin/dashboard');
         }
     };
 
@@ -168,9 +168,9 @@ const LoginPage = () => {
                                 Login
                             </Button>
 
-                            <Box sx={{ mt: 5, textAlign: 'center' }} className="hintPass">
+                            {/* <Box sx={{ mt: 5, textAlign: 'center' }} className="hintPass">
                                 {adminHardcode.user} - {adminHardcode.pass}
-                            </Box>
+                            </Box> */}
                         </Box>
                     </Box>
                     <div className="footer-admin">

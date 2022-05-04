@@ -7,6 +7,8 @@ import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 interface Props {
     window?: () => Window;
@@ -26,13 +28,31 @@ function HideOnScroll(props: Props) {
     );
 }
 
-const Header = ({ props }: { props?: Props }) => {
+type T_Menu = {
+    isShow: boolean;
+    toggleDrawer: () => void;
+};
+const Header = ({ props, menuHandle }: { props?: Props; menuHandle?: T_Menu }) => {
     const matches = useMediaQuery('(max-width:450px)');
 
     return (
         <HideOnScroll {...props}>
-            <AppBar>
+            <AppBar sx={{ zIndex: menuHandle?.isShow ? '1201' : '1100' }}>
                 <Toolbar>
+                    {menuHandle?.isShow && (
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={menuHandle?.toggleDrawer}
+                            sx={{
+                                marginRight: '36px',
+                            }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    )}
+
                     <Link href="/">
                         <a className="logo">
                             <Image src="/imgs/SolanaPayLogo.svg" alt="Solana Pay" width={100} height={50} />
