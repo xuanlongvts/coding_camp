@@ -2,44 +2,20 @@ import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import NoSsr from '@mui/material/NoSsr';
 
 import Header from '_commComp/header';
 import Footer from '_commComp/footer';
 
 import { mainListItems } from './listItems';
-import Orders from './Orders';
+import ProductsManagment from './products';
 
 const drawerWidth: number = 240;
-
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: prop => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(({ theme, open }) => ({
     '& .MuiDrawer-paper': {
@@ -82,14 +58,14 @@ const Dashboard = () => {
                         alignItems: 'center',
                         justifyContent: 'flex-end',
                         px: [1],
-                        minHeight: '75px !important',
+                        minHeight: '74px !important',
+                        boxShadow: '1px 1px 10px rgba(0, 0, 0, .1)',
                     }}
                 >
                     <IconButton onClick={toggleDrawer}>
                         <ChevronLeftIcon />
                     </IconButton>
                 </Toolbar>
-                <Divider />
                 <Box
                     sx={{
                         display: 'flex',
@@ -99,11 +75,6 @@ const Dashboard = () => {
                     }}
                 >
                     <List component="nav">{mainListItems}</List>
-                    {open && (
-                        <div className="footer-admin">
-                            <Footer />
-                        </div>
-                    )}
                 </Box>
             </Drawer>
             <Box
@@ -114,19 +85,12 @@ const Dashboard = () => {
                     overflow: 'auto',
                 }}
             >
-                {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                <Orders />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </Container> */}
-                <Container maxWidth="xl">
-                    <Paper sx={{ p: 2 }}>
-                        <Orders />
-                    </Paper>
+                <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                    <ProductsManagment />
+
+                    <div className="footer-admin">
+                        <Footer />
+                    </div>
                 </Container>
             </Box>
         </Box>

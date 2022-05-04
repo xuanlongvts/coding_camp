@@ -1,5 +1,6 @@
-import { Suspense, lazy, useEffect, ComponentType, ComponentProps, ReactNode } from 'react';
+import { Suspense, lazy, useEffect, ComponentType, ComponentProps, ReactNode, useState, useTransition } from 'react';
 import { useRouter } from 'next/router';
+import NoSsr from '@mui/material/NoSsr';
 
 import { getCookie } from '_utils/cookieStorage';
 import { adminHardcode, EnumAccountInfor } from 'comps/admin/const';
@@ -24,8 +25,13 @@ const AsyncCompWrap = <T extends Promise<any>, U extends ComponentType<any>>(
 
     const AsyncComponent = (props: ComponentProps<U>): JSX.Element => {
         const router = useRouter();
+        const [isPending, startTransition] = useTransition();
+        const [isRender, setIsRender] = useState<boolean>(false);
 
         useEffect(() => {
+            startTransition(() => {
+                setIsRender(true);
+            });
             const getUser = getCookie(EnumAccountInfor.user);
             const getPass = getCookie(EnumAccountInfor.pass);
             if (getUser !== adminHardcode.user || getPass !== adminHardcode.pass) {
@@ -33,12 +39,24 @@ const AsyncCompWrap = <T extends Promise<any>, U extends ComponentType<any>>(
             }
         }, []);
 
+        if (!isRender) {
+            return (
+                <NoSsr>
+                    <SkeletonDefault />
+                </NoSsr>
+            );
+        }
+
         return (
-            <Suspense fallback={opts.fallback! || <SkeletonDefault />}>
-                <LazyComponent {...props} />
-            </Suspense>
+            <NoSsr>
+                <Suspense fallback={opts.fallback! || <SkeletonDefault />}>
+                    <LazyComponent {...props} />
+                </Suspense>
+            </NoSsr>
         );
     };
+
+    // await new Promise(res => setTimeout(res, 100));
 
     return AsyncComponent;
 };
