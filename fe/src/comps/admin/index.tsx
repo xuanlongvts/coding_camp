@@ -17,20 +17,20 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { web3 } from '@project-serum/anchor';
+
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 import Footer from '_commComp/footer';
 import { setCookie } from '_utils/cookieStorage';
 
 import LoginSchemaValidate from './validateLogin';
-import Slice from './slice';
-import { adminHardcode, EnumAccountInfor } from './const';
+import { adminHardcode, EnumAccountInfor, KeyPairDemo } from './const';
 
 interface T_HOOKS_FOMR {
     username: string;
     password: string;
 }
 const LoginPage = () => {
-    const { actions } = Slice();
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -60,6 +60,9 @@ const LoginPage = () => {
             setCookie(EnumAccountInfor.user, username, getDate);
             setCookie(EnumAccountInfor.pass, password, getDate);
 
+            const neweKey = web3.Keypair.generate();
+            setCookie(KeyPairDemo, JSON.stringify(neweKey), getDate);
+
             await new Promise(res => setTimeout(res, 1000));
 
             router.push('/admin/dashboard');
@@ -67,7 +70,6 @@ const LoginPage = () => {
     };
 
     const disabledBtn = !!(errors.username || errors.password || !watch().username || !watch().password);
-
     useEffect(() => {
         if (disabledBtn && errorMess) {
             setErrorMess(undefined);

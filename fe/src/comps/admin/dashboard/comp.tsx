@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -7,13 +7,19 @@ import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NoSsr from '@mui/material/NoSsr';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import TaskIcon from '@mui/icons-material/Task';
 
 import Header from '_commComp/header';
 import Footer from '_commComp/footer';
 
-import { mainListItems } from './listItems';
 import ProductsManagment from './products';
+
+// import { web3 } from '@project-serum/anchor';
+// import { getCookie } from '_utils/cookieStorage';
+// import { KeyPairDemo } from '../const';
 
 const drawerWidth: number = 240;
 
@@ -48,6 +54,18 @@ const Dashboard = () => {
         setOpen(!open);
     };
 
+    // useEffect(() => {
+    //     let getKeypairDemo = getCookie(KeyPairDemo);
+    //     getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
+    //     let baseAccountDemo = null;
+    //     if (getKeypairDemo) {
+    //         const arr = Object.values(getKeypairDemo);
+    //         const secret = new Uint8Array(arr as any);
+    //         baseAccountDemo = web3.Keypair.fromSecretKey(secret);
+    //         console.log('baseAccountDemo: ', baseAccountDemo);
+    //     }
+    // }, []);
+
     return (
         <Box sx={{ display: 'flex' }}>
             <Header menuHandle={{ isShow: !open, toggleDrawer: toggleDrawer }} />
@@ -74,7 +92,14 @@ const Dashboard = () => {
                         height: '100%',
                     }}
                 >
-                    <List component="nav">{mainListItems}</List>
+                    <List component="nav">
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <TaskIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Products" />
+                        </ListItemButton>
+                    </List>
                 </Box>
             </Drawer>
             <Box

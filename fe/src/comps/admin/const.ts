@@ -1,3 +1,5 @@
+export const KeyPairDemo = 'KeyPairDemo';
+
 export enum EnumAccountInfor {
     user = 'user',
     pass = 'pass',
