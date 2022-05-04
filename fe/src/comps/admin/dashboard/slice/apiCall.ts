@@ -1,4 +1,4 @@
-import { PublicKey, LAMPORTS_PER_SOL, Keypair } from '@solana/web3.js';
+import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
 import { getCookie } from '_utils/cookieStorage';
@@ -46,9 +46,25 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
             .rpc();
 
         return await program.account.products.fetch(baseAccount.publicKey);
-    } catch (_err) {
+    } catch (_err: any) {
         console.log('productsInitCallApi _err ---> ', _err);
 
-        return _err;
+        return {
+            errMess: _err,
+        };
+    }
+};
+
+export const productsCallApi = async (): Promise<any> => {
+    const baseAccount = getKeypairDemo() || baseAccountDefault;
+
+    try {
+        return await program.account.products.fetch(baseAccount.publicKey);
+    } catch (_err: any) {
+        console.log('productsCallApi _err ---> ', _err);
+
+        return {
+            errMess: _err,
+        };
     }
 };

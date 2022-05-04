@@ -3,6 +3,7 @@ import { T_PRODUCT } from '_commComp/products/type';
 export const KEY_ERR_MESS = 'errMess';
 export const KEY_DATA_PRODUCT = 'dataProduct';
 export const KEY_PRODUCT_INIT = 'productInit';
+export const KEY_PRODUCT_GET_ALL = 'productsAll';
 
 export interface T_DATA_PRODUCT {
     [KEY_ERR_MESS]: string | null;

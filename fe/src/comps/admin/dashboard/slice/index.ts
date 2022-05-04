@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { NSP_PRODUCTS } from '_types/root_state_type';
+import { Obj } from '_types/index';
 import { createSlice, useInjectReducer, useInjectSaga } from '_redux';
 import { T_PRODUCT } from '_commComp/products/type';
 
@@ -21,12 +22,16 @@ const slice = createSlice({
         productsInitCall(state, action: PayloadAction<T_PRODUCT[]>) {
             state[TYPES_KEYS.KEY_PRODUCT_INIT] = action.payload;
         },
-        productsInitCallSuccess(state, action: PayloadAction<T_PRODUCT[]>) {
+        productsCall(state) {
+            console.log('productsCall');
+        },
+        productsCallSuccess(state, action: PayloadAction<T_PRODUCT[]>) {
             state[TYPES_KEYS.KEY_ERR_MESS] = initErrMess;
             state[TYPES_KEYS.KEY_DATA_PRODUCT] = action.payload;
         },
-        productsInitCallFailed(state, action: PayloadAction<string>) {
-            state[TYPES_KEYS.KEY_ERR_MESS] = action.payload;
+        productsCallFailed(state, action: PayloadAction<Obj>) {
+            const { message } = action.payload;
+            state[TYPES_KEYS.KEY_ERR_MESS] = message;
         },
     },
 });
