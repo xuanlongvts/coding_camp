@@ -17,10 +17,6 @@ import Footer from '_commComp/footer';
 
 import ProductsManagment from './products';
 
-// import { web3 } from '@project-serum/anchor';
-// import { getCookie } from '_utils/cookieStorage';
-// import { KeyPairDemo } from '../const';
-
 const drawerWidth: number = 240;
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(({ theme, open }) => ({
@@ -53,18 +49,6 @@ const Dashboard = () => {
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
-    // useEffect(() => {
-    //     let getKeypairDemo = getCookie(KeyPairDemo);
-    //     getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
-    //     let baseAccountDemo = null;
-    //     if (getKeypairDemo) {
-    //         const arr = Object.values(getKeypairDemo);
-    //         const secret = new Uint8Array(arr as any);
-    //         baseAccountDemo = web3.Keypair.fromSecretKey(secret);
-    //         console.log('baseAccountDemo: ', baseAccountDemo);
-    //     }
-    // }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>

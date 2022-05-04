@@ -15,9 +15,6 @@ const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccountDefault: Keypair = web3.Keypair.fromSecretKey(secret);
 
-const program = getProgram(idl, programID);
-const provider = getProvider(getConfig());
-
 const getKeypairDemo = (): Keypair | null => {
     let getKeypairDemo = getCookie(KeyPairDemo);
     getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
@@ -33,6 +30,9 @@ const getKeypairDemo = (): Keypair | null => {
 
 export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<any> => {
     const baseAccount = getKeypairDemo() || baseAccountDefault;
+
+    const program = getProgram(idl, programID);
+    const provider = getProvider(getConfig());
 
     try {
         await program.methods
@@ -57,6 +57,7 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
 
 export const productsCallApi = async (): Promise<any> => {
     const baseAccount = getKeypairDemo() || baseAccountDefault;
+    const program = getProgram(idl, programID);
 
     try {
         return await program.account.products.fetch(baseAccount.publicKey);

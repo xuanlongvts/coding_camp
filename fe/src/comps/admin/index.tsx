@@ -11,7 +11,6 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import { useForm } from 'react-hook-form';
@@ -19,9 +18,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { web3 } from '@project-serum/anchor';
 
+import LinkRouters from '_routers';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 import Footer from '_commComp/footer';
-import { setCookie } from '_utils/cookieStorage';
+import { setCookie, getCookie } from '_utils/cookieStorage';
 
 import LoginSchemaValidate from './validateLogin';
 import { adminHardcode, EnumAccountInfor, KeyPairDemo } from './const';
@@ -65,7 +65,7 @@ const LoginPage = () => {
 
             await new Promise(res => setTimeout(res, 1000));
 
-            router.push('/admin/dashboard');
+            router.push(LinkRouters.adminDashboard);
         }
     };
 
@@ -75,6 +75,14 @@ const LoginPage = () => {
             setErrorMess(undefined);
         }
     }, [disabledBtn, errorMess]);
+
+    useEffect(() => {
+        const getUser = getCookie(EnumAccountInfor.user);
+        const getPass = getCookie(EnumAccountInfor.pass);
+        if (getUser === adminHardcode.user && getPass === adminHardcode.pass) {
+            router.push(LinkRouters.adminDashboard);
+        }
+    }, []);
 
     return (
         <Grid container component="div" sx={{ height: '100vh' }}>

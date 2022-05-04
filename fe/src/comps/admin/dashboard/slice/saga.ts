@@ -6,7 +6,6 @@ import { T_PRODUCT } from 'comps/01-home/products/type';
 
 import { productsActions } from '.';
 import { selectProductInit } from './selector';
-
 import * as ApiCall from './apiCall';
 
 function* productInitSaga() {
