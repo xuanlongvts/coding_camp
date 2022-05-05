@@ -22,6 +22,7 @@ import { wrapperStore } from '_redux/configureStore';
 import ENV, { ENUM_envName } from '_config';
 
 import LoadingApp from '_commComp/loadingApp';
+import ToastApp from '_commComp/toast';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -92,6 +93,7 @@ const App = (props: T_APP) => {
                             <Component {...pageProps} />
 
                             <LoadingApp />
+                            <ToastApp />
                         </ThemeProvider>
                     </WalletModalProvider>
                 </WalletProvider>
