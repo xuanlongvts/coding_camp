@@ -8,10 +8,16 @@ export enum FIELDS {
     typeAlert = 'typeAlert',
     mess = 'mess',
     newPosition = 'newPosition',
+    linkRef = 'linkRef',
 }
 export interface I_APP_TOAST {
     [FIELDS.open]?: boolean;
     [FIELDS.typeAlert]?: AlertColor;
     [FIELDS.mess]: string;
     [FIELDS.newPosition]?: SnackbarOrigin;
+    [FIELDS.linkRef]?: {
+        link: string;
+        target?: string;
+        mess?: string;
+    };
 }

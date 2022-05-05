@@ -1,7 +1,8 @@
 import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
-import { getCookie, setCookie } from '_utils/cookieStorage';
+import { getCookie } from '_utils/cookieStorage';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { getProgram, getProvider, getConfig } from '_config';
 import { KeyPairDemo } from 'comps/admin/const';
 
@@ -35,7 +36,7 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
     const provider = getProvider(getConfig());
 
     try {
-        await program.methods
+        const tx = await program.methods
             .initialize(productsInit)
             .accounts({
                 baseAccount: baseAccount.publicKey,
@@ -44,6 +45,8 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
             })
             .signers([baseAccount])
             .rpc();
+
+        LocalStorageServices.setItem(LocalStorageKey().tx_lists.initProduct, tx);
 
         return await program.account.products.fetch(baseAccount.publicKey);
     } catch (_err: any) {

@@ -1,12 +1,22 @@
 import ENV from '_config';
 
 type T_LocalStorageKey = {
-    tx_lists: string;
+    tx_lists: {
+        initProduct: string;
+        addOneProduct: string;
+        updateOneProduct: string;
+        deleteOneProduct: string;
+    };
     darkMode: string;
 };
 const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
     return {
-        tx_lists: `${detectEnv}_tx_lists`,
+        tx_lists: {
+            initProduct: `${detectEnv}_initProduct`,
+            addOneProduct: `${detectEnv}_addOneProduct`,
+            updateOneProduct: `${detectEnv}_updateOneProduct`,
+            deleteOneProduct: `${detectEnv}_deleteOneProduct`,
+        },
         darkMode: `${detectEnv}_darkMode`,
     };
 };

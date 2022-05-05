@@ -3,6 +3,7 @@ import { appLoadingActions } from '_commComp/loadingApp/slice';
 
 import { Obj } from '_types/index';
 import { T_PRODUCT } from 'comps/01-home/products/type';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
 import { productsActions } from '.';
 import { selectProductInit } from './selector';
@@ -20,6 +21,9 @@ function* productInitSaga() {
     } else {
         const arrProducts: T_PRODUCT[] = result?.listProducts;
         yield put(productsActions.productsCallSuccess(arrProducts));
+
+        const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.initProduct);
+        yield put(productsActions.productsInitCallSuccess(getTx));
     }
 
     yield put(appLoadingActions.loadingClose());

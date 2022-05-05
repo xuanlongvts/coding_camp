@@ -1,6 +1,4 @@
-import ENV from '_config';
-
-const isWindow = typeof window !== null;
+import ENV, { isWindow } from '_config';
 
 const ListCookieStorageName = (detectEnv = ENV) => {
     return {

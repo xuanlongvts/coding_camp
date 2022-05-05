@@ -55,6 +55,8 @@ export const Config = {
     },
 };
 
+export const isWindow = typeof window !== null;
+
 export const getConfig = (envParams = ENV, protocol = SOLANA_PROTOCOLS.API_SERVER) => {
     return Config[envParams as string][protocol];
 };
