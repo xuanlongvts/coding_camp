@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Snackbar from '@mui/material/Snackbar';
@@ -20,6 +20,16 @@ const Toast = () => {
     const handleClose = () => {
         dispatch(actions.toastClose());
     };
+
+    useEffect(() => {
+        const timeOutClose = setTimeout(() => {
+            handleClose();
+        }, 15000);
+
+        return () => {
+            clearTimeout(timeOutClose);
+        };
+    }, [toastState.open]);
 
     return (
         <Snackbar anchorOrigin={toastState.newPosition} open={toastState.open} onClose={handleClose} key={Math.random()}>

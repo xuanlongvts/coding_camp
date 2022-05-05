@@ -1,7 +1,7 @@
 import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
-import { getCookie } from '_utils/cookieStorage';
+import { getCookie, setCookie } from '_utils/cookieStorage';
 import { getProgram, getProvider, getConfig } from '_config';
 import { KeyPairDemo } from 'comps/admin/const';
 

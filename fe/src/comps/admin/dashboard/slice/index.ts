@@ -13,7 +13,7 @@ export const initialState: TYPES_KEYS.T_DATA_PRODUCT = {
     [TYPES_KEYS.KEY_PRODUCT_INIT]: null,
     [TYPES_KEYS.KEY_DATA_PRODUCT]: [],
 };
-const { [TYPES_KEYS.KEY_ERR_MESS]: initErrMess, [TYPES_KEYS.KEY_DATA_PRODUCT]: initDataProducts } = initialState;
+const { [TYPES_KEYS.KEY_ERR_MESS]: initErrMess } = initialState;
 
 const slice = createSlice({
     name: NSP_PRODUCTS,

@@ -2,11 +2,10 @@ import ENV from '_config';
 
 const isWindow = typeof window !== null;
 
-const listCookieStorageName = (detectEnv = ENV) => {
+const ListCookieStorageName = (detectEnv = ENV) => {
     return {
-        access_token: `${detectEnv}_access_token`,
-        refresh_token: `${detectEnv}_refresh_token`,
-        token_type: `${detectEnv}_token_type`,
+        user: `${detectEnv}_user`,
+        pass: `${detectEnv}_pass`,
     };
 };
 
@@ -45,9 +44,9 @@ const deleteCookie = (cName: string) => {
 };
 
 const deleteCookieFunc = () => {
-    Object.values(listCookieStorageName()).forEach(item => {
+    Object.values(ListCookieStorageName()).forEach(item => {
         deleteCookie(item);
     });
 };
 
-export { setCookie, getCookie, deleteCookie, checkCookie, listCookieStorageName, deleteCookieFunc };
+export { setCookie, getCookie, deleteCookie, checkCookie, ListCookieStorageName, deleteCookieFunc };

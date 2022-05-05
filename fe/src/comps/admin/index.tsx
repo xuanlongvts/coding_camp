@@ -21,10 +21,10 @@ import { web3 } from '@project-serum/anchor';
 import LinkRouters from '_routers';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 import Footer from '_commComp/footer';
-import { setCookie, getCookie } from '_utils/cookieStorage';
+import { setCookie, getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 
 import LoginSchemaValidate from './validateLogin';
-import { adminHardcode, EnumAccountInfor, KeyPairDemo } from './const';
+import { adminHardcode, KeyPairDemo } from './const';
 
 interface T_HOOKS_FOMR {
     username: string;
@@ -57,8 +57,8 @@ const LoginPage = () => {
 
             const getDate = Date.now() + 1000 * 60 * 60 * 24 * 30 * 3; // 3 months
 
-            setCookie(EnumAccountInfor.user, username, getDate);
-            setCookie(EnumAccountInfor.pass, password, getDate);
+            setCookie(ListCookieStorageName().user, username, getDate);
+            setCookie(ListCookieStorageName().pass, password, getDate);
 
             const neweKey = web3.Keypair.generate();
             setCookie(KeyPairDemo, JSON.stringify(neweKey), getDate);
@@ -77,8 +77,8 @@ const LoginPage = () => {
     }, [disabledBtn, errorMess]);
 
     useEffect(() => {
-        const getUser = getCookie(EnumAccountInfor.user);
-        const getPass = getCookie(EnumAccountInfor.pass);
+        const getUser = getCookie(ListCookieStorageName().user);
+        const getPass = getCookie(ListCookieStorageName().pass);
         if (getUser === adminHardcode.user && getPass === adminHardcode.pass) {
             router.push(LinkRouters.adminDashboard);
         }

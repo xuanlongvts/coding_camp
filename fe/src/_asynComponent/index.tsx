@@ -2,8 +2,8 @@ import { Suspense, lazy, useEffect, ComponentType, ComponentProps, ReactNode, us
 import { useRouter } from 'next/router';
 import NoSsr from '@mui/material/NoSsr';
 
-import { getCookie } from '_utils/cookieStorage';
-import { adminHardcode, EnumAccountInfor } from 'comps/admin/const';
+import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
+import { adminHardcode } from 'comps/admin/const';
 
 import SkeletonDefault from './skeleton';
 
@@ -32,8 +32,8 @@ const AsyncCompWrap = <T extends Promise<any>, U extends ComponentType<any>>(
             startTransition(() => {
                 setIsRender(true);
             });
-            const getUser = getCookie(EnumAccountInfor.user);
-            const getPass = getCookie(EnumAccountInfor.pass);
+            const getUser = getCookie(ListCookieStorageName().user);
+            const getPass = getCookie(ListCookieStorageName().pass);
             if (getUser !== adminHardcode.user || getPass !== adminHardcode.pass) {
                 router.push('/admin');
             }

@@ -30,10 +30,9 @@ const ProductsManagment = () => {
     }, []);
 
     const initProduct = () => {
-        const mess = 'Connect wallet first and change network to DevNet!';
         dispatch(
             actionsToast.toastOpen({
-                mess: mess,
+                mess: 'Connect wallet first and change network to DevNet!',
             }),
         );
         if (!publicKey) {
