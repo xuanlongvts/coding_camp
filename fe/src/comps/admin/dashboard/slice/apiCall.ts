@@ -67,7 +67,7 @@ export const productsCallApi = async (): Promise<any> => {
     const baseAccount = getKeypairDemo();
 
     if (!baseAccount) {
-        return [];
+        return null;
     }
 
     const program = getProgram(idl, programID);

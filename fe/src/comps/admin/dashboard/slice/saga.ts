@@ -4,6 +4,8 @@ import { appLoadingActions } from '_commComp/loadingApp/slice';
 import { Obj } from '_types/index';
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
+import { transactionExplorer } from '_config';
+import { appToastActions } from '_commComp/toast/slice';
 
 import { productsActions } from '.';
 import { selectProductInit } from './selector';
@@ -24,6 +26,18 @@ function* productInitSaga() {
 
         const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.initProduct);
         yield put(productsActions.productsInitCallSuccess(getTx));
+
+        const hrefLink = transactionExplorer(getTx);
+        yield put(
+            appToastActions.toastOpen({
+                mess: 'Initial product success!',
+                linkRef: {
+                    mess: 'Transaction Link',
+                    link: hrefLink,
+                    target: '_blank',
+                },
+            }),
+        );
     }
 
     yield put(appLoadingActions.loadingClose());
