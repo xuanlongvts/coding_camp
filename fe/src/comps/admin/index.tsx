@@ -24,7 +24,7 @@ import Footer from '_commComp/footer';
 import { setCookie, getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 
 import LoginSchemaValidate from './validateLogin';
-import { adminHardcode, KeyPairDemo } from './const';
+import { adminHardcode } from './const';
 
 interface T_HOOKS_FOMR {
     username: string;
@@ -61,7 +61,8 @@ const LoginPage = () => {
             setCookie(ListCookieStorageName().pass, password, getDate);
 
             const neweKey = web3.Keypair.generate();
-            setCookie(KeyPairDemo, JSON.stringify(neweKey), getDate);
+            const getCookiesKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);
+            !getCookiesKeypairDemo && setCookie(ListCookieStorageName().KeyPairDemo, JSON.stringify(neweKey), getDate);
 
             await new Promise(res => setTimeout(res, 1000));
 

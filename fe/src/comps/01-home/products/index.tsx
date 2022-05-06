@@ -38,7 +38,7 @@ const ListProduct = () => {
 
     return (
         <>
-            {products.length && <BasicMasonry products={products} handleQuickBuy={handleQuickBuy} />}
+            {products?.length ? <BasicMasonry products={products} handleQuickBuy={handleQuickBuy} /> : null}
 
             {idProductBuy ? (
                 <DialogBox open={open} products={products} unit={unitPay} idProductBuy={idProductBuy} handleClose={handleClose} />

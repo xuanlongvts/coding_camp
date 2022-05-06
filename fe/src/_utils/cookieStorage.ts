@@ -4,6 +4,7 @@ const ListCookieStorageName = (detectEnv = ENV) => {
     return {
         user: `${detectEnv}_user`,
         pass: `${detectEnv}_pass`,
+        KeyPairDemo: `${detectEnv}_KeyPairDemo`,
     };
 };
 

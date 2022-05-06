@@ -1,10 +1,9 @@
 import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
-import { getCookie } from '_utils/cookieStorage';
+import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { getProgram, getProvider, getConfig } from '_config';
-import { KeyPairDemo } from 'comps/admin/const';
 
 import idl from '_config/idl.json';
 import { T_PRODUCT } from 'comps/01-home/products/type';
@@ -17,7 +16,7 @@ const secret = new Uint8Array(arr);
 const baseAccountDefault: Keypair = web3.Keypair.fromSecretKey(secret);
 
 export const getKeypairDemo = (): Keypair | null => {
-    let getKeypairDemo = getCookie(KeyPairDemo);
+    let getKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);
     getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
     let baseAccountDemo: Keypair | null = null;
     if (getKeypairDemo) {
@@ -30,7 +29,12 @@ export const getKeypairDemo = (): Keypair | null => {
 };
 
 export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<any> => {
-    const baseAccount = getKeypairDemo() || baseAccountDefault;
+    // const baseAccount = getKeypairDemo() || baseAccountDefault;
+    const baseAccount = getKeypairDemo();
+
+    if (!baseAccount) {
+        return null;
+    }
 
     const program = getProgram(idl, programID);
     const provider = getProvider(getConfig());
@@ -59,7 +63,13 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
 };
 
 export const productsCallApi = async (): Promise<any> => {
-    const baseAccount = getKeypairDemo() || baseAccountDefault;
+    // const baseAccount = getKeypairDemo() || baseAccountDefault;
+    const baseAccount = getKeypairDemo();
+
+    if (!baseAccount) {
+        return [];
+    }
+
     const program = getProgram(idl, programID);
 
     try {

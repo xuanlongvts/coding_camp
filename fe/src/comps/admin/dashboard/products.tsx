@@ -62,7 +62,7 @@ const ProductsManagment = () => {
 
     return (
         <>
-            {!products.length ? (
+            {!products?.length ? (
                 <Box>
                     <AddIcon sx={{ cursor: 'pointer' }} onClick={initProduct} />
                 </Box>
