@@ -4,7 +4,7 @@ import NoSsr from '@mui/material/NoSsr';
 
 import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 import { adminHardcode } from 'comps/admin/const';
-
+import Routers from '_routers';
 import SkeletonDefault from './skeleton';
 
 type UnPromisify<T> = T extends Promise<infer P> ? P : never;
@@ -35,7 +35,7 @@ const AsyncCompWrap = <T extends Promise<any>, U extends ComponentType<any>>(
             const getUser = getCookie(ListCookieStorageName().user);
             const getPass = getCookie(ListCookieStorageName().pass);
             if (getUser !== adminHardcode.user || getPass !== adminHardcode.pass) {
-                router.push('/admin');
+                router.push(Routers.admin);
             }
         }, []);
 

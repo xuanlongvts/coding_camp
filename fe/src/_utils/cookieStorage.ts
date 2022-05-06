@@ -38,7 +38,7 @@ const checkCookie = (cName: string) => {
 };
 
 const deleteCookie = (cName: string) => {
-    isWindow && (document.cookie = `${cName}=; expires = Thu, 01 Jan 1970 00:00:00 GMT`);
+    isWindow && (document.cookie = `${cName}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`);
 };
 
 const deleteCookieFunc = () => {

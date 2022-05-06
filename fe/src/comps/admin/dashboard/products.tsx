@@ -28,21 +28,21 @@ const ProductsManagment = () => {
 
     const { publicKey } = useWallet();
 
-    useEffect(() => {
-        if (txInit) {
-            const hrefLink = transactionExplorer(txInit);
-            dispatch(
-                actionsToast.toastOpen({
-                    mess: 'Initial product success!',
-                    linkRef: {
-                        mess: 'Transaction Link',
-                        link: hrefLink,
-                        target: '_blank',
-                    },
-                }),
-            );
-        }
-    }, [txInit]);
+    // useEffect(() => {
+    //     if (txInit) {
+    //         const hrefLink = transactionExplorer(txInit);
+    //         dispatch(
+    //             actionsToast.toastOpen({
+    //                 mess: 'Initial product success!',
+    //                 linkRef: {
+    //                     mess: 'Transaction Link',
+    //                     link: hrefLink,
+    //                     target: '_blank',
+    //                 },
+    //             }),
+    //         );
+    //     }
+    // }, [txInit]);
 
     useEffect(() => {
         dispatch(actions.productsCall());

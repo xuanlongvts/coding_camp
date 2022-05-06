@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import AppBar from '@mui/material/AppBar';
@@ -9,6 +10,10 @@ import Slide from '@mui/material/Slide';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+
+import Routers from '_routers';
+import { deleteCookie, ListCookieStorageName } from '_utils/cookieStorage';
 
 interface Props {
     window?: () => Window;
@@ -32,13 +37,20 @@ type T_Menu = {
     isShow: boolean;
     toggleDrawer: () => void;
 };
-const Header = ({ props, menuHandle }: { props?: Props; menuHandle?: T_Menu }) => {
+const Header = ({ props, menuHandle, isLogout = false }: { props?: Props; menuHandle?: T_Menu; isLogout?: boolean }) => {
     const matches = useMediaQuery('(max-width:450px)');
+    const router = useRouter();
+
+    const handleLogout = () => {
+        deleteCookie(ListCookieStorageName().user);
+        deleteCookie(ListCookieStorageName().pass);
+        router.push(Routers.admin);
+    };
 
     return (
         <HideOnScroll {...props}>
             <AppBar sx={{ zIndex: menuHandle?.isShow ? '1201' : '1100' }}>
-                <Toolbar>
+                <Toolbar className="headerInner">
                     {menuHandle?.isShow && (
                         <IconButton
                             edge="start"
@@ -59,7 +71,14 @@ const Header = ({ props, menuHandle }: { props?: Props; menuHandle?: T_Menu }) =
                         </a>
                     </Link>
 
-                    {!matches ? <WalletMultiButton /> : null}
+                    <div className="boxRight">
+                        {!matches ? (
+                            <div className="walletConn">
+                                <WalletMultiButton />
+                            </div>
+                        ) : null}
+                        {isLogout ? <LogoutIcon className="logout" onClick={handleLogout} /> : null}
+                    </div>
                 </Toolbar>
             </AppBar>
         </HideOnScroll>

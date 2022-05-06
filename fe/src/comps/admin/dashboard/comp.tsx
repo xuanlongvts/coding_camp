@@ -52,7 +52,7 @@ const Dashboard = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <Header menuHandle={{ isShow: !open, toggleDrawer: toggleDrawer }} />
+            <Header menuHandle={{ isShow: !open, toggleDrawer: toggleDrawer }} isLogout />
             <Drawer variant="permanent" open={open}>
                 <Toolbar
                     sx={{
