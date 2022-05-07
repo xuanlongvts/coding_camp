@@ -113,6 +113,8 @@ const FrmProduct = ({ type }: T_TypeAction) => {
                 label="Images"
                 margin="normal"
                 type="text"
+                multiline
+                rows={5}
                 {...register('imgs')}
                 error={!!errors.imgs}
                 helperText={errors?.imgs?.message}

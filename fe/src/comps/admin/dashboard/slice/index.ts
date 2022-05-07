@@ -57,13 +57,13 @@ const slice = createSlice({
         productsCall() {
             // console.log('productsCall');
         },
-        productAddOneProductCall(state, action: PayloadAction<T_PRODUCT>) {
+        productAddOneCall(state, action: PayloadAction<T_PRODUCT>) {
             state[TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE] = action.payload;
         },
-        productUpdateOneProductCall(state, action: PayloadAction<T_PRODUCT>) {
+        productUpdateOneCall(state, action: PayloadAction<T_PRODUCT>) {
             state[TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE] = action.payload;
         },
-        productDeleteOneProductCall(state, action: PayloadAction<string>) {
+        productDeleteOneCall(state, action: PayloadAction<string>) {
             state[TYPES_KEYS.KEY_PRODUCT_DELETE_ONE] = action.payload;
         },
         productsCallSuccess(state, action: PayloadAction<T_PRODUCT[]>) {

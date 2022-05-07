@@ -59,7 +59,7 @@ function* productCallSaga() {
     yield put(appLoadingActions.loadingClose());
 }
 
-function* productAddOneProductCallSaga() {
+function* productAddOneCallSaga() {
     yield put(appLoadingActions.loadingOpen());
 
     const payload: T_PRODUCT = yield select(selectProductAddOrUpdate);
@@ -91,14 +91,45 @@ function* productAddOneProductCallSaga() {
     yield put(appLoadingActions.loadingClose());
 }
 
-function* productUpdateOneProductCallSaga() {}
-function* productDeleteOneProductCallSaga() {}
+function* productUpdateOneCallSaga() {}
+
+function* productDeleteOneCallSaga() {
+    yield put(appLoadingActions.loadingOpen());
+
+    const payload: string = yield select(selectProductDelete);
+    const result: Obj = yield call(ApiCall.productDeleteOneProductCallApi, payload);
+
+    if (result && result.errMess) {
+        yield put(appLoadingActions.loadingClose());
+        yield put(productsActions.productsCallFailed(result.errMess));
+    } else {
+        const arrProducts: T_PRODUCT[] = result?.listProducts;
+        yield put(productsActions.productsCallSuccess(arrProducts));
+
+        const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.deleteOneProduct);
+        yield put(productsActions.productsDeleteOneProductCallSuccess(getTx));
+
+        const hrefLink = transactionExplorer(getTx);
+        yield put(
+            appToastActions.toastOpen({
+                mess: 'Delete product success!',
+                linkRef: {
+                    mess: 'Transaction Link',
+                    link: hrefLink,
+                    target: '_blank',
+                },
+            }),
+        );
+    }
+
+    yield put(appLoadingActions.loadingClose());
+}
 
 export default function* root() {
     yield takeLatest(productsActions.productsInitCall.type, productInitSaga);
     yield takeLatest(productsActions.productsCall.type, productCallSaga);
 
-    yield takeLatest(productsActions.productAddOneProductCall.type, productAddOneProductCallSaga);
-    yield takeLatest(productsActions.productUpdateOneProductCall.type, productUpdateOneProductCallSaga);
-    yield takeLatest(productsActions.productDeleteOneProductCall.type, productDeleteOneProductCallSaga);
+    yield takeLatest(productsActions.productAddOneCall.type, productAddOneCallSaga);
+    yield takeLatest(productsActions.productUpdateOneCall.type, productUpdateOneCallSaga);
+    yield takeLatest(productsActions.productDeleteOneCall.type, productDeleteOneCallSaga);
 }

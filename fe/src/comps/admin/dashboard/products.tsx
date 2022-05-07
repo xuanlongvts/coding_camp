@@ -17,6 +17,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { productsInit, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
 import { appToastActions } from '_commComp/toast/slice';
@@ -34,6 +41,8 @@ const ProductsManagment = () => {
     const products = useSelector(selectProducts);
     const router = useRouter();
     const { publicKey } = useWallet();
+
+    const [idProductDelete, setIdProductDelete] = useState<string | null>(null);
 
     useEffect(() => {
         dispatch(actions.productsCall());
@@ -59,7 +68,22 @@ const ProductsManagment = () => {
         router.push(`${LinkRouters.adminProductActions}/${id}`);
     };
 
-    const handleDelete = (id: string) => () => {};
+    const handleDelete = (id: string) => () => {
+        if (!publicKey) {
+            dispatch(
+                appToastActions.toastOpen({
+                    mess: 'Connect wallet first and change network to DevNet!',
+                }),
+            );
+            return;
+        }
+        setIdProductDelete(id);
+    };
+
+    const handleClose = (isYes: boolean) => () => {
+        isYes && idProductDelete && dispatch(actions.productDeleteOneCall(idProductDelete));
+        setIdProductDelete(null);
+    };
 
     return (
         <>
@@ -107,6 +131,21 @@ const ProductsManagment = () => {
                     </Box>
                 </>
             )}
+
+            <Dialog
+                open={!idProductDelete ? false : true}
+                onClose={handleClose(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+                <DialogContent sx={{ minWidth: 400 }}>
+                    <DialogContentText id="alert-dialog-description">&nbsp;</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose(true)}>Ok</Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };
