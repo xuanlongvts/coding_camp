@@ -82,3 +82,93 @@ export const productsCallApi = async (): Promise<any> => {
         };
     }
 };
+
+export const productAddOneProductCallApi = async (productAdd: T_PRODUCT): Promise<any> => {
+    // const baseAccount = getKeypairDemo() || baseAccountDefault;
+    const baseAccount = getKeypairDemo();
+
+    if (!baseAccount) {
+        return null;
+    }
+
+    const program = getProgram(idl, programID);
+
+    try {
+        const tx = await program.methods
+            .addOneProduct(productAdd)
+            .accounts({
+                baseAccount: baseAccount.publicKey,
+            })
+            .rpc();
+
+        LocalStorageServices.setItem(LocalStorageKey().tx_lists.addOneProduct, tx);
+
+        return await program.account.products.fetch(baseAccount.publicKey);
+    } catch (_err: any) {
+        console.log('productAddOneProductCallApi _err ---> ', _err);
+
+        return {
+            errMess: _err,
+        };
+    }
+};
+
+export const productUpdateOneProductCallApi = async (productAdd: T_PRODUCT): Promise<any> => {
+    // const baseAccount = getKeypairDemo() || baseAccountDefault;
+    const baseAccount = getKeypairDemo();
+
+    if (!baseAccount) {
+        return null;
+    }
+
+    const program = getProgram(idl, programID);
+
+    try {
+        const tx = await program.methods
+            .updateOneProduct(productAdd)
+            .accounts({
+                baseAccount: baseAccount.publicKey,
+            })
+            .rpc();
+
+        LocalStorageServices.setItem(LocalStorageKey().tx_lists.updateOneProduct, tx);
+
+        return await program.account.products.fetch(baseAccount.publicKey);
+    } catch (_err: any) {
+        console.log('productUpdateOneProductCallApi _err ---> ', _err);
+
+        return {
+            errMess: _err,
+        };
+    }
+};
+
+export const productDeleteOneProductCallApi = async (id: string): Promise<any> => {
+    // const baseAccount = getKeypairDemo() || baseAccountDefault;
+    const baseAccount = getKeypairDemo();
+
+    if (!baseAccount) {
+        return null;
+    }
+
+    const program = getProgram(idl, programID);
+
+    try {
+        const tx = await program.methods
+            .deleteOneProduct(id)
+            .accounts({
+                baseAccount: baseAccount.publicKey,
+            })
+            .rpc();
+
+        LocalStorageServices.setItem(LocalStorageKey().tx_lists.deleteOneProduct, tx);
+
+        return await program.account.products.fetch(baseAccount.publicKey);
+    } catch (_err: any) {
+        console.log('productDeleteOneProductCallApi _err ---> ', _err);
+
+        return {
+            errMess: _err,
+        };
+    }
+};

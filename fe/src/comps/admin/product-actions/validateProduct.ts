@@ -1,11 +1,11 @@
 import * as Yup from 'yup';
 
-import { stringRequiredSchema } from '_validate';
+import { stringRequiredSchema, priceFiled } from '_validate';
 
 const ProductSchema = Yup.object().shape({
     title: stringRequiredSchema('Title'),
     imgs: stringRequiredSchema('Images'),
-    price: stringRequiredSchema('Price'),
+    price: priceFiled('SOL'),
     description: stringRequiredSchema('Description'),
 });
 

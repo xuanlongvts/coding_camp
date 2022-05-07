@@ -4,41 +4,45 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PublicKey } from '@solana/web3.js';
+import { nanoid } from 'nanoid';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import LinkRouters from '_routers';
-import { appLoadingActions } from '_commComp/loadingApp/slice';
-import Footer from '_commComp/footer';
-import { setCookie, getCookie, ListCookieStorageName } from '_utils/cookieStorage';
+import { T_PRODUCT } from 'comps/01-home/products/type';
+import { appToastActions } from '_commComp/toast/slice';
+import SliceProduct from 'comps/admin/dashboard/slice';
 
 import ProductSchema from './validateProduct';
 
 type T_HOOK_FORM = {
-    id: string;
     title: string;
     imgs: string;
     price: number;
     description: string;
-    // owner?: PublicKey;
 };
 
+export enum E_TYPES {
+    Add = 'Add',
+    Update = 'Update',
+}
 type T_TypeAction = {
-    type: string;
+    type: E_TYPES.Add | E_TYPES.Update;
 };
 const FrmProduct = ({ type }: T_TypeAction) => {
+    const { actions } = SliceProduct();
+
     const dispatch = useDispatch();
     const router = useRouter();
+    const { publicKey } = useWallet();
 
     const {
         register,
@@ -50,7 +54,30 @@ const FrmProduct = ({ type }: T_TypeAction) => {
         resolver: yupResolver(ProductSchema),
     });
 
-    const onSubmitForm = async (data: T_HOOK_FORM) => {};
+    const onSubmitForm = async (data: T_HOOK_FORM) => {
+        if (!publicKey) {
+            dispatch(
+                appToastActions.toastOpen({
+                    mess: 'Connect wallet first and change network to DevNet!',
+                }),
+            );
+            return;
+        }
+        const dataSend: T_PRODUCT = {
+            id: nanoid(),
+            title: data.title,
+            imgs: {
+                links: [data.imgs],
+            },
+            tips: [],
+            price: data.price,
+            description: data.description,
+            owner: publicKey,
+        };
+        if (type === E_TYPES.Add) {
+            dispatch(actions.productAddOneProductCall(dataSend));
+        }
+    };
 
     const disabledBtn = !!(
         errors.title ||
@@ -111,7 +138,6 @@ const FrmProduct = ({ type }: T_TypeAction) => {
                 margin="normal"
                 multiline
                 rows={5}
-                maxRows={10}
                 type="text"
                 {...register('description')}
                 error={!!errors.description}

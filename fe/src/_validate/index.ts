@@ -58,6 +58,17 @@ export const amountFiled = (unit: string) => {
         .required('Amount required');
 };
 
+const PRICE_FILED = {
+    min: 1,
+    max: 1_000_000,
+};
+export const priceFiled = (unit: string) => {
+    return Yup.number()
+        .min(PRICE_FILED.min, `Price min is ${PRICE_FILED.min} ${unit.toUpperCase()}`)
+        .max(PRICE_FILED.max, `Price max is ${PRICE_FILED.max} ${unit.toUpperCase()}`)
+        .required('Price required');
+};
+
 const MESSAGE_FILED = {
     min: 3,
     max: 60,

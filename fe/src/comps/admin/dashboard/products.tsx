@@ -19,6 +19,7 @@ import TableRow from '@mui/material/TableRow';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { productsInit, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
+import { appToastActions } from '_commComp/toast/slice';
 
 import SliceToast from '_commComp/toast/slice';
 import LinkRouters from '_routers';
@@ -28,7 +29,6 @@ import { selectError, selectProducts, selectTx } from './slice/selector';
 
 const ProductsManagment = () => {
     const { actions } = Slice();
-    const { actions: actionsToast } = SliceToast();
     const dispatch = useDispatch();
     const errMess = useSelector(selectError);
     const products = useSelector(selectProducts);
@@ -42,7 +42,7 @@ const ProductsManagment = () => {
     const initProduct = () => {
         if (!publicKey) {
             dispatch(
-                actionsToast.toastOpen({
+                appToastActions.toastOpen({
                     mess: 'Connect wallet first and change network to DevNet!',
                 }),
             );

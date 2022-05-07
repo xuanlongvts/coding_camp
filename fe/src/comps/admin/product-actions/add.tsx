@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 
 import HistoryBack from '_commComp/backHistory';
-import FrmProduct from './frm';
+import FrmProduct, { E_TYPES } from './frm';
 
 const AddProduct = () => {
     return (
@@ -9,7 +9,7 @@ const AddProduct = () => {
             <Box sx={{ width: '100%', marginBottom: 0 }}>
                 <HistoryBack />
             </Box>
-            <FrmProduct type="Add" />
+            <FrmProduct type={E_TYPES.Add} />
         </>
     );
 };

@@ -5,7 +5,6 @@ import { Obj } from '_types/index';
 import { createSlice, useInjectReducer, useInjectSaga } from '_redux';
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
-import { isWindow } from '_config';
 
 import * as TYPES_KEYS from './types';
 import saga from './saga';
@@ -19,6 +18,8 @@ export const initialState: TYPES_KEYS.T_DATA_PRODUCT = {
     [TYPES_KEYS.KEY_ERR_MESS]: null,
     [TYPES_KEYS.KEY_PRODUCT_INIT]: null,
     [TYPES_KEYS.KEY_DATA_PRODUCT]: [],
+    [TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE]: null,
+    [TYPES_KEYS.KEY_PRODUCT_DELETE_ONE]: null,
     [TYPES_KEYS.KEY_TX_LISTS]: {
         txInit: getTxInit,
         txAddOneProduct: getTxAddOneProduct,
@@ -49,6 +50,15 @@ const slice = createSlice({
         },
         productsCall() {
             // console.log('productsCall');
+        },
+        productAddOneProductCall(state, action: PayloadAction<T_PRODUCT>) {
+            state[TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE] = action.payload;
+        },
+        productUpdateOneProductCall(state, action: PayloadAction<T_PRODUCT>) {
+            state[TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE] = action.payload;
+        },
+        productDeleteOneProductCall(state, action: PayloadAction<string>) {
+            state[TYPES_KEYS.KEY_PRODUCT_DELETE_ONE] = action.payload;
         },
         productsCallSuccess(state, action: PayloadAction<T_PRODUCT[]>) {
             state[TYPES_KEYS.KEY_ERR_MESS] = initErrMess;
