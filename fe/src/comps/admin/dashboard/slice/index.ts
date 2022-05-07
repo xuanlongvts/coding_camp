@@ -10,9 +10,15 @@ import * as TYPES_KEYS from './types';
 import saga from './saga';
 
 const getTxInit = LocalStorageServices.getItem(LocalStorageKey().tx_lists.initProduct);
-const getTxAddOneProduct = LocalStorageServices.getItem(LocalStorageKey().tx_lists.addOneProduct) || [];
-const getTxUpdateOneProduct = LocalStorageServices.getItem(LocalStorageKey().tx_lists!.updateOneProduct) || [];
-const getTxDeleteOneProduct = LocalStorageServices.getItem(LocalStorageKey().tx_lists!.deleteOneProduct) || [];
+
+let getTxAddOneProduct = LocalStorageServices.getItem(LocalStorageKey().tx_lists.addOneProduct);
+getTxAddOneProduct = getTxAddOneProduct ? [getTxAddOneProduct] : [];
+
+let getTxUpdateOneProduct = LocalStorageServices.getItem(LocalStorageKey().tx_lists!.updateOneProduct);
+getTxUpdateOneProduct = getTxUpdateOneProduct ? [getTxUpdateOneProduct] : [];
+
+let getTxDeleteOneProduct = LocalStorageServices.getItem(LocalStorageKey().tx_lists!.deleteOneProduct);
+getTxDeleteOneProduct = getTxDeleteOneProduct ? [getTxDeleteOneProduct] : [];
 
 export const initialState: TYPES_KEYS.T_DATA_PRODUCT = {
     [TYPES_KEYS.KEY_ERR_MESS]: null,
