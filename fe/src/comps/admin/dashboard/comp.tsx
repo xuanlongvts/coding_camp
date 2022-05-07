@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -16,6 +18,9 @@ import Header from '_commComp/header';
 import Footer from '_commComp/footer';
 
 import ProductsManagment from './products';
+
+import AddProduct from '../product-actions/add';
+import UpdateProduct from '../product-actions/update';
 
 const drawerWidth: number = 240;
 
@@ -43,12 +48,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
     },
 }));
 
-const Dashboard = () => {
+type T_ProductActions = {
+    productUpdate?: boolean;
+    productAdd?: boolean;
+};
+const Dashboard = ({ productUpdate, productAdd }: T_ProductActions) => {
     const [open, setOpen] = useState(true);
+    const router = useRouter();
+
+    useEffect(() => {
+        console.log('productUpdate', productUpdate);
+        console.log('productAdd', productAdd);
+    }, []);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
+
+    let LayoutRender = <ProductsManagment />;
+    productAdd && (LayoutRender = <AddProduct />);
+    productUpdate && (LayoutRender = <UpdateProduct />);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -95,7 +114,7 @@ const Dashboard = () => {
                 }}
             >
                 <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                    <ProductsManagment />
+                    {LayoutRender}
 
                     <div className="footer-admin">
                         <Footer />

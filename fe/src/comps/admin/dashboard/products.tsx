@@ -1,5 +1,6 @@
 import { useEffect, useState, forwardRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import * as anchor from '@project-serum/anchor';
@@ -20,21 +21,10 @@ import { T_PRODUCT } from 'comps/01-home/products/type';
 import { productsInit, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
 
 import SliceToast from '_commComp/toast/slice';
+import LinkRouters from '_routers';
 
 import Slice from './slice';
 import { selectError, selectProducts, selectTx } from './slice/selector';
-
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const ProductsManagment = () => {
     const { actions } = Slice();
@@ -42,7 +32,7 @@ const ProductsManagment = () => {
     const dispatch = useDispatch();
     const errMess = useSelector(selectError);
     const products = useSelector(selectProducts);
-
+    const router = useRouter();
     const { publicKey } = useWallet();
 
     useEffect(() => {
@@ -61,7 +51,13 @@ const ProductsManagment = () => {
         dispatch(actions.productsInitCall(productsInit));
     };
 
-    const handleEdit = (id: string) => () => {};
+    const handleAdd = () => {
+        router.push(LinkRouters.adminProductActions);
+    };
+
+    const handleEdit = (id: string) => () => {
+        router.push(`${LinkRouters.adminProductActions}/${id}`);
+    };
 
     const handleDelete = (id: string) => () => {};
 
@@ -74,7 +70,7 @@ const ProductsManagment = () => {
             ) : (
                 <>
                     <Box>
-                        <AddIcon sx={{ cursor: 'pointer', marginBottom: 2 }} />
+                        <AddIcon sx={{ cursor: 'pointer', marginBottom: 2 }} onClick={handleAdd} />
 
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
