@@ -75,7 +75,7 @@ const FrmProduct = ({ type }: T_TypeAction) => {
             owner: publicKey,
         };
         if (type === E_TYPES.Add) {
-            dispatch(actions.productAddOneProductCall(dataSend));
+            dispatch(actions.productAddOneCall(dataSend));
         }
     };
 

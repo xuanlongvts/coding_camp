@@ -52,7 +52,7 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
 
         LocalStorageServices.setItem(LocalStorageKey().tx_lists.initProduct, tx);
 
-        return await program.account.products.fetch(baseAccount.publicKey);
+        return await productsCallApi();
     } catch (_err: any) {
         console.log('productsInitCallApi _err ---> ', _err);
 
@@ -103,7 +103,7 @@ export const productAddOneProductCallApi = async (productAdd: T_PRODUCT): Promis
 
         LocalStorageServices.setItem(LocalStorageKey().tx_lists.addOneProduct, tx);
 
-        return await program.account.products.fetch(baseAccount.publicKey);
+        return await productsCallApi();
     } catch (_err: any) {
         console.log('productAddOneProductCallApi _err ---> ', _err);
 
@@ -133,7 +133,7 @@ export const productUpdateOneProductCallApi = async (productAdd: T_PRODUCT): Pro
 
         LocalStorageServices.setItem(LocalStorageKey().tx_lists.updateOneProduct, tx);
 
-        return await program.account.products.fetch(baseAccount.publicKey);
+        return await productsCallApi();
     } catch (_err: any) {
         console.log('productUpdateOneProductCallApi _err ---> ', _err);
 
@@ -163,7 +163,7 @@ export const productDeleteOneProductCallApi = async (id: string): Promise<any> =
 
         LocalStorageServices.setItem(LocalStorageKey().tx_lists.deleteOneProduct, tx);
 
-        return await program.account.products.fetch(baseAccount.publicKey);
+        return await productsCallApi();
     } catch (_err: any) {
         console.log('productDeleteOneProductCallApi _err ---> ', _err);
 
