@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { PublicKey } from '@solana/web3.js';
@@ -19,6 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { appToastActions } from '_commComp/toast/slice';
+
 import SliceProduct from 'comps/admin/dashboard/slice';
 
 import ProductSchema from './validateProduct';
@@ -36,10 +38,10 @@ export enum E_TYPES {
 }
 type T_TypeAction = {
     type: E_TYPES.Add | E_TYPES.Update;
+    productUpdating?: T_PRODUCT;
 };
-const FrmProduct = ({ type }: T_TypeAction) => {
+const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
     const { actions } = SliceProduct();
-
     const dispatch = useDispatch();
     const router = useRouter();
     const { publicKey } = useWallet();
@@ -63,19 +65,34 @@ const FrmProduct = ({ type }: T_TypeAction) => {
             );
             return;
         }
-        const dataSend: T_PRODUCT = {
-            id: nanoid(),
-            title: data.title,
-            imgs: {
-                links: [data.imgs],
-            },
-            tips: [],
-            price: data.price,
-            description: data.description,
-            owner: publicKey,
-        };
+
         if (type === E_TYPES.Add) {
+            const dataSend: T_PRODUCT = {
+                id: nanoid(),
+                title: data.title,
+                imgs: {
+                    links: [data.imgs],
+                },
+                tips: [],
+                price: data.price,
+                description: data.description,
+                owner: publicKey,
+            };
             dispatch(actions.productAddOneCall(dataSend));
+        }
+        if (type === E_TYPES.Update) {
+            const dataSend: T_PRODUCT = {
+                id: productUpdating!.id,
+                title: data.title,
+                imgs: {
+                    links: [data.imgs],
+                },
+                tips: productUpdating!.tips,
+                price: data.price,
+                description: data.description,
+                owner: productUpdating!.owner,
+            };
+            dispatch(actions.productUpdateOneCall(dataSend));
         }
     };
 
@@ -100,6 +117,7 @@ const FrmProduct = ({ type }: T_TypeAction) => {
                 label="Title"
                 placeholder="abc@gmail.com"
                 type="text"
+                defaultValue={productUpdating?.title}
                 margin="normal"
                 {...register('title')}
                 error={!!errors.title}
@@ -113,6 +131,7 @@ const FrmProduct = ({ type }: T_TypeAction) => {
                 label="Images"
                 margin="normal"
                 type="text"
+                defaultValue={productUpdating?.imgs?.links[0]}
                 multiline
                 rows={5}
                 {...register('imgs')}
@@ -127,6 +146,7 @@ const FrmProduct = ({ type }: T_TypeAction) => {
                 label="Prices (SOL)"
                 margin="normal"
                 type="text"
+                defaultValue={productUpdating?.price}
                 {...register('price')}
                 error={!!errors.price}
                 helperText={errors?.price?.message}
@@ -141,6 +161,7 @@ const FrmProduct = ({ type }: T_TypeAction) => {
                 multiline
                 rows={5}
                 type="text"
+                defaultValue={productUpdating?.description}
                 {...register('description')}
                 error={!!errors.description}
                 helperText={errors?.description?.message}

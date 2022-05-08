@@ -113,7 +113,7 @@ export const productAddOneProductCallApi = async (productAdd: T_PRODUCT): Promis
     }
 };
 
-export const productUpdateOneProductCallApi = async (productAdd: T_PRODUCT): Promise<any> => {
+export const productUpdateOneProductCallApi = async (productUpdate: T_PRODUCT): Promise<any> => {
     // const baseAccount = getKeypairDemo() || baseAccountDefault;
     const baseAccount = getKeypairDemo();
 
@@ -125,7 +125,7 @@ export const productUpdateOneProductCallApi = async (productAdd: T_PRODUCT): Pro
 
     try {
         const tx = await program.methods
-            .updateOneProduct(productAdd)
+            .updateOneProduct(productUpdate)
             .accounts({
                 baseAccount: baseAccount.publicKey,
             })

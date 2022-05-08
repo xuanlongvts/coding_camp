@@ -91,7 +91,36 @@ function* productAddOneCallSaga() {
     yield put(appLoadingActions.loadingClose());
 }
 
-function* productUpdateOneCallSaga() {}
+function* productUpdateOneCallSaga() {
+    yield put(appLoadingActions.loadingOpen());
+
+    const payload: T_PRODUCT = yield select(selectProductAddOrUpdate);
+    const result: Obj = yield call(ApiCall.productUpdateOneProductCallApi, payload);
+
+    if (result && result.errMess) {
+        yield put(productsActions.productsCallFailed(result.errMess));
+    } else {
+        const arrProducts: T_PRODUCT[] = result?.listProducts;
+        yield put(productsActions.productsCallSuccess(arrProducts));
+
+        const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.updateOneProduct);
+        yield put(productsActions.productsUpdateOneProductCallSuccess(getTx));
+
+        const hrefLink = transactionExplorer(getTx);
+        yield put(
+            appToastActions.toastOpen({
+                mess: 'Update one product success!',
+                linkRef: {
+                    mess: 'Transaction Link',
+                    link: hrefLink,
+                    target: '_blank',
+                },
+            }),
+        );
+    }
+
+    yield put(appLoadingActions.loadingClose());
+}
 
 function* productDeleteOneCallSaga() {
     yield put(appLoadingActions.loadingOpen());

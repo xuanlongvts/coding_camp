@@ -56,11 +56,6 @@ const Dashboard = ({ productUpdate, productAdd }: T_ProductActions) => {
     const [open, setOpen] = useState(true);
     const router = useRouter();
 
-    useEffect(() => {
-        console.log('productUpdate', productUpdate);
-        console.log('productAdd', productAdd);
-    }, []);
-
     const toggleDrawer = () => {
         setOpen(!open);
     };
