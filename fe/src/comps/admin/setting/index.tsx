@@ -32,9 +32,9 @@ const Setting = () => {
                 value={value}
                 onChange={handleChange}
             >
-                <FormControlLabel value={1} control={<Radio />} label="1" />
+                <FormControlLabel value={1} control={<Radio />} label="1 (BYaq...SULT)" />
                 &nbsp;&nbsp;
-                <FormControlLabel value={2} control={<Radio />} label="2" />
+                <FormControlLabel value={2} control={<Radio />} label="2 (FR7p...yj8i)" />
             </RadioGroup>
         </FormControl>
     );
