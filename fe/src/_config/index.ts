@@ -101,7 +101,7 @@ export const blockExplorer = (block: string) => {
 // SOL Pay Section
 // wallet 1 = BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT
 // wallet 2 = FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i
-export const WalletRecipient = 'BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT'; // phantom wallet of recipient wallet 1
+export const WalletRecipient = 'FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i'; // phantom wallet of recipient wallet 1
 
 export const PubkeyRecipient = new PublicKey(WalletRecipient); // transform to Pubkey
 
@@ -113,10 +113,6 @@ export enum PaymentStatus {
     Valid = 'Valid',
     InValid = 'InValid',
     Finalized = 'Finalized',
-}
-
-export enum PROGRESS_STATUS {
-    ProgressStatus = 'ProgressStatus',
 }
 
 // Mint DUMMY tokens on devnet @ https://spl-token-faucet.com

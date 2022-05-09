@@ -67,7 +67,7 @@ const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
                     links: [data.imgs],
                 },
                 tips: [],
-                price: data.price,
+                price: Number(data.price),
                 description: data.description,
                 owner: publicKey,
             };
@@ -81,7 +81,7 @@ const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
                     links: [data.imgs],
                 },
                 tips: [],
-                price: data.price,
+                price: Number(data.price),
                 description: data.description,
                 owner: productUpdating!.owner,
             };

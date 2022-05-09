@@ -83,7 +83,7 @@ export const messageField = Yup.string()
 
 const MEMO_FILED = {
     min: 3,
-    max: 60,
+    max: 200,
 };
 export const memoField = Yup.string()
     .nullable()

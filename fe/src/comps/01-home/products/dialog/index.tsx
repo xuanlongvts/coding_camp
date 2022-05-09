@@ -29,10 +29,10 @@ import FrmGenegrate from './frmGenegrate';
 import { I_DiglogBox } from './const';
 
 const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_DiglogBox) => {
-    const [reference, setReference] = useState<PublicKey | null>(null);
     const dispatch = useDispatch();
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
+    const [reference, setReference] = useState<PublicKey | null>(null);
     const [signature, setSignature] = useState<TransactionSignature>();
     const [status, setStatus] = useState<PaymentStatus>(PaymentStatus.Pending);
     const [confirmations, setConfirmations] = useState<Confirmations>(0);
@@ -76,13 +76,13 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     }
                 } catch (err) {
                     console.log('0. Wallet on Broswer Pay --->: ', err);
-                    timeout = setTimeout(run, 3000);
+                    timeout = qrCodeValid && setTimeout(run, 3000);
                 }
             };
-            let timeout = setTimeout(run, 0);
+            let timeout = qrCodeValid && setTimeout(run, 0);
 
             return () => {
-                clearTimeout(timeout);
+                timeout && clearTimeout(timeout);
             };
         }
     }, [status, publicKey, sendTransaction, qrCodeValid]);
@@ -247,7 +247,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
         handleClose();
 
-        if (blockPay) {
+        if (blockPay && status === PaymentStatus.Finalized) {
             const hrefLink = blockPay && blockExplorer(blockPay);
             dispatch(
                 appToastActions.toastOpen({
@@ -288,7 +288,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     ) : (
                         <Progress status={status} progress={progress} handlePreClose={handlePreClose} />
                     )}
-                    {/* <Progress status={status} progress={progress} handlePreClose={handlePreClose} /> */}
                 </DialogContent>
             </Dialog>
         </>

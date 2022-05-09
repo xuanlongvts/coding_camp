@@ -5,8 +5,8 @@ import Box from '@mui/material/Box';
 import { makeStyles } from '@mui/styles';
 import NoSsr from '@mui/material/NoSsr';
 
-import { PaymentStatus, PROGRESS_STATUS } from '_config';
-import { LocalStorageServices } from '_utils/localStorage';
+import { PaymentStatus } from '_config';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
 const colors = ['#8752f3', '#5497d5', '#43b4ca', '#28e0b9', '#19fb9b'];
 
@@ -93,7 +93,7 @@ const Progress = ({ progress, status, handlePreClose }: T_Progress) => {
     };
 
     useEffect(() => {
-        const getInforProgress = LocalStorageServices.getItemJson(PROGRESS_STATUS.ProgressStatus);
+        const getInforProgress = LocalStorageServices.getItemJson(LocalStorageKey().ProgressStatus);
         if (getInforProgress && getInforProgress === PaymentStatus.InValid) {
             setIsProgressContinues(getInforProgress);
         }
@@ -107,12 +107,12 @@ const Progress = ({ progress, status, handlePreClose }: T_Progress) => {
         let newStatus: any = PaymentStatus.Pending;
         switch (status) {
             case PaymentStatus.Finalized:
-                LocalStorageServices.setItemJson(PROGRESS_STATUS.ProgressStatus, PaymentStatus.Finalized);
+                LocalStorageServices.setItemJson(LocalStorageKey().ProgressStatus, PaymentStatus.Finalized);
                 return [100, 'Complete'];
             case PaymentStatus.Confirmed:
             case PaymentStatus.Valid:
                 if (progress >= 1) {
-                    LocalStorageServices.setItemJson(PROGRESS_STATUS.ProgressStatus, PaymentStatus.Finalized);
+                    LocalStorageServices.setItemJson(LocalStorageKey().ProgressStatus, PaymentStatus.Finalized);
                     return [100, 'Complete'];
                 } else {
                     const val = Number(progress.toFixed(2)) * 100;
@@ -121,7 +121,7 @@ const Progress = ({ progress, status, handlePreClose }: T_Progress) => {
             case PaymentStatus.InValid:
                 newStatus = PaymentStatus.InValid;
                 console.log('status: ===> ', status);
-                LocalStorageServices.setItemJson(PROGRESS_STATUS.ProgressStatus, PaymentStatus.InValid);
+                LocalStorageServices.setItemJson(LocalStorageKey().ProgressStatus, PaymentStatus.InValid);
                 return [0, newStatus];
             default:
                 return [0, PaymentStatus.Pending];
