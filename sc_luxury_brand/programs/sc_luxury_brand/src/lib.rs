@@ -40,8 +40,13 @@ pub mod sc_luxury_brand {
 
         if find_index_prod != None {
             let get_id = find_index_prod.unwrap();
-            base_acc.list_products[get_id] = product;
-        } else  {
+            // base_acc.list_products[get_id] = product;
+            base_acc.list_products[get_id].title = product.title;
+            base_acc.list_products[get_id].imgs = product.imgs;
+            base_acc.list_products[get_id].price = product.price;
+            base_acc.list_products[get_id].description = product.description;
+            base_acc.list_products[get_id].owner = product.owner;
+        } else {
             return Err(ErrorMess::NotFoundProduct.into());
         }
 
@@ -55,7 +60,7 @@ pub mod sc_luxury_brand {
         if find_index_prod != None {
             let get_id = find_index_prod.unwrap();
             base_acc.list_products.remove(get_id);
-        } else  {
+        } else {
             return Err(ErrorMess::NotFoundProduct.into());
         }
 
@@ -120,5 +125,5 @@ pub enum ErrorMess {
     #[msg("The products already initial")]
     AlreadyInitProducts,
     #[msg("The product already exist")]
-    AlreadyExistProduct
+    AlreadyExistProduct,
 }

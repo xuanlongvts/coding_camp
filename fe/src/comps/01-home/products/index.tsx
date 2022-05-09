@@ -1,27 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import Slice from 'comps/admin/dashboard/slice';
-import { selectError, selectProducts } from 'comps/admin/dashboard/slice/selector';
+import { useState } from 'react';
 
 import BasicMasonry from './masory';
 import { unitPay as unitPayConst } from './const';
 import DialogBox from './dialog';
+import { T_PRODUCT } from './type';
 
-const ListProduct = () => {
-    const { actions } = Slice();
-
-    const dispatch = useDispatch();
-    const errMess = useSelector(selectError);
-    const products = useSelector(selectProducts);
-
+const ListProduct = ({ products }: { products: T_PRODUCT[] }) => {
     const [unitPay, setUnitPay] = useState<string>(unitPayConst.sol);
     const [idProductBuy, setIdProductBuy] = useState<string>();
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        dispatch(actions.productsCall());
-    }, []);
 
     const handleQuickBuy = (unit: string, id: string) => {
         if (unit !== unitPay) {

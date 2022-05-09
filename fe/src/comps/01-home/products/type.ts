@@ -19,6 +19,6 @@ export type T_PRODUCT = {
     };
     price: number;
     description: string;
-    tips: T_CustomerTips[];
+    tips?: T_CustomerTips[];
     owner: PublicKey;
 };

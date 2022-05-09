@@ -18,7 +18,6 @@ const HistoryBack = () => {
     const router = useRouter();
 
     const handleBack = () => {
-        console.log('router', router);
         router.back();
     };
 

@@ -1,19 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { PublicKey } from '@solana/web3.js';
 import { nanoid } from 'nanoid';
 import { useWallet } from '@solana/wallet-adapter-react';
 
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import FormHelperText from '@mui/material/FormHelperText';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -87,7 +80,7 @@ const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
                 imgs: {
                     links: [data.imgs],
                 },
-                tips: productUpdating!.tips,
+                tips: [],
                 price: data.price,
                 description: data.description,
                 owner: productUpdating!.owner,
