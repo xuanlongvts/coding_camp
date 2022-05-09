@@ -1,16 +1,10 @@
 import Grow from '@mui/material/Grow';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import Routers from '_routers';
 
 const Welcome = () => {
     const isOpen = true;
-    const router = useRouter();
-
-    const handleGoToAdmin = () => {
-        router.push(Routers.admin);
-    };
 
     return (
         <div className="Welcome">

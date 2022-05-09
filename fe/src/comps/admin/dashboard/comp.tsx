@@ -1,26 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import TaskIcon from '@mui/icons-material/Task';
 
 import Header from '_commComp/header';
 import Footer from '_commComp/footer';
 
-import ProductsManagment from './products';
-
 import AddProduct from '../product-actions/add';
 import UpdateProduct from '../product-actions/update';
+import SettingComp from '../setting';
+
+import ProductsManagment from './products';
+import Nav from './nav';
 
 const drawerWidth: number = 240;
 
@@ -51,10 +47,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 type T_ProductActions = {
     productUpdate?: boolean;
     productAdd?: boolean;
+    settingPage?: boolean;
 };
-const Dashboard = ({ productUpdate, productAdd }: T_ProductActions) => {
+const Dashboard = ({ productUpdate, productAdd, settingPage }: T_ProductActions) => {
     const [open, setOpen] = useState(true);
-    const router = useRouter();
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -63,6 +59,7 @@ const Dashboard = ({ productUpdate, productAdd }: T_ProductActions) => {
     let LayoutRender = <ProductsManagment />;
     productAdd && (LayoutRender = <AddProduct />);
     productUpdate && (LayoutRender = <UpdateProduct />);
+    settingPage && (LayoutRender = <SettingComp />);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -90,14 +87,7 @@ const Dashboard = ({ productUpdate, productAdd }: T_ProductActions) => {
                         height: '100%',
                     }}
                 >
-                    <List component="nav">
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <TaskIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Products" />
-                        </ListItemButton>
-                    </List>
+                    <Nav />
                 </Box>
             </Drawer>
             <Box

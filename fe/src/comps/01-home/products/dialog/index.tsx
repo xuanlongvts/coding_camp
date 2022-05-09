@@ -41,6 +41,10 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
+    useEffect(() => {
+        console.log('wallet receiver: ', PubkeyRecipient().toString());
+    }, []);
+
     // 0. Wallet Pay on Browser
     useEffect(() => {
         if (publicKey && status === PaymentStatus.Pending) {
@@ -61,9 +65,9 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     }
                     const transaction =
                         reference &&
-                        PubkeyRecipient &&
+                        PubkeyRecipient() &&
                         (await createTransfer(connection, publicKey, {
-                            recipient: PubkeyRecipient,
+                            recipient: PubkeyRecipient(),
                             amount: getAmount,
                             splToken: isSplToken,
                             reference,
@@ -141,12 +145,12 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                 }
 
                 reference &&
-                    PubkeyRecipient &&
+                    PubkeyRecipient() &&
                     (await validateTransfer(
                         connection,
                         signature,
                         {
-                            recipient: PubkeyRecipient,
+                            recipient: PubkeyRecipient(),
                             amount: getAmount,
                             splToken: isSplToken,
                             reference,

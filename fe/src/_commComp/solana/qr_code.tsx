@@ -8,7 +8,7 @@ import QRCodeStyling from '@solana/qr-code-styling';
 import { PublicKey } from '@solana/web3.js';
 
 import { LocalStorageServices } from '_utils/localStorage';
-import { WalletRecipient, DEVNET_DUMMY_MINT } from '_config';
+import { PubkeyRecipient, DEVNET_DUMMY_MINT } from '_config';
 import { ENUM_FIELDS } from '_validate';
 
 import { unitPay as unitPayConst } from 'comps/01-home/products/const';
@@ -42,7 +42,7 @@ const QRCode: FC<{ refPubkey: PublicKey }> = ({ refPubkey }) => {
         let getAmount = Number(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
         const getLabel = encodeURI(LocalStorageServices.getItemJson(ENUM_FIELDS.label));
 
-        let url = `solana:${WalletRecipient}?amount=${getAmount}&reference=${refPubkey.toBase58()}`;
+        let url = `solana:${PubkeyRecipient().toBase58()}?amount=${getAmount}&reference=${refPubkey.toBase58()}`;
         getLabel && (url += `&label=${getLabel}`);
 
         const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);

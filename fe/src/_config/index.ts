@@ -1,9 +1,13 @@
 import { PublicKey, Connection, ConfirmOptions, Commitment } from '@solana/web3.js';
 import { Program, AnchorProvider, Provider, web3 } from '@project-serum/anchor';
 
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
+
 const ENV = require('../../env.json').ENV;
 
 export default ENV;
+
+export const isWindow = typeof window !== null;
 
 export enum ENUM_envName {
     local = 'local',
@@ -55,8 +59,6 @@ export const Config = {
     },
 };
 
-export const isWindow = typeof window !== null;
-
 export const getConfig = (envParams = ENV, protocol = SOLANA_PROTOCOLS.API_SERVER) => {
     return Config[envParams as string][protocol];
 };
@@ -101,9 +103,14 @@ export const blockExplorer = (block: string) => {
 // SOL Pay Section
 // wallet 1 = BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT
 // wallet 2 = FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i
-export const WalletRecipient = 'FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i'; // phantom wallet of recipient wallet 1
+export const WalletRecipient_1 = 'BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT';
+export const WalletRecipient_2 = 'FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i';
 
-export const PubkeyRecipient = new PublicKey(WalletRecipient); // transform to Pubkey
+export const PubkeyRecipient = () => {
+    const getWalletRecipient = isWindow ? Number(LocalStorageServices.getItemJson(LocalStorageKey().WalletReceive)) : 1;
+    const determineWallet = getWalletRecipient === 1 ? WalletRecipient_1 : WalletRecipient_2;
+    return new PublicKey(determineWallet);
+}; // transform to Pubkey
 
 export const requiredConfirmations = 5;
 
