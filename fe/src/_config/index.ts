@@ -91,6 +91,13 @@ export const transactionExplorer = (signature: string) => {
     return `https://explorer.solana.com/tx/${signature}?cluster=${cluster}`;
 };
 
+export const blockExplorer = (block: string) => {
+    let cluster = envName.dev;
+    ENV === ENUM_envName.test && (cluster = envName.test);
+    ENV === ENUM_envName.production && (cluster = envName.production);
+    return `https://explorer.solana.com/block/${block}?cluster=${cluster}`;
+};
+
 // SOL Pay Section
 // wallet 1 = BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT
 // wallet 2 = FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i

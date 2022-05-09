@@ -1,16 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+
 import Image from 'next/image';
 
-import {
-    createTransfer,
-    encodeURL,
-    fetchTransaction,
-    findReference,
-    FindReferenceError,
-    parseURL,
-    validateTransfer,
-    ValidateTransferError,
-} from '@solana/pay';
+import { createTransfer, findReference, FindReferenceError, validateTransfer, ValidateTransferError } from '@solana/pay';
 
 import { ConfirmedSignatureInfo, PublicKey, TransactionSignature } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
@@ -26,23 +19,25 @@ import { web3 } from '@project-serum/anchor';
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
 
-import { PubkeyRecipient, WalletRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT } from '_config';
+import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT, blockExplorer } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
 import { unitPay as unitPayConst } from 'comps/01-home/products/const';
+import { appToastActions } from '_commComp/toast/slice';
 
 import FrmGenegrate from './frmGenegrate';
 import { I_DiglogBox } from './const';
 
 const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_DiglogBox) => {
     const [reference, setReference] = useState<PublicKey | null>(null);
-
+    const dispatch = useDispatch();
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
     const [signature, setSignature] = useState<TransactionSignature>();
     const [status, setStatus] = useState<PaymentStatus>(PaymentStatus.Pending);
     const [confirmations, setConfirmations] = useState<Confirmations>(0);
     const [qrCodeValid, setQrCodeValid] = useState<boolean>(false);
+    const [blockPay, setBlockPay] = useState<string | null>(null);
 
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
@@ -210,8 +205,10 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     setConfirmations(confirmations);
 
                     if (confirmations >= requiredConfirmations || status.confirmationStatus === 'finalized') {
+                        // console.log('slot: ', status.slot);
                         clearInterval(interval);
                         setStatus(PaymentStatus.Finalized);
+                        setBlockPay(status.slot.toString());
 
                         changed = true;
                         LocalStorageServices.removeManyItems([
@@ -249,6 +246,20 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
         setConfirmations(0);
 
         handleClose();
+
+        if (blockPay) {
+            const hrefLink = blockPay && blockExplorer(blockPay);
+            dispatch(
+                appToastActions.toastOpen({
+                    mess: 'Pay product success! ',
+                    linkRef: {
+                        mess: `Block at ${blockPay}`,
+                        link: hrefLink,
+                        target: '_blank',
+                    },
+                }),
+            );
+        }
     };
     // ---- End this pop
 
