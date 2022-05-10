@@ -1,9 +1,7 @@
-import { useEffect, useState, forwardRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import * as anchor from '@project-serum/anchor';
 import { useWallet } from '@solana/wallet-adapter-react';
 import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
@@ -25,19 +23,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
-import { productsInit, addOneProductDataArr, updateOneProductData, deleteOneProductData } from '_config/tmp_data';
+import { productsInit } from '_config/tmp_data';
 import { appToastActions } from '_commComp/toast/slice';
-
-import SliceToast from '_commComp/toast/slice';
+import ENV, { AirDropAccount, ENUM_envName, getBalance } from '_config';
 import LinkRouters from '_routers';
 
 import Slice from './slice';
-import { selectError, selectProducts, selectTx } from './slice/selector';
+import { selectProducts } from './slice/selector';
 
 const ProductsManagment = () => {
     const { actions } = Slice();
     const dispatch = useDispatch();
-    const errMess = useSelector(selectError);
     const products = useSelector(selectProducts);
     const router = useRouter();
     const { publicKey } = useWallet();
@@ -47,6 +43,18 @@ const ProductsManagment = () => {
     useEffect(() => {
         dispatch(actions.productsCall());
     }, []);
+
+    useEffect(() => {
+        (async () => {
+            if (publicKey) {
+                const getBal = await getBalance(publicKey);
+                if (!getBal && ENUM_envName.production === ENV) {
+                    AirDropAccount(publicKey); // default (it depend on env)
+                    ENUM_envName.local === ENV && AirDropAccount(publicKey, ENUM_envName.dev); // in case local, also airdrop to devnet
+                }
+            }
+        })();
+    }, [publicKey]);
 
     const initProduct = () => {
         if (!publicKey) {

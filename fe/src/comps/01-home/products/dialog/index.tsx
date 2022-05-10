@@ -1,24 +1,18 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-
 import Image from 'next/image';
 
 import { createTransfer, findReference, FindReferenceError, validateTransfer, ValidateTransferError } from '@solana/pay';
-
 import { ConfirmedSignatureInfo, PublicKey, TransactionSignature } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import BigNumber from 'bignumber.js';
-
+import { web3 } from '@project-serum/anchor';
 import Dialog from '@mui/material/Dialog';
-
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { web3 } from '@project-serum/anchor';
-
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
-
 import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT, blockExplorer } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';

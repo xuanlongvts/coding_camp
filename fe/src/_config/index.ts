@@ -1,5 +1,5 @@
-import { PublicKey, Connection, ConfirmOptions, Commitment } from '@solana/web3.js';
-import { Program, AnchorProvider, Provider, web3 } from '@project-serum/anchor';
+import { PublicKey, Connection, ConfirmOptions, Commitment, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { Program, AnchorProvider } from '@project-serum/anchor';
 
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
@@ -66,6 +66,29 @@ export const getConfig = (envParams = ENV, protocol = SOLANA_PROTOCOLS.API_SERVE
 const optsConn: Commitment = 'confirmed';
 const opts: ConfirmOptions = {
     preflightCommitment: 'confirmed', // confirmed, processed
+};
+
+export const Conn = (envParams?: string) => {
+    return new Connection(getConfig(envParams), optsConn);
+};
+
+export const AirDropAccount = async (pubkey: PublicKey, envParams = ENV): Promise<any> => {
+    try {
+        const airdropAdminAcc = await Conn(envParams).requestAirdrop(pubkey, LAMPORTS_PER_SOL);
+        return await Conn().confirmTransaction(airdropAdminAcc);
+    } catch (err) {
+        return err;
+    }
+};
+
+export const getBalance = async (pubkey: PublicKey): Promise<number | string> => {
+    try {
+        const getAmounts = await Conn().getBalance(pubkey);
+        return Number(getAmounts);
+    } catch (err) {
+        console.log('err: getBalance ---> ', err);
+        return 'Something went wrong';
+    }
 };
 
 export const getProvider = (cluster: string) => {
