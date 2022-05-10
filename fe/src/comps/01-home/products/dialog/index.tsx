@@ -43,7 +43,8 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
     // 0. Wallet Pay on Browser
     useEffect(() => {
-        if (publicKey && status === PaymentStatus.Pending) {
+        let timeout: any;
+        if (publicKey && status === PaymentStatus.Pending && open && qrCodeValid) {
             const run = async () => {
                 try {
                     const getAmount = new BigNumber(LocalStorageServices.getItemJson(ENUM_FIELDS.amount));
@@ -70,22 +71,22 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                             memo: getMemo,
                         }));
 
-                    if (qrCodeValid) {
-                        console.log('qrCodeValid true: --> ', qrCodeValid);
-                        transaction && (await sendTransaction(transaction, connection));
-                    }
-                } catch (err) {
+                    console.log('qrCodeValid: --> ', qrCodeValid);
+                    transaction && (await sendTransaction(transaction, connection));
+                } catch (err: any) {
                     console.log('0. Wallet on Broswer Pay --->: ', err);
-                    timeout = qrCodeValid && setTimeout(run, 3000);
+                    if (err?.code !== 4001) {
+                        timeout = setTimeout(run, 3000);
+                    }
                 }
             };
-            let timeout = qrCodeValid && setTimeout(run, 0);
-
-            return () => {
-                timeout && clearTimeout(timeout);
-            };
+            timeout = setTimeout(run, 0);
         }
-    }, [status, publicKey, sendTransaction, qrCodeValid]);
+        return () => {
+            console.log('timeout: ', timeout);
+            timeout && clearTimeout(timeout);
+        };
+    }, [status, publicKey, sendTransaction, qrCodeValid, open]);
 
     // 1. Status pending
     useEffect(() => {
