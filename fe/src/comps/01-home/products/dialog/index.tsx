@@ -41,10 +41,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
-    useEffect(() => {
-        console.log('wallet receiver: ', PubkeyRecipient().toString());
-    }, []);
-
     // 0. Wallet Pay on Browser
     useEffect(() => {
         if (publicKey && status === PaymentStatus.Pending) {

@@ -39,7 +39,12 @@ const FrmGenegrate = ({ products, idProductBuy, unit, handleGenerateQrCode }: I_
         setLastTotalMoney(newPrice);
 
         setValue(ENUM_FIELDS.amount, newPrice);
-        setValue(ENUM_FIELDS.memo, idProductBuy);
+
+        const newMemo = {
+            id: idProductBuy,
+        };
+        const stringifyMemo = JSON.stringify(newMemo);
+        setValue(ENUM_FIELDS.memo, stringifyMemo);
     }, [idProductBuy]);
 
     const handleUnitPay = (unit: string) => {
@@ -81,7 +86,7 @@ const FrmGenegrate = ({ products, idProductBuy, unit, handleGenerateQrCode }: I_
                     id: idProductBuy,
                     quantityProduct: getQuantity,
                 };
-                const stringifyMemo = encodeURI(JSON.stringify(newMemo));
+                const stringifyMemo = JSON.stringify(newMemo);
                 setValue(ENUM_FIELDS.memo, stringifyMemo);
             }
         }

@@ -1,36 +1,15 @@
-# Sell Luxury Brand
+## Run local
 
-    1. Account tips
-    	struct tips {
-    		counts: u8,
-    		unit: {
-    			sol: f32,
-    			usdc: u8
-    		}
-    	}
+# 1
 
-    2. Each product
+    solana-test-validator -r	(-r reset)
 
-        struct product {
-    		title: String,
-    		imgs: {
-    			links: Vec<String>
-    		},
-    		price: u8,
-    		description: String,
-    		tips: {
-    			user_pubkey: tips // HashMap, use Pubkey make user_pubkey (for aim index and update)
-    		}
-        }
+# 2
 
-    3. List products
+    solana aidrop 10 Publickey	 	(File /Users/lelong/work/github/coding_camp/sc_luxury_brand/Anchor.toml)
+    								wallet = "/Users/lelong/.config/solana/id.json"
 
-        struct products {
-    		lists: Vec<product>,
-    		owner: Pubkey,
-        }
+# 3
 
-    4. Accounts
-    	struct BaseAccount {
-    		pub base_account: Account<'info, products>,
-    	}
+    Connect wallet and airdrop for account in Local net
+    solana aidrop 10 Publickey	(Publickey from extension chrome)
