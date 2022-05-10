@@ -83,7 +83,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
             timeout = setTimeout(run, 0);
         }
         return () => {
-            console.log('timeout: ', timeout);
             timeout && clearTimeout(timeout);
         };
     }, [status, publicKey, sendTransaction, qrCodeValid, open]);

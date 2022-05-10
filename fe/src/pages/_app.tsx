@@ -59,7 +59,7 @@ const App = (props: T_APP) => {
     // You can also provide a custom RPC endpoint
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-    const wallets = useMemo(() => [new PhantomWalletAdapter(), new SlopeWalletAdapter(), new SolflareWalletAdapter()], [network]);
+    const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter({ network })], [network]);
     // --------------------- Wallet End
 
     useEffect(() => {

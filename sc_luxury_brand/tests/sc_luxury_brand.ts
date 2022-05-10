@@ -32,7 +32,7 @@ describe("sc_luxury_brand", () => {
         const accState = await program.account.products.fetch(
             baseAcc.publicKey
         );
-        expect(accState.listProducts.length).to.equal(2);
+        expect(accState.listProducts?.length).to.equal(2);
 
         try {
             await program.methods
