@@ -43,19 +43,19 @@ export const envName: T_envName = {
 export const Config = {
     [ConstEnvName.local]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'http://127.0.0.1:8899',
-        [SOLANA_PROTOCOLS.HUB_WS]: 'ws://127.0.0.1:8900',
+        [SOLANA_PROTOCOLS.HUB_WS]: 'wss://127.0.0.1:8900',
     },
     [ConstEnvName.dev]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.devnet.solana.com',
-        [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.devnet.solana.com',
+        [SOLANA_PROTOCOLS.HUB_WS]: 'wss://api.devnet.solana.com/',
     },
     [ConstEnvName.test]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.testnet.solana.com',
-        [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.testnet.solana.com',
+        [SOLANA_PROTOCOLS.HUB_WS]: 'wss://api.testnet.solana.com',
     },
     [ConstEnvName.production]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.mainnet-beta.solana.com', // https://solana-api.projectserum.com
-        [SOLANA_PROTOCOLS.HUB_WS]: 'ws://api.mainnet-beta.solana.com',
+        [SOLANA_PROTOCOLS.HUB_WS]: 'wss://api.mainnet-beta.solana.com',
     },
 };
 

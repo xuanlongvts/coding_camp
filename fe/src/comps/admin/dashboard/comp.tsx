@@ -13,6 +13,7 @@ import Footer from '_commComp/footer';
 
 import AddProduct from '../product-actions/add';
 import UpdateProduct from '../product-actions/update';
+import MintNftComp from '../mint-nft';
 import SettingComp from '../setting';
 
 import ProductsManagment from './products';
@@ -48,8 +49,9 @@ type T_ProductActions = {
     productUpdate?: boolean;
     productAdd?: boolean;
     settingPage?: boolean;
+    mintNftPage?: boolean;
 };
-const Dashboard = ({ productUpdate, productAdd, settingPage }: T_ProductActions) => {
+const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage }: T_ProductActions) => {
     const [open, setOpen] = useState(true);
 
     const toggleDrawer = () => {
@@ -59,6 +61,7 @@ const Dashboard = ({ productUpdate, productAdd, settingPage }: T_ProductActions)
     let LayoutRender = <ProductsManagment />;
     productAdd && (LayoutRender = <AddProduct />);
     productUpdate && (LayoutRender = <UpdateProduct />);
+    mintNftPage && (LayoutRender = <MintNftComp />);
     settingPage && (LayoutRender = <SettingComp />);
 
     return (

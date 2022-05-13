@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import TaskIcon from '@mui/icons-material/Task';
 import SettingsIcon from '@mui/icons-material/Settings';
+import TokenIcon from '@mui/icons-material/Token';
 
 import Routers from '_routers';
 
@@ -20,6 +21,7 @@ const Nav = () => {
     const isSelectedProduct =
         router.pathname.includes(Routers.adminProductActions) || router.pathname.includes(Routers.adminDashboard) ? true : false;
     const isSelectedSetting = router.pathname.includes(Routers.setting) ? true : false;
+    const isSelectedMintNft = router.pathname.includes(Routers.mintNft) ? true : false;
 
     return (
         <List component="nav">
@@ -28,6 +30,12 @@ const Nav = () => {
                     <TaskIcon />
                 </ListItemIcon>
                 <ListItemText primary="Products" />
+            </ListItemButton>
+            <ListItemButton selected={isSelectedMintNft} onClick={handleRedirect(Routers.mintNft)}>
+                <ListItemIcon>
+                    <TokenIcon />
+                </ListItemIcon>
+                <ListItemText primary="Mint NFT" />
             </ListItemButton>
             <ListItemButton selected={isSelectedSetting} onClick={handleRedirect(Routers.setting)}>
                 <ListItemIcon>
