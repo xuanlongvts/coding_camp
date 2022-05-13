@@ -32,18 +32,14 @@ const MintNftComp = () => {
         if (publicRuntimeConfig.CANDY_MACHINE_ID) {
             try {
                 const cndy = await getCandyMachineState(anchorWallet, publicRuntimeConfig.CANDY_MACHINE_ID);
+                console.log('cndy: ', cndy);
             } catch (err) {}
         }
     }, []);
 
     useEffect(() => {
-        (function loop() {
-            setTimeout(() => {
-                refreshCandyMachineState();
-                loop();
-            }, 20000);
-        })();
-    }, [refreshCandyMachineState]);
+        refreshCandyMachineState();
+    }, []);
 
     const hanldeMintNft = () => {
         console.log('hanldeMintNft', publicRuntimeConfig.CANDY_MACHINE_ID);

@@ -1,7 +1,8 @@
 import { web3, Wallet, Program, BN, AnchorProvider } from '@project-serum/anchor';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { Commitment, Connection, PublicKey, Transaction } from '@solana/web3.js';
 
-import { Conn } from '_config';
+import ENV, { Conn, Config, SOLANA_PROTOCOLS, getProvider, getConfig, getProgram } from '_config';
 
 export const CANDY_MACHINE_PROGRAM = new web3.PublicKey('cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ');
 export const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
@@ -113,13 +114,17 @@ export interface CandyMachineAccount {
     program: Program;
     state: CandyMachineState;
 }
-export const getCandyMachineState = async (anchorWallet: Wallet, candyMachineId: web3.PublicKey): Promise<CandyMachineAccount> => {
-    const provider = new AnchorProvider(Conn(), anchorWallet, {
+export const getCandyMachineState = async (
+    anchorWallet: Wallet,
+    candyMachineId: web3.PublicKey,
+    optsParam: Commitment = 'confirmed',
+): Promise<CandyMachineAccount> => {
+    const getConn = Conn(ENV, SOLANA_PROTOCOLS.METAPLEX, optsParam);
+    const provider = new AnchorProvider(getConn, anchorWallet, {
         preflightCommitment: 'processed',
     });
-
     const idl = await Program.fetchIdl(CANDY_MACHINE_PROGRAM, provider);
-    const program = new Program(idl!, CANDY_MACHINE_PROGRAM, provider);
+    const program = getProgram(idl!, CANDY_MACHINE_PROGRAM, provider);
 
     const state: any = await program.account.candyMachine.fetch(candyMachineId);
     const itemsAvailable = state.data.itemsAvailable.toNumber();

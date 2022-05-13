@@ -1,5 +1,5 @@
 import { PublicKey, Connection, ConfirmOptions, Commitment, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { Program, AnchorProvider } from '@project-serum/anchor';
+import { Program, AnchorProvider, Wallet } from '@project-serum/anchor';
 
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
@@ -25,6 +25,7 @@ export const ConstEnvName = {
 export enum SOLANA_PROTOCOLS {
     API_SERVER = 'API_SERVER',
     HUB_WS = 'HUB_WS',
+    METAPLEX = 'METAPLEX',
 }
 
 type T_envName = {
@@ -44,18 +45,22 @@ export const Config = {
     [ConstEnvName.local]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'http://127.0.0.1:8899',
         [SOLANA_PROTOCOLS.HUB_WS]: 'wss://127.0.0.1:8900',
+        [SOLANA_PROTOCOLS.METAPLEX]: 'https://metaplex.devnet.rpcpool.com/',
     },
     [ConstEnvName.dev]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.devnet.solana.com',
         [SOLANA_PROTOCOLS.HUB_WS]: 'wss://api.devnet.solana.com/',
+        [SOLANA_PROTOCOLS.METAPLEX]: 'https://metaplex.devnet.rpcpool.com/',
     },
     [ConstEnvName.test]: {
         [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.testnet.solana.com',
         [SOLANA_PROTOCOLS.HUB_WS]: 'wss://api.testnet.solana.com',
+        [SOLANA_PROTOCOLS.METAPLEX]: 'https://metaplex.testnet.rpcpool.com/',
     },
     [ConstEnvName.production]: {
-        [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.mainnet-beta.solana.com', // https://solana-api.projectserum.com
+        [SOLANA_PROTOCOLS.API_SERVER]: 'https://api.mainnet-beta.solana.com',
         [SOLANA_PROTOCOLS.HUB_WS]: 'wss://api.mainnet-beta.solana.com',
+        [SOLANA_PROTOCOLS.METAPLEX]: '',
     },
 };
 
@@ -68,8 +73,8 @@ const opts: ConfirmOptions = {
     preflightCommitment: 'confirmed', // confirmed, processed
 };
 
-export const Conn = (envParams?: string) => {
-    return new Connection(getConfig(envParams), optsConn);
+export const Conn = (envParams?: string, protocol?: SOLANA_PROTOCOLS, optsParam: Commitment = optsConn) => {
+    return new Connection(getConfig(envParams, protocol), optsParam);
 };
 
 export const AirDropAccount = async (pubkey: PublicKey, envParams = ENV): Promise<any> => {
@@ -91,15 +96,19 @@ export const getBalance = async (pubkey: PublicKey): Promise<number | string> =>
     }
 };
 
-export const getProvider = (cluster: string) => {
+export const getProvider = (
+    cluster: string,
+    wallet: Wallet = (window as any)?.solana,
+    optsParam: ConfirmOptions = opts,
+): AnchorProvider => {
     const conn = new Connection(cluster, optsConn);
-    const provider = new AnchorProvider(conn, (window as any)?.solana, opts);
+    const provider = new AnchorProvider(conn, wallet, optsParam);
 
     return provider;
 };
 
-export const getProgram = (idl: any, pubkey: PublicKey) => {
-    return new Program(idl, pubkey, getProvider(getConfig()));
+export const getProgram = (idl: any, pubkey: PublicKey, provider: AnchorProvider = getProvider(getConfig())) => {
+    return new Program(idl, pubkey, provider);
 };
 
 export const accountExplorer = (address: string) => {
