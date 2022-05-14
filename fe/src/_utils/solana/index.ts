@@ -1,8 +1,10 @@
 import { web3, Wallet, Program, BN, AnchorProvider } from '@project-serum/anchor';
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { Commitment, Connection, PublicKey, Transaction } from '@solana/web3.js';
+import { MintLayout, TOKEN_PROGRAM_ID, createInitializeMintInstruction, createMintToInstruction } from '@solana/spl-token';
 
 import ENV, { Conn, Config, SOLANA_PROTOCOLS, getProvider, getConfig, getProgram } from '_config';
+
+// import { sendTransactions, SequenceType } from './connection';
 
 export const CANDY_MACHINE_PROGRAM = new web3.PublicKey('cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ');
 export const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
@@ -43,6 +45,15 @@ export const getAtaForMint = async (mint: web3.PublicKey, buyer: web3.PublicKey)
         [buyer.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
         SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
     );
+};
+
+export const getTokenWallet = async (wallet: web3.PublicKey, mint: web3.PublicKey) => {
+    return (
+        await web3.PublicKey.findProgramAddress(
+            [wallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
+            SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
+        )
+    )[0];
 };
 
 export const getMasterEdition = async (mint: web3.PublicKey): Promise<web3.PublicKey> => {
@@ -155,3 +166,48 @@ export const getCandyMachineState = async (
         },
     };
 };
+
+// export type SetupState = {
+//     mint: web3.Keypair;
+//     userTokenAccount: web3.PublicKey;
+//     transaction: string;
+// };
+
+// export const createAccountsForMint = async (candyMachine: CandyMachineAccount, payer: web3.PublicKey): Promise<SetupState> => {
+//     const mint = web3.Keypair.generate();
+//     const userTokenAccountAddress = (await getAtaForMint(mint.publicKey, payer))[0];
+
+//     const signers: web3.Keypair[] = [mint];
+//     const instructions = [
+//         web3.SystemProgram.createAccount({
+//             fromPubkey: payer,
+//             newAccountPubkey: mint.publicKey,
+//             space: MintLayout.span,
+//             lamports: await candyMachine.program.provider.connection.getMinimumBalanceForRentExemption(MintLayout.span),
+//             programId: TOKEN_PROGRAM_ID,
+//         }),
+//         createInitializeMintInstruction(mint.publicKey, 0, payer, payer, TOKEN_PROGRAM_ID),
+//         createAssociatedTokenAccountInstruction(userTokenAccountAddress, payer, payer, mint.publicKey),
+//         createMintToInstruction(mint.publicKey, userTokenAccountAddress, payer, 1, [], TOKEN_PROGRAM_ID),
+//     ];
+
+//     return {
+//         mint: mint,
+//         userTokenAccount: userTokenAccountAddress,
+//         transaction: (
+//             await sendTransactions(
+//                 candyMachine.program.provider.connection,
+//                 candyMachine.program.provider.wallet,
+//                 [instructions],
+//                 [signers],
+//                 SequenceType.StopOnFailure,
+//                 'singleGossip',
+//                 () => {},
+//                 () => false,
+//                 undefined,
+//                 [],
+//                 [],
+//             )
+//         ).txs[0].txid,
+//     };
+// };
