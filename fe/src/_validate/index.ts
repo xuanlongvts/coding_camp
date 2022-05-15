@@ -29,6 +29,24 @@ export interface T_HOOKS_FOMR_GENE_QR_CODE {
     [ENUM_FIELDS.memo]: string;
 }
 
+const NFT_NAME_FILED = {
+    min: 3,
+    max: 30,
+};
+export const NftNameField = Yup.string()
+    .min(NFT_NAME_FILED.min, `Name Nft min is ${NFT_NAME_FILED.min} characters`)
+    .max(NFT_NAME_FILED.max, `Name Nft max is ${NFT_NAME_FILED.max} characters`)
+    .required('Name Nft required');
+
+const NFT_DES_FILED = {
+    min: 5,
+    max: 150,
+};
+export const NftDesField = Yup.string()
+    .min(NFT_DES_FILED.min, `Description Nft min is ${NFT_DES_FILED.min} characters`)
+    .max(NFT_DES_FILED.max, `Description Nft max is ${NFT_DES_FILED.max} characters`)
+    .required('Description Nft required');
+
 const LBL_FILED = {
     min: 3,
     max: 60,
