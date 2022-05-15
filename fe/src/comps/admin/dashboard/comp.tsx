@@ -13,7 +13,7 @@ import Footer from '_commComp/footer';
 
 import AddProduct from '../product-actions/add';
 import UpdateProduct from '../product-actions/update';
-import MintNftComp from '../mint-nft';
+import MintNftComp from '../mint-nft/index';
 import SettingComp from '../setting';
 
 import ProductsManagment from './products';

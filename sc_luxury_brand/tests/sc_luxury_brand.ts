@@ -1,5 +1,12 @@
 import * as anchor from "@project-serum/anchor";
-import { Program, AnchorError } from "@project-serum/anchor";
+import { Program, AnchorError, Wallet } from "@project-serum/anchor";
+import {
+    TOKEN_PROGRAM_ID,
+    createAssociatedTokenAccountInstruction,
+    getAssociatedTokenAddress,
+    createInitializeMintInstruction,
+    MINT_SIZE,
+} from "@solana/spl-token";
 import chai, { expect } from "chai";
 
 import { ScLuxuryBrand } from "../target/types/sc_luxury_brand";
@@ -9,14 +16,17 @@ import {
     addOneProduct,
     updateOneProduct,
     deleteOneProduct,
+    TOKEN_METADATA_PROGRAM_ID,
+    getMetadata,
+    getMasterEdition,
+    nftProps,
 } from "./consts";
 
 describe("sc_luxury_brand", () => {
     const provider = anchor.AnchorProvider.env();
-
     anchor.setProvider(provider);
-
     const program = anchor.workspace.ScLuxuryBrand as Program<ScLuxuryBrand>;
+    const wallet = provider.wallet as Wallet;
 
     before(async () => {
         await program.methods
@@ -137,5 +147,69 @@ describe("sc_luxury_brand", () => {
             expect(err.error.errorCode.code).to.equal("NotFoundProduct");
             expect(err.error.errorCode.number).to.equal(6000);
         }
+    });
+
+    it("Mint Nft!", async () => {
+        const lamports: number =
+            await program.provider.connection.getMinimumBalanceForRentExemption(
+                MINT_SIZE
+            );
+        const mintKey: anchor.web3.Keypair = anchor.web3.Keypair.generate();
+        const NftTokenAccount = await getAssociatedTokenAddress(
+            mintKey.publicKey,
+            wallet.publicKey
+        );
+        const mint_tx = new anchor.web3.Transaction().add(
+            anchor.web3.SystemProgram.createAccount({
+                fromPubkey: wallet.publicKey,
+                newAccountPubkey: mintKey.publicKey,
+                space: MINT_SIZE,
+                programId: TOKEN_PROGRAM_ID,
+                lamports,
+            }),
+            createInitializeMintInstruction(
+                mintKey.publicKey,
+                0,
+                wallet.publicKey,
+                wallet.publicKey
+            ),
+            createAssociatedTokenAccountInstruction(
+                wallet.publicKey,
+                NftTokenAccount,
+                wallet.publicKey,
+                mintKey.publicKey
+            )
+        );
+        await program.provider.sendAndConfirm(mint_tx, [mintKey]);
+        // console.log(
+        //     await program.provider.connection.getParsedAccountInfo(
+        //         mintKey.publicKey
+        //     )
+        // );
+
+        const metadataAddress = await getMetadata(mintKey.publicKey);
+        const masterEdition = await getMasterEdition(mintKey.publicKey);
+
+        const tx = await program.methods
+            .mintNft(
+                mintKey.publicKey,
+                nftProps.title,
+                nftProps.symbol,
+                nftProps.uri
+            )
+            .accounts({
+                mintAuthority: wallet.publicKey,
+                mint: mintKey.publicKey,
+                tokenAccount: NftTokenAccount,
+                tokenProgram: TOKEN_PROGRAM_ID,
+                metadata: metadataAddress,
+                tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+                payer: wallet.publicKey,
+                systemProgram: anchor.web3.SystemProgram.programId,
+                rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+                masterEdition: masterEdition,
+            })
+            .rpc();
+        console.log("Tx mint nft: ---> ", tx);
     });
 });

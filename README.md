@@ -13,3 +13,9 @@
 
     Connect wallet and airdrop for account in Local net
     solana aidrop 10 Publickey	(Publickey from extension chrome)
+
+# Note: Metaplex just work devnet, have change in Anchor.toml
+
+1. [programs.devnet]
+
+2. cluster = "devnet"
