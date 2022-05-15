@@ -6,15 +6,16 @@
 
 ## 2
 
-    solana aidrop 10 Publickey	 	(File sc_luxury_brand/Anchor.toml)
-    								wallet = "~/.config/solana/id.json"
+    solana aidrop 10 Publickey
+    (File sc_luxury_brand/Anchor.toml)
+    wallet = "~/.config/solana/id.json"
 
 ## 3
 
     Connect wallet and airdrop for account in Local net
     solana aidrop 10 Publickey	(Publickey from extension chrome)
 
-# Note: Metaplex just work devnet, have change in Anchor.toml
+# Note: Metaplex just work on devnet, need to change in Anchor.toml
 
 1. [programs.devnet]
 
