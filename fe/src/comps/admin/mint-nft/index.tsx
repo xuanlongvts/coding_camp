@@ -29,14 +29,7 @@ import TextField from '@mui/material/TextField';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 
-import {
-    getMetadata,
-    getMasterEdition,
-    TOKEN_METADATA_PROGRAM_ID,
-    CANDY_MACHINE_PROGRAM,
-    updloadImgToIpfs,
-    updloaMetadataToIpfs,
-} from '_utils/solana';
+import { updloadImgToIpfs, updloaMetadataToIpfs } from '_utils/solana';
 import ENV, { Conn, SOLANA_PROTOCOLS, getProgram } from '_config';
 import { appToastActions } from '_commComp/toast/slice';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
