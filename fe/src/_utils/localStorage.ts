@@ -9,6 +9,7 @@ type T_LocalStorageKey = {
         updateOneProduct: string;
         deleteOneProduct: string;
     };
+    tx_mint_nft: string;
     darkMode: string;
 };
 const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
@@ -21,6 +22,7 @@ const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
             updateOneProduct: `${detectEnv}_updateOneProduct`,
             deleteOneProduct: `${detectEnv}_deleteOneProduct`,
         },
+        tx_mint_nft: `${detectEnv}_tx_mint_nft`,
         darkMode: `${detectEnv}_darkMode`,
     };
 };

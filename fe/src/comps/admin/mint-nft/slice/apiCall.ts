@@ -56,10 +56,11 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<any> => {
         const metadataAddress = await getMetadata(mintKey.publicKey);
         const masterEdition = await getMasterEdition(mintKey.publicKey);
 
+        const { name, symbol, metadataUrl } = data;
         const tx =
             wallet?.publicKey &&
             (await program.methods
-                .mintNft(mintKey.publicKey, data.name, data.symbol, data.metadataUrl)
+                .mintNft(mintKey.publicKey, name, symbol, metadataUrl)
                 .accounts({
                     mintAuthority: wallet!.publicKey,
                     mint: mintKey.publicKey,
@@ -73,6 +74,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<any> => {
                     masterEdition: masterEdition,
                 })
                 .rpc());
+        LocalStorageServices.setItem(LocalStorageKey().tx_mint_nft, tx);
         return tx;
     } catch (_err: any) {
         console.log('mintNftlApi _err ---> ', _err);
