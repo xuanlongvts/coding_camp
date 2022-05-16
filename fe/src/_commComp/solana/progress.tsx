@@ -99,6 +99,7 @@ const Progress = ({ progress, status, handlePreClose }: T_Progress) => {
         }
 
         return () => {
+            LocalStorageServices.removeItem(LocalStorageKey().ProgressStatus);
             clearInterval(intervalTick);
         };
     }, []);

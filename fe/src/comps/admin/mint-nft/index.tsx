@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getConfig from 'next/config';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { web3, Wallet, Program, BN, AnchorProvider } from '@project-serum/anchor';
 import { Commitment, PublicKey, Transaction } from '@solana/web3.js';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+
 import {
     MintLayout,
     TOKEN_PROGRAM_ID,
@@ -28,9 +29,17 @@ import TextField from '@mui/material/TextField';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 
-import { getMetadata, getMasterEdition, TOKEN_METADATA_PROGRAM_ID, CANDY_MACHINE_PROGRAM } from '_utils/solana';
-import { appToastActions } from '_commComp/toast/slice';
+import {
+    getMetadata,
+    getMasterEdition,
+    TOKEN_METADATA_PROGRAM_ID,
+    CANDY_MACHINE_PROGRAM,
+    updloadImgToIpfs,
+    updloaMetadataToIpfs,
+} from '_utils/solana';
 import ENV, { Conn, SOLANA_PROTOCOLS, getProgram } from '_config';
+import { appToastActions } from '_commComp/toast/slice';
+import { appLoadingActions } from '_commComp/loadingApp/slice';
 
 import SendNftSchema, { ENUM_FIELDS, T_HOOKS_FOMR_NFT_SEND } from './validateSendNft';
 
@@ -50,9 +59,10 @@ const useStyles = makeStyles({
 });
 
 const MintNftComp = () => {
-    const { publicKey } = useWallet();
     const dispatch = useDispatch();
     const useClasses = useStyles();
+    const { connection } = useConnection();
+    const { publicKey, sendTransaction } = useWallet();
 
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [imageFileBuffer, setImageFileBuffer] = useState<any>(null);
@@ -76,9 +86,34 @@ const MintNftComp = () => {
             );
             return;
         }
+        dispatch(appLoadingActions.loadingOpen());
+        const uploadedImageUrl = await updloadImgToIpfs(imageFileBuffer);
+        if (!uploadedImageUrl) {
+            dispatch(
+                appToastActions.toastOpen({
+                    mess: 'Uploading image to IPFS failed due to an error; please try again!',
+                }),
+            );
+            dispatch(appLoadingActions.loadingClose());
+            return;
+        }
+        const uploadedMetatdataUrl = await updloaMetadataToIpfs({
+            name: data[ENUM_FIELDS.name],
+            symbol: 'NFT-Demo Day 5/2022',
+            description: data[ENUM_FIELDS.des],
+            imgOnIpfs: uploadedImageUrl,
+        });
+        if (!uploadedMetatdataUrl) {
+            dispatch(
+                appToastActions.toastOpen({
+                    mess: 'Uploading informations to IPFS failed due to an error; please try again!',
+                }),
+            );
+            dispatch(appLoadingActions.loadingClose());
+            return;
+        }
+        dispatch(appLoadingActions.loadingClose());
     };
-
-    const hanldeMintNft = async () => {};
 
     const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
         if (event) {
@@ -108,13 +143,13 @@ const MintNftComp = () => {
     const disabledBtn = !!(errors.name || errors.des || !watch().name || !watch().des || !selectedFile || !imageFileBuffer);
 
     return (
-        <Grid item xs={12} sx={{ mt: 2 }}>
+        <Grid item xs={12} sx={{ mt: 1 }}>
             <Card sx={{ display: 'flex', border: 'none' }} variant="outlined" square>
                 <CardContent sx={{ flex: 1, p: 0 }} className={useClasses.imgWrap}>
                     <Typography>
                         <span style={{ color: 'red' }}>*</span> Image
                     </Typography>
-                    <Box sx={{ border: '1px dotted #ddd', position: 'relative', minHeight: 500 }}>
+                    <Box sx={{ border: '1px dotted #ddd', position: 'relative', minHeight: 400 }}>
                         <input
                             accept="image/*"
                             id="imageFileUpload"
@@ -140,7 +175,7 @@ const MintNftComp = () => {
                         label="Name"
                         placeholder="NFT name here"
                         type="text"
-                        {...register('name')}
+                        {...register(ENUM_FIELDS.name)}
                         error={!!errors.name}
                         helperText={errors?.name?.message}
                     />
@@ -155,7 +190,7 @@ const MintNftComp = () => {
                         type="text"
                         multiline
                         rows={5}
-                        {...register('des')}
+                        {...register(ENUM_FIELDS.des)}
                         error={!!errors.des}
                         helperText={errors?.des?.message}
                     />

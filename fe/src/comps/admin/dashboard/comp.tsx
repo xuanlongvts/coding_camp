@@ -7,6 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import clsx from 'clsx';
 
 import Header from '_commComp/header';
 import Footer from '_commComp/footer';
@@ -104,7 +105,7 @@ const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage }: T_Pr
                 <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     {LayoutRender}
 
-                    <div className="footer-admin">
+                    <div className={clsx(`footer-admin ${open ? 'insideDashboardL' : 'insideDashboardS'}`)}>
                         <Footer />
                     </div>
                 </Container>

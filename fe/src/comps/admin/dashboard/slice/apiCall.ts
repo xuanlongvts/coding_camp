@@ -1,9 +1,8 @@
 import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
-import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
-import { getProgram, getProvider, getConfig } from '_config';
+import { getKeypairDemo, programApp, providerApp } from '_services/solana';
 
 import idl from '_config/idl.json';
 import { T_PRODUCT } from 'comps/01-home/products/type';
@@ -15,19 +14,6 @@ const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccountDefault: Keypair = web3.Keypair.fromSecretKey(secret);
 
-export const getKeypairDemo = (): Keypair | null => {
-    let getKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);
-    getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
-    let baseAccountDemo: Keypair | null = null;
-    if (getKeypairDemo) {
-        const arr = Object.values(getKeypairDemo);
-        const secret = new Uint8Array(arr as any);
-        baseAccountDemo = web3.Keypair.fromSecretKey(secret);
-    }
-
-    return baseAccountDemo;
-};
-
 export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<any> => {
     // const baseAccount = getKeypairDemo() || baseAccountDefault;
     const baseAccount = getKeypairDemo();
@@ -36,8 +22,8 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
         return null;
     }
 
-    const program = getProgram(idl, programID);
-    const provider = getProvider(getConfig());
+    const program = programApp();
+    const provider = providerApp();
 
     try {
         const tx = await program.methods
@@ -70,7 +56,7 @@ export const productsCallApi = async (): Promise<any> => {
         return null;
     }
 
-    const program = getProgram(idl, programID);
+    const program = programApp();
 
     try {
         return await program.account.products.fetch(baseAccount.publicKey);
@@ -91,7 +77,7 @@ export const productAddOneProductCallApi = async (productAdd: T_PRODUCT): Promis
         return null;
     }
 
-    const program = getProgram(idl, programID);
+    const program = programApp();
 
     try {
         const tx = await program.methods
@@ -121,7 +107,7 @@ export const productUpdateOneProductCallApi = async (productUpdate: T_PRODUCT): 
         return null;
     }
 
-    const program = getProgram(idl, programID);
+    const program = programApp();
 
     try {
         const tx = await program.methods
@@ -151,7 +137,7 @@ export const productDeleteOneProductCallApi = async (id: string): Promise<any> =
         return null;
     }
 
-    const program = getProgram(idl, programID);
+    const program = programApp();
 
     try {
         const tx = await program.methods

@@ -1,7 +1,7 @@
 import * as anchor from '@project-serum/anchor';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
-import { getKeypairDemo } from 'comps/admin/dashboard/slice/apiCall';
+import { getKeypairDemo } from '_services/solana';
 
 const baseAcc = anchor.web3.Keypair.generate();
 
