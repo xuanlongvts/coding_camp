@@ -1,8 +1,18 @@
 import { useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getConfig from 'next/config';
+import * as anchor from '@project-serum/anchor';
 import { web3, Wallet, Program, BN, AnchorProvider } from '@project-serum/anchor';
-import { Commitment, PublicKey, Transaction } from '@solana/web3.js';
+import { Commitment, PublicKey, Transaction, ConfirmOptions } from '@solana/web3.js';
+
+import {
+    TOKEN_PROGRAM_ID,
+    createAssociatedTokenAccountInstruction,
+    getAssociatedTokenAddress,
+    createInitializeMintInstruction,
+    MINT_SIZE,
+} from '@solana/spl-token';
+
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 import { useForm } from 'react-hook-form';
@@ -19,11 +29,22 @@ import TextField from '@mui/material/TextField';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 
+import idl from '_config/idl.json';
 import { updloadImgToIpfs, updloaMetadataToIpfs } from '_utils/solana';
 import ENV, { Conn, SOLANA_PROTOCOLS, getProgram } from '_config';
 import { appToastActions } from '_commComp/toast/slice';
 import { FIELDS } from '_commComp/toast/types';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
+
+import {
+    getKeypairDemo,
+    programApp,
+    providerApp,
+    getMetadata,
+    getMasterEdition,
+    TOKEN_METADATA_PROGRAM_ID,
+    programID,
+} from '_services/solana';
 
 import SendNftSchema, { ENUM_FIELDS, T_HOOKS_FOMR_NFT_SEND } from './validateSendNft';
 import SliceMintNft from './slice';
@@ -46,11 +67,24 @@ const useStyles = makeStyles({
 const MintNftComp = () => {
     const dispatch = useDispatch();
     const useClasses = useStyles();
-    const { publicKey } = useWallet();
+    const { connection } = useConnection();
+    const wallet = useWallet();
     const { actions } = SliceMintNft();
 
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [imageFileBuffer, setImageFileBuffer] = useState<any>(null);
+
+    const anchorWallet = useMemo(() => {
+        if (!wallet || !wallet.publicKey || !wallet.signAllTransactions || !wallet.signTransaction) {
+            return;
+        }
+
+        return {
+            publicKey: wallet.publicKey,
+            signAllTransactions: wallet.signAllTransactions,
+            signTransaction: wallet.signTransaction,
+        } as anchor.Wallet;
+    }, [wallet]);
 
     const {
         register,
@@ -63,7 +97,7 @@ const MintNftComp = () => {
     });
 
     const onSubmitForm = async (data: T_HOOKS_FOMR_NFT_SEND) => {
-        if (!publicKey) {
+        if (!wallet.publicKey) {
             dispatch(
                 appToastActions.toastOpen({
                     [FIELDS.mess]: 'Connect wallet first and change network to DevNet!',
@@ -111,17 +145,103 @@ const MintNftComp = () => {
             symbol: 'NFT-Demo Day 5/2022',
             metadataUrl: uploadedMetatdataUrl,
         };
-        dispatch(actions.mintNftCall(dataSend));
-    };
+        // Call mint nft
+        // dispatch(actions.mintNftCall(dataSend));
 
-    // const testHandle = () => {
-    //     const dataSend = {
-    //         name: 'name',
-    //         symbol: 'symbol 5/2022',
-    //         metadataUrl: 'metadataUrl',
-    //     };
-    //     dispatch(actions.mintNftCall(dataSend));
-    // };
+        const opts: ConfirmOptions = {
+            preflightCommitment: 'confirmed', // confirmed, processed
+        };
+        const provider = anchorWallet && new anchor.AnchorProvider(connection, anchorWallet, opts);
+        provider && anchor.setProvider(provider);
+
+        const SOL_MINT_NFT_PROGRAM_ID = new anchor.web3.PublicKey('3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC');
+        const program = idl && new Program(idl, SOL_MINT_NFT_PROGRAM_ID, provider);
+
+        const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
+        const mintKey = anchor.web3.Keypair.generate();
+
+        if (provider?.wallet) {
+            const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, provider.wallet.publicKey);
+
+            const mint_tx = new anchor.web3.Transaction().add(
+                anchor.web3.SystemProgram.createAccount({
+                    fromPubkey: provider.wallet.publicKey,
+                    newAccountPubkey: mintKey.publicKey,
+                    space: MINT_SIZE,
+                    programId: TOKEN_PROGRAM_ID,
+                    lamports,
+                }),
+                createInitializeMintInstruction(mintKey.publicKey, 0, provider.wallet.publicKey, provider.wallet.publicKey),
+                createAssociatedTokenAccountInstruction(
+                    provider.wallet.publicKey,
+                    nftTokenAccount,
+                    provider.wallet.publicKey,
+                    mintKey.publicKey,
+                ),
+            );
+            let blockhashObj = await connection.getLatestBlockhash();
+            // console.log("blockhashObj", blockhashObj);
+            mint_tx.recentBlockhash = blockhashObj.blockhash;
+
+            try {
+                const signature = await wallet.sendTransaction(mint_tx, connection, {
+                    signers: [mintKey],
+                });
+                await connection.confirmTransaction(signature, 'confirmed');
+            } catch {
+                return false;
+            }
+            const metadataAddress = await getMetadata(mintKey.publicKey);
+
+            try {
+                // const tx = program.transaction.mintNft(
+                //     mintKey.publicKey,
+                //     data[ENUM_FIELDS.name],
+                //     'NFT-Demo Day 5/2022',
+                //     uploadedMetatdataUrl,
+                //     {
+                //         accounts: {
+                //             mintAuthority: provider.wallet.publicKey,
+                //             mint: mintKey.publicKey,
+                //             tokenAccount: nftTokenAccount,
+                //             tokenProgram: TOKEN_PROGRAM_ID,
+                //             metadata: metadataAddress,
+                //             tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+                //             payer: provider.wallet.publicKey,
+                //             systemProgram: anchor.web3.SystemProgram.programId,
+                //             rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+                //         },
+                //     },
+                // );
+                // await wallet.sendTransaction(tx, connection);
+                // await connection.confirmTransaction(tx, 'confirmed');
+
+                const sign = await program.methods
+                    .mintNft(mintKey.publicKey, data[ENUM_FIELDS.name], 'symb', uploadedMetatdataUrl)
+                    .accounts({
+                        mintAuthority: provider.wallet.publicKey,
+                        mint: mintKey.publicKey,
+                        tokenAccount: nftTokenAccount,
+                        tokenProgram: TOKEN_PROGRAM_ID,
+                        metadata: metadataAddress,
+                        tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+                        payer: provider.wallet.publicKey,
+                        systemProgram: anchor.web3.SystemProgram.programId,
+                        rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+                    })
+                    .rpc();
+
+                // const tx = await connection.getConfirmedSignaturesForAddress2(
+                //     sign,
+                //     "confirmed"
+                // );
+                console.log('Mint Success!', sign);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+    };
 
     const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
         if (event) {
