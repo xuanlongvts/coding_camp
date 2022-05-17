@@ -9,7 +9,8 @@ import {
 } from '@solana/spl-token';
 
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
-import { getKeypairDemo, programApp, providerApp, getMetadata, getMasterEdition, TOKEN_METADATA_PROGRAM_ID } from '_services/solana';
+import { getKeypairDemo, programApp, getMetadata, getMasterEdition, TOKEN_METADATA_PROGRAM_ID } from '_services/solana';
+import { getProvider, getConfig, WalletRecipient_2 } from '_config';
 
 import { T_DATA_PREPARE, T_RESULT_MINT_NFT } from './types';
 
@@ -25,7 +26,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
     }
 
     const program = programApp();
-    const provider = providerApp();
+    const provider = getProvider(getConfig());
 
     try {
         const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);

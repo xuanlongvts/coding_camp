@@ -24,7 +24,6 @@ function* mintNftCallSaga() {
     const result: Obj = yield call(ApiCall.mintNftlApi, dataSendApi);
 
     if (result && result.errMess) {
-        yield put(appLoadingActions.loadingClose());
         yield put(mintActions.mintNftCallFailed(result.errMess));
         yield put(
             appToastActions.toastOpen({

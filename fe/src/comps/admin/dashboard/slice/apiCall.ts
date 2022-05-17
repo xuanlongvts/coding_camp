@@ -1,10 +1,10 @@
-import { PublicKey, Keypair } from '@solana/web3.js';
+import { Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
-import { getKeypairDemo, programApp, providerApp } from '_services/solana';
+import { getKeypairDemo, programApp } from '_services/solana';
+import { getProvider, getConfig } from '_config';
 
-import idl from '_config/idl.json';
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import kp from '_keys/keypair.json';
 
@@ -23,7 +23,7 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
     }
 
     const program = programApp();
-    const provider = providerApp();
+    const provider = getProvider(getConfig());
 
     try {
         const tx = await program.methods

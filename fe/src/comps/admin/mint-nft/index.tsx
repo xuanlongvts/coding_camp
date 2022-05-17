@@ -186,6 +186,7 @@ const MintNftComp = () => {
         //         return false;
         //     }
         //     const metadataAddress = await getMetadata(mintKey.publicKey);
+        //     const masterEdition = await getMasterEdition(mintKey.publicKey);
 
         //     try {
         //         const sign = await program.methods
@@ -200,6 +201,7 @@ const MintNftComp = () => {
         //                 payer: provider.wallet.publicKey,
         //                 systemProgram: anchor.web3.SystemProgram.programId,
         //                 rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+        //                 masterEdition: masterEdition,
         //             })
         //             .rpc();
         //         console.log('Mint Success!', sign);

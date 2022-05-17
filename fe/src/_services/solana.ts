@@ -2,7 +2,7 @@ import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
 
 import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
-import { getProgram, getProvider, getConfig } from '_config';
+import { getProgram } from '_config';
 
 import idl from '_config/idl.json';
 
@@ -23,7 +23,6 @@ export const getKeypairDemo = (): Keypair | null => {
 };
 
 export const programApp = () => getProgram(idl, programID);
-export const providerApp = () => getProvider(getConfig());
 
 export const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
 
