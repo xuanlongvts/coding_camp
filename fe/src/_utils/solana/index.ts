@@ -4,7 +4,6 @@ import { Program, Wallet } from '@project-serum/anchor';
 import * as ipfsClient from 'ipfs-http-client';
 
 export const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
-export const CANDY_MACHINE_PROGRAM = new web3.PublicKey('cndy3Z4yapfJBmL3ShUp5exZKqR3z33thTzeNMm2gRZ');
 export const SOL_MINT_NFT_PROGRAM_ID = new web3.PublicKey('3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC');
 
 export const getMetadata = async (mint: web3.PublicKey): Promise<web3.PublicKey> => {

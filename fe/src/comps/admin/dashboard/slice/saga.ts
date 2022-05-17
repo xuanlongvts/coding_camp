@@ -6,6 +6,7 @@ import { T_PRODUCT } from 'comps/01-home/products/type';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { transactionExplorer } from '_config';
 import { appToastActions } from '_commComp/toast/slice';
+import { FIELDS } from '_commComp/toast/types';
 
 import { productsActions } from '.';
 import { selectProductInit, selectProductAddOrUpdate, selectProductDelete } from './selector';
@@ -30,8 +31,9 @@ function* productInitSaga() {
         const hrefLink = transactionExplorer(getTx);
         yield put(
             appToastActions.toastOpen({
-                mess: 'Initial product success!',
-                linkRef: {
+                [FIELDS.typeAlert]: 'success',
+                [FIELDS.mess]: 'Initial product success!',
+                [FIELDS.linkRef]: {
                     mess: 'Transaction Link',
                     link: hrefLink,
                     target: '_blank',
@@ -78,8 +80,9 @@ function* productAddOneCallSaga() {
         const hrefLink = transactionExplorer(getTx);
         yield put(
             appToastActions.toastOpen({
-                mess: 'Add one product success!',
-                linkRef: {
+                [FIELDS.typeAlert]: 'success',
+                [FIELDS.mess]: 'Add one product success!',
+                [FIELDS.linkRef]: {
                     mess: 'Transaction Link',
                     link: hrefLink,
                     target: '_blank',
@@ -109,8 +112,9 @@ function* productUpdateOneCallSaga() {
         const hrefLink = transactionExplorer(getTx);
         yield put(
             appToastActions.toastOpen({
-                mess: 'Update one product success!',
-                linkRef: {
+                [FIELDS.typeAlert]: 'success',
+                [FIELDS.mess]: 'Update one product success!',
+                [FIELDS.linkRef]: {
                     mess: 'Transaction Link',
                     link: hrefLink,
                     target: '_blank',
@@ -141,8 +145,9 @@ function* productDeleteOneCallSaga() {
         const hrefLink = transactionExplorer(getTx);
         yield put(
             appToastActions.toastOpen({
-                mess: 'Delete product success!',
-                linkRef: {
+                [FIELDS.typeAlert]: 'success',
+                [FIELDS.mess]: 'Delete product success!',
+                [FIELDS.linkRef]: {
                     mess: 'Transaction Link',
                     link: hrefLink,
                     target: '_blank',

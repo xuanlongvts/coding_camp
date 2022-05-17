@@ -135,11 +135,6 @@
                     "name": "rent",
                     "isMut": false,
                     "isSigner": false
-                },
-                {
-                    "name": "masterEdition",
-                    "isMut": true,
-                    "isSigner": false
                 }
             ],
             "args": [

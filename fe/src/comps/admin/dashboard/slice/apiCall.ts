@@ -8,8 +8,6 @@ import idl from '_config/idl.json';
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import kp from '_keys/keypair.json';
 
-const programID = new PublicKey(idl.metadata.address);
-
 const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccountDefault: Keypair = web3.Keypair.fromSecretKey(secret);
@@ -19,7 +17,9 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
     const baseAccount = getKeypairDemo();
 
     if (!baseAccount) {
-        return null;
+        return {
+            errMess: 'baseAccount Not found',
+        };
     }
 
     const program = programApp();
@@ -53,7 +53,9 @@ export const productsCallApi = async (): Promise<any> => {
     const baseAccount = getKeypairDemo();
 
     if (!baseAccount) {
-        return null;
+        return {
+            errMess: 'baseAccount Not found',
+        };
     }
 
     const program = programApp();
@@ -74,7 +76,9 @@ export const productAddOneProductCallApi = async (productAdd: T_PRODUCT): Promis
     const baseAccount = getKeypairDemo();
 
     if (!baseAccount) {
-        return null;
+        return {
+            errMess: 'baseAccount Not found',
+        };
     }
 
     const program = programApp();
@@ -104,7 +108,9 @@ export const productUpdateOneProductCallApi = async (productUpdate: T_PRODUCT): 
     const baseAccount = getKeypairDemo();
 
     if (!baseAccount) {
-        return null;
+        return {
+            errMess: 'baseAccount Not found',
+        };
     }
 
     const program = programApp();
@@ -134,7 +140,9 @@ export const productDeleteOneProductCallApi = async (id: string): Promise<any> =
     const baseAccount = getKeypairDemo();
 
     if (!baseAccount) {
-        return null;
+        return {
+            errMess: 'baseAccount Not found',
+        };
     }
 
     const program = programApp();

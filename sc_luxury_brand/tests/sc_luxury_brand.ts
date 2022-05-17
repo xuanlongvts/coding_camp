@@ -188,7 +188,7 @@ describe("sc_luxury_brand", () => {
         // );
 
         const metadataAddress = await getMetadata(mintKey.publicKey);
-        const masterEdition = await getMasterEdition(mintKey.publicKey);
+        // const masterEdition = await getMasterEdition(mintKey.publicKey);
 
         const tx = await program.methods
             .mintNft(
@@ -207,7 +207,7 @@ describe("sc_luxury_brand", () => {
                 payer: wallet.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
                 rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-                masterEdition: masterEdition,
+                // masterEdition: masterEdition,
             })
             .rpc();
         console.log("Tx mint nft: ---> ", tx);

@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useDispatch } from 'react-redux';
 
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
@@ -11,6 +13,7 @@ import clsx from 'clsx';
 
 import Header from '_commComp/header';
 import Footer from '_commComp/footer';
+import useCommSlice, { commonActions } from '_redux/slice';
 
 import AddProduct from '../product-actions/add';
 import UpdateProduct from '../product-actions/update';
@@ -53,7 +56,22 @@ type T_ProductActions = {
     mintNftPage?: boolean;
 };
 const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage }: T_ProductActions) => {
+    useCommSlice();
     const [open, setOpen] = useState(true);
+    const dispatch = useDispatch();
+    const { connection } = useConnection();
+    const wallet = useWallet();
+
+    useEffect(() => {
+        dispatch(
+            commonActions.commonInitCall({
+                common: {
+                    wallet,
+                    connection,
+                },
+            }),
+        );
+    }, [connection, wallet]);
 
     const toggleDrawer = () => {
         setOpen(!open);

@@ -1,7 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { NSP_MINT_NFT } from '_types/root_state_type';
-import { Obj } from '_types/index';
 import { createSlice, useInjectReducer, useInjectSaga } from '_redux';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 

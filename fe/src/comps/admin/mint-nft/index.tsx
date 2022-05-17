@@ -5,16 +5,6 @@ import { web3, Wallet, Program, BN, AnchorProvider } from '@project-serum/anchor
 import { Commitment, PublicKey, Transaction } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
-import {
-    MintLayout,
-    TOKEN_PROGRAM_ID,
-    createInitializeMintInstruction,
-    createMintToInstruction,
-    getAssociatedTokenAddress,
-    createAssociatedTokenAccountInstruction,
-    MINT_SIZE,
-} from '@solana/spl-token';
-
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -32,9 +22,11 @@ import Button from '@mui/material/Button';
 import { updloadImgToIpfs, updloaMetadataToIpfs } from '_utils/solana';
 import ENV, { Conn, SOLANA_PROTOCOLS, getProgram } from '_config';
 import { appToastActions } from '_commComp/toast/slice';
+import { FIELDS } from '_commComp/toast/types';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 
 import SendNftSchema, { ENUM_FIELDS, T_HOOKS_FOMR_NFT_SEND } from './validateSendNft';
+import SliceMintNft from './slice';
 
 const useStyles = makeStyles({
     input: {
@@ -54,8 +46,8 @@ const useStyles = makeStyles({
 const MintNftComp = () => {
     const dispatch = useDispatch();
     const useClasses = useStyles();
-    const { connection } = useConnection();
-    const { publicKey, sendTransaction } = useWallet();
+    const { publicKey } = useWallet();
+    const { actions } = SliceMintNft();
 
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [imageFileBuffer, setImageFileBuffer] = useState<any>(null);
@@ -74,7 +66,7 @@ const MintNftComp = () => {
         if (!publicKey) {
             dispatch(
                 appToastActions.toastOpen({
-                    mess: 'Connect wallet first and change network to DevNet!',
+                    [FIELDS.mess]: 'Connect wallet first and change network to DevNet!',
                 }),
             );
             return;
@@ -84,7 +76,8 @@ const MintNftComp = () => {
         if (!uploadedImageUrl) {
             dispatch(
                 appToastActions.toastOpen({
-                    mess: 'Uploading image to IPFS failed due to an error; please try again!',
+                    [FIELDS.typeAlert]: 'error',
+                    [FIELDS.mess]: 'Uploading image to IPFS failed due to an error, please try again!',
                 }),
             );
             dispatch(appLoadingActions.loadingClose());
@@ -99,14 +92,36 @@ const MintNftComp = () => {
         if (!uploadedMetatdataUrl) {
             dispatch(
                 appToastActions.toastOpen({
-                    mess: 'Uploading informations to IPFS failed due to an error; please try again!',
+                    [FIELDS.typeAlert]: 'error',
+                    [FIELDS.mess]: 'Uploading informations to IPFS failed due to an error, please try again!',
                 }),
             );
             dispatch(appLoadingActions.loadingClose());
             return;
         }
+        dispatch(
+            appToastActions.toastOpen({
+                [FIELDS.typeAlert]: 'success',
+                [FIELDS.mess]: 'Uploading information to IPFS: success!',
+            }),
+        );
         dispatch(appLoadingActions.loadingClose());
+        const dataSend = {
+            name: data[ENUM_FIELDS.name],
+            symbol: 'NFT-Demo Day 5/2022',
+            metadataUrl: uploadedMetatdataUrl,
+        };
+        dispatch(actions.mintNftCall(dataSend));
     };
+
+    // const testHandle = () => {
+    //     const dataSend = {
+    //         name: 'name',
+    //         symbol: 'symbol 5/2022',
+    //         metadataUrl: 'metadataUrl',
+    //     };
+    //     dispatch(actions.mintNftCall(dataSend));
+    // };
 
     const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
         if (event) {
@@ -196,6 +211,10 @@ const MintNftComp = () => {
                     >
                         Send NFT
                     </Button>
+
+                    {/* <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} onClick={testHandle}>
+                        Send NFT
+                    </Button> */}
                 </CardContent>
             </Card>
         </Grid>

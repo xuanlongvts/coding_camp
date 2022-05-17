@@ -1,5 +1,8 @@
 import { ThemeState } from 'themes/const';
 
+export const NSP_COMMON = 'NSP_COMMON';
+import { T_COMMON } from '_redux/types';
+
 export const NSP_LOADING_APP = 'NSP_LOADING_APP';
 import { T_APP_LOADING } from '_commComp/loadingApp/types';
 
@@ -17,6 +20,7 @@ import { I_APP_TOAST } from '_commComp/toast/types';
 
 export interface RootState {
     theme: ThemeState;
+    [NSP_COMMON]: T_COMMON;
     [NSP_LOADING_APP]: T_APP_LOADING;
     [NSP_THEME_MODE_MODE_THEME]?: T_DARK_MODE;
     [NSP_PRODUCTS]?: T_DATA_PRODUCT;
