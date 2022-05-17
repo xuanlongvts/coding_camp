@@ -67,24 +67,24 @@ const useStyles = makeStyles({
 const MintNftComp = () => {
     const dispatch = useDispatch();
     const useClasses = useStyles();
-    const { connection } = useConnection();
+    // const { connection } = useConnection();
     const wallet = useWallet();
     const { actions } = SliceMintNft();
 
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [imageFileBuffer, setImageFileBuffer] = useState<any>(null);
 
-    const anchorWallet = useMemo(() => {
-        if (!wallet || !wallet.publicKey || !wallet.signAllTransactions || !wallet.signTransaction) {
-            return;
-        }
+    // const anchorWallet = useMemo(() => {
+    //     if (!wallet || !wallet.publicKey || !wallet.signAllTransactions || !wallet.signTransaction) {
+    //         return;
+    //     }
 
-        return {
-            publicKey: wallet.publicKey,
-            signAllTransactions: wallet.signAllTransactions,
-            signTransaction: wallet.signTransaction,
-        } as anchor.Wallet;
-    }, [wallet]);
+    //     return {
+    //         publicKey: wallet.publicKey,
+    //         signAllTransactions: wallet.signAllTransactions,
+    //         signTransaction: wallet.signTransaction,
+    //     } as anchor.Wallet;
+    // }, [wallet]);
 
     const {
         register,
@@ -119,7 +119,7 @@ const MintNftComp = () => {
         }
         const uploadedMetatdataUrl = await updloaMetadataToIpfs({
             name: data[ENUM_FIELDS.name],
-            symbol: 'NFT-Demo Day 5/2022',
+            symbol: 'symb',
             description: data[ENUM_FIELDS.des],
             imgOnIpfs: uploadedImageUrl,
         });
@@ -142,105 +142,72 @@ const MintNftComp = () => {
         dispatch(appLoadingActions.loadingClose());
         const dataSend = {
             name: data[ENUM_FIELDS.name],
-            symbol: 'NFT-Demo Day 5/2022',
+            symbol: 'symb',
             metadataUrl: uploadedMetatdataUrl,
         };
         // Call mint nft
-        // dispatch(actions.mintNftCall(dataSend));
+        dispatch(actions.mintNftCall(dataSend));
 
-        const opts: ConfirmOptions = {
-            preflightCommitment: 'confirmed', // confirmed, processed
-        };
-        const provider = anchorWallet && new anchor.AnchorProvider(connection, anchorWallet, opts);
-        provider && anchor.setProvider(provider);
+        // const program = programApp();
+        // const provider = providerApp();
 
-        const SOL_MINT_NFT_PROGRAM_ID = new anchor.web3.PublicKey('3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC');
-        const program = idl && new Program(idl, SOL_MINT_NFT_PROGRAM_ID, provider);
+        // const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
+        // const mintKey = anchor.web3.Keypair.generate();
 
-        const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
-        const mintKey = anchor.web3.Keypair.generate();
+        // if (provider?.wallet) {
+        //     const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, provider.wallet.publicKey);
 
-        if (provider?.wallet) {
-            const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, provider.wallet.publicKey);
+        //     const mint_tx = new anchor.web3.Transaction().add(
+        //         anchor.web3.SystemProgram.createAccount({
+        //             fromPubkey: provider.wallet.publicKey,
+        //             newAccountPubkey: mintKey.publicKey,
+        //             space: MINT_SIZE,
+        //             programId: TOKEN_PROGRAM_ID,
+        //             lamports,
+        //         }),
+        //         createInitializeMintInstruction(mintKey.publicKey, 0, provider.wallet.publicKey, provider.wallet.publicKey),
+        //         createAssociatedTokenAccountInstruction(
+        //             provider.wallet.publicKey,
+        //             nftTokenAccount,
+        //             provider.wallet.publicKey,
+        //             mintKey.publicKey,
+        //         ),
+        //     );
+        //     let blockhashObj = await connection.getLatestBlockhash();
+        //     // console.log("blockhashObj", blockhashObj);
+        //     mint_tx.recentBlockhash = blockhashObj.blockhash;
 
-            const mint_tx = new anchor.web3.Transaction().add(
-                anchor.web3.SystemProgram.createAccount({
-                    fromPubkey: provider.wallet.publicKey,
-                    newAccountPubkey: mintKey.publicKey,
-                    space: MINT_SIZE,
-                    programId: TOKEN_PROGRAM_ID,
-                    lamports,
-                }),
-                createInitializeMintInstruction(mintKey.publicKey, 0, provider.wallet.publicKey, provider.wallet.publicKey),
-                createAssociatedTokenAccountInstruction(
-                    provider.wallet.publicKey,
-                    nftTokenAccount,
-                    provider.wallet.publicKey,
-                    mintKey.publicKey,
-                ),
-            );
-            let blockhashObj = await connection.getLatestBlockhash();
-            // console.log("blockhashObj", blockhashObj);
-            mint_tx.recentBlockhash = blockhashObj.blockhash;
+        //     try {
+        //         const signature = await wallet.sendTransaction(mint_tx, connection, {
+        //             signers: [mintKey],
+        //         });
+        //         await connection.confirmTransaction(signature, 'confirmed');
+        //     } catch {
+        //         return false;
+        //     }
+        //     const metadataAddress = await getMetadata(mintKey.publicKey);
 
-            try {
-                const signature = await wallet.sendTransaction(mint_tx, connection, {
-                    signers: [mintKey],
-                });
-                await connection.confirmTransaction(signature, 'confirmed');
-            } catch {
-                return false;
-            }
-            const metadataAddress = await getMetadata(mintKey.publicKey);
-
-            try {
-                // const tx = program.transaction.mintNft(
-                //     mintKey.publicKey,
-                //     data[ENUM_FIELDS.name],
-                //     'NFT-Demo Day 5/2022',
-                //     uploadedMetatdataUrl,
-                //     {
-                //         accounts: {
-                //             mintAuthority: provider.wallet.publicKey,
-                //             mint: mintKey.publicKey,
-                //             tokenAccount: nftTokenAccount,
-                //             tokenProgram: TOKEN_PROGRAM_ID,
-                //             metadata: metadataAddress,
-                //             tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
-                //             payer: provider.wallet.publicKey,
-                //             systemProgram: anchor.web3.SystemProgram.programId,
-                //             rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-                //         },
-                //     },
-                // );
-                // await wallet.sendTransaction(tx, connection);
-                // await connection.confirmTransaction(tx, 'confirmed');
-
-                const sign = await program.methods
-                    .mintNft(mintKey.publicKey, data[ENUM_FIELDS.name], 'symb', uploadedMetatdataUrl)
-                    .accounts({
-                        mintAuthority: provider.wallet.publicKey,
-                        mint: mintKey.publicKey,
-                        tokenAccount: nftTokenAccount,
-                        tokenProgram: TOKEN_PROGRAM_ID,
-                        metadata: metadataAddress,
-                        tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
-                        payer: provider.wallet.publicKey,
-                        systemProgram: anchor.web3.SystemProgram.programId,
-                        rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-                    })
-                    .rpc();
-
-                // const tx = await connection.getConfirmedSignaturesForAddress2(
-                //     sign,
-                //     "confirmed"
-                // );
-                console.log('Mint Success!', sign);
-                return true;
-            } catch {
-                return false;
-            }
-        }
+        //     try {
+        //         const sign = await program.methods
+        //             .mintNft(mintKey.publicKey, data[ENUM_FIELDS.name], 'symb', uploadedMetatdataUrl)
+        //             .accounts({
+        //                 mintAuthority: provider.wallet.publicKey,
+        //                 mint: mintKey.publicKey,
+        //                 tokenAccount: nftTokenAccount,
+        //                 tokenProgram: TOKEN_PROGRAM_ID,
+        //                 metadata: metadataAddress,
+        //                 tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+        //                 payer: provider.wallet.publicKey,
+        //                 systemProgram: anchor.web3.SystemProgram.programId,
+        //                 rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+        //             })
+        //             .rpc();
+        //         console.log('Mint Success!', sign);
+        //         return true;
+        //     } catch {
+        //         return false;
+        //     }
+        // }
     };
 
     const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
