@@ -56,7 +56,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
         await connection.confirmTransaction(signatureMintTx, 'confirmed');
 
         const metadataAddress = await getMetadata(mintKey.publicKey);
-        // const masterEdition = await getMasterEdition(mintKey.publicKey);
+        const masterEdition = await getMasterEdition(mintKey.publicKey);
 
         const tx =
             wallet?.publicKey &&
@@ -72,7 +72,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
                     payer: wallet.publicKey,
                     systemProgram: web3.SystemProgram.programId,
                     rent: web3.SYSVAR_RENT_PUBKEY,
-                    // masterEdition: masterEdition,
+                    masterEdition: masterEdition,
                 })
                 .rpc());
         console.log('mint nft tx: ', tx);

@@ -135,6 +135,11 @@
                     "name": "rent",
                     "isMut": false,
                     "isSigner": false
+                },
+                {
+                    "name": "masterEdition",
+                    "isMut": true,
+                    "isSigner": false
                 }
             ],
             "args": [
@@ -303,8 +308,5 @@
             "name": "MasterEditinNftMintFailed",
             "msg": "Master edition nft mint failed!"
         }
-    ],
-    "metadata": {
-        "address": "3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC"
-    }
+    ]
 }

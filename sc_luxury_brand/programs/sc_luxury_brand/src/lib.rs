@@ -135,31 +135,31 @@ pub mod sc_luxury_brand {
             return Err(ErrorMess::MetadataCreateFailed.into());
         }
 
-        // let master_edition_infos = vec![
-        //     ctx.accounts.master_edition.to_account_info(),
-        //     ctx.accounts.mint.to_account_info(),
-        //     ctx.accounts.mint_authority.to_account_info(),
-        //     ctx.accounts.payer.to_account_info(),
-        //     ctx.accounts.metadata.to_account_info(),
-        //     ctx.accounts.token_metadata_program.to_account_info(),
-        //     ctx.accounts.token_program.to_account_info(),
-        //     ctx.accounts.system_program.to_account_info(),
-        //     ctx.accounts.rent.to_account_info(),
-        // ]; // Master Edition Account Infos Assigned
-        // let instruction = create_master_edition_v3(
-        //     ctx.accounts.token_metadata_program.key(),
-        //     ctx.accounts.master_edition.key(),
-        //     ctx.accounts.mint.key(),
-        //     ctx.accounts.payer.key(),
-        //     ctx.accounts.mint_authority.key(),
-        //     ctx.accounts.metadata.key(),
-        //     ctx.accounts.payer.key(),
-        //     Some(0),
-        // );
-        // let result_master_edition_mint = invoke(&instruction, master_edition_infos.as_slice());
-        // if let Err(_) = result_master_edition_mint {
-        //     return Err(ErrorMess::MasterEditinNftMintFailed.into());
-        // }
+        let master_edition_infos = vec![
+            ctx.accounts.master_edition.to_account_info(),
+            ctx.accounts.mint.to_account_info(),
+            ctx.accounts.mint_authority.to_account_info(),
+            ctx.accounts.payer.to_account_info(),
+            ctx.accounts.metadata.to_account_info(),
+            ctx.accounts.token_metadata_program.to_account_info(),
+            ctx.accounts.token_program.to_account_info(),
+            ctx.accounts.system_program.to_account_info(),
+            ctx.accounts.rent.to_account_info(),
+        ]; // Master Edition Account Infos Assigned
+        let instruction = create_master_edition_v3(
+            ctx.accounts.token_metadata_program.key(),
+            ctx.accounts.master_edition.key(),
+            ctx.accounts.mint.key(),
+            ctx.accounts.payer.key(),
+            ctx.accounts.mint_authority.key(),
+            ctx.accounts.metadata.key(),
+            ctx.accounts.payer.key(),
+            Some(0),
+        );
+        let result_master_edition_mint = invoke(&instruction, &master_edition_infos);
+        if let Err(_) = result_master_edition_mint {
+            return Err(ErrorMess::MasterEditinNftMintFailed.into());
+        }
 
         Ok(())
     }
@@ -265,7 +265,7 @@ pub struct MintNft<'info> {
     /// CHECK: This is not dangerous because we don't read or write from this account
     pub rent: AccountInfo<'info>,
 
-    // /// CHECK: This is not dangerous because we don't read or write from this account
-    // #[account(mut)]
-    // pub master_edition: UncheckedAccount<'info>,
+    /// CHECK: This is not dangerous because we don't read or write from this account
+    #[account(mut)]
+    pub master_edition: UncheckedAccount<'info>,
 }

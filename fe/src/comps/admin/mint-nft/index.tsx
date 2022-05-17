@@ -298,10 +298,6 @@ const MintNftComp = () => {
                     >
                         Send NFT
                     </Button>
-
-                    {/* <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} onClick={testHandle}>
-                        Send NFT
-                    </Button> */}
                 </CardContent>
             </Card>
         </Grid>
