@@ -35,11 +35,11 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
     const provider = getProvider(getConfig());
     try {
         const isAnotherAcc = true;
-        const accReceiveNft = isAnotherAcc ? new web3.PublicKey(WalletRecipient_2) : provider.wallet.publicKey;
+        const accReceiveNft = isAnotherAcc ? new web3.PublicKey(idPubkey) : provider.wallet.publicKey;
 
         const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
         const mintKey = web3.Keypair.generate();
-        const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, provider.wallet.publicKey);
+        const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, accReceiveNft);
 
         const mint_tx = new web3.Transaction().add(
             web3.SystemProgram.createAccount({
@@ -49,7 +49,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
                 programId: TOKEN_PROGRAM_ID,
                 lamports,
             }),
-            createInitializeMintInstruction(mintKey.publicKey, 0, accReceiveNft, accReceiveNft),
+            createInitializeMintInstruction(mintKey.publicKey, 0, provider.wallet.publicKey, provider.wallet.publicKey),
             createAssociatedTokenAccountInstruction(provider.wallet.publicKey, nftTokenAccount, accReceiveNft, mintKey.publicKey),
         );
         const { blockhash } = await connection.getLatestBlockhash();
