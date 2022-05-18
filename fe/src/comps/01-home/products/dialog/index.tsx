@@ -14,7 +14,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
 import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT, transactionExplorer } from '_config';
-import { LocalStorageServices } from '_utils/localStorage';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
 import { unitPay as unitPayConst } from 'comps/01-home/products/const';
 import { appToastActions } from '_commComp/toast/slice';
@@ -213,9 +213,21 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     setConfirmations(confirmations);
 
                     if (confirmations >= requiredConfirmations || status.confirmationStatus === 'finalized') {
-                        // console.log('slot: ', status.slot);
                         clearInterval(interval);
                         setStatus(PaymentStatus.Finalized);
+
+                        if (pubkeyPayer) {
+                            const getListPayers = LocalStorageServices.getItemJson(LocalStorageKey().accountsReceiveNft) || [];
+                            const arrPayers = {
+                                pubkeyPayer,
+                                label: LocalStorageServices.getItemJson(ENUM_FIELDS.label),
+                                amount: LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay),
+                                message: LocalStorageServices.getItemJson(ENUM_FIELDS.message),
+                                memo: LocalStorageServices.getItemJson(ENUM_FIELDS.memo),
+                            };
+                            getListPayers.push(arrPayers);
+                            LocalStorageServices.setItemJson(LocalStorageKey().accountsReceiveNft, getListPayers);
+                        }
 
                         changed = true;
                         LocalStorageServices.removeManyItems([
@@ -252,6 +264,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
         setConfirmations(0);
 
         handleClose();
+        LocalStorageServices.removeItem(LocalStorageKey().ProgressStatus);
 
         if (signature && status === PaymentStatus.Finalized) {
             const hrefLink = signature && transactionExplorer(signature);
