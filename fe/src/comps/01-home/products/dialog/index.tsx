@@ -221,9 +221,11 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                             const arrPayers = {
                                 pubkeyPayer,
                                 label: LocalStorageServices.getItemJson(ENUM_FIELDS.label),
-                                amount: LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay),
+                                amount: LocalStorageServices.getItemJson(ENUM_FIELDS.amount),
+                                unitPay: LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay),
                                 message: LocalStorageServices.getItemJson(ENUM_FIELDS.message),
                                 memo: LocalStorageServices.getItemJson(ENUM_FIELDS.memo),
+                                status: 0,
                             };
                             getListPayers.push(arrPayers);
                             LocalStorageServices.setItemJson(LocalStorageKey().accountsReceiveNft, getListPayers);
@@ -273,7 +275,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                     [FIELDS.typeAlert]: 'success',
                     [FIELDS.mess]: 'Pay product success! ',
                     [FIELDS.linkRef]: {
-                        mess: `Signature Link`,
+                        mess: `Transaction Link`,
                         link: hrefLink,
                         target: '_blank',
                     },

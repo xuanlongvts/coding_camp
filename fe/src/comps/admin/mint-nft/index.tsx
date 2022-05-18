@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { useWallet } from '@solana/wallet-adapter-react';
-import AddIcon from '@mui/icons-material/Add';
+import Alert from '@mui/material/Alert';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -13,17 +13,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SendIcon from '@mui/icons-material/Send';
+import Typography from '@mui/material/Typography';
 
 import ENV, { AirDropAccount, ENUM_envName, getBalance } from '_config';
 import LinkRouters from '_routers';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
-type T_ListPayers = {
+export type T_ListPayers = {
     pubkeyPayer: string;
     label: string;
     amount: string;
+    unitPay: String;
     message: string;
     memo: any;
+    status: number;
 };
 
 const MintNftsToAccounts = () => {
@@ -57,7 +60,9 @@ const MintNftsToAccounts = () => {
         <>
             {!payers?.length ? (
                 <Box>
-                    <AddIcon sx={{ cursor: 'pointer' }} />
+                    <Typography variant="h5" gutterBottom component="div">
+                        There are no payers.
+                    </Typography>
                 </Box>
             ) : (
                 <>
@@ -73,7 +78,9 @@ const MintNftsToAccounts = () => {
                                         <TableCell align="left">Message</TableCell>
                                         <TableCell align="left">Product id</TableCell>
                                         <TableCell align="center">Quantity</TableCell>
-                                        <TableCell align="right">Action</TableCell>
+                                        <TableCell align="right" sx={{ width: 30 }}>
+                                            Action
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -88,12 +95,18 @@ const MintNftsToAccounts = () => {
                                                 </TableCell>
                                                 <TableCell align="left">{pubPayerSlim}</TableCell>
                                                 <TableCell align="left">{item.label}</TableCell>
-                                                <TableCell align="left">{item.amount}</TableCell>
+                                                <TableCell align="left">
+                                                    {item.amount} ({item.unitPay})
+                                                </TableCell>
                                                 <TableCell align="left">{item.message}</TableCell>
                                                 <TableCell align="left">{memoParse.id}</TableCell>
                                                 <TableCell align="center">{memoParse?.quantityProduct || 1}</TableCell>
                                                 <TableCell align="right">
-                                                    <SendIcon onClick={handleSend(item.pubkeyPayer)} sx={{ cursor: 'pointer' }} />
+                                                    {item.status ? (
+                                                        <Alert>Received</Alert>
+                                                    ) : (
+                                                        <SendIcon onClick={handleSend(item.pubkeyPayer)} sx={{ cursor: 'pointer' }} />
+                                                    )}
                                                 </TableCell>
                                             </TableRow>
                                         );

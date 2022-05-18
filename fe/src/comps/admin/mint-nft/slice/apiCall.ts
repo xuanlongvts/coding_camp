@@ -11,7 +11,7 @@ import {
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { getKeypairDemo, programApp, getMetadata, getMasterEdition, TOKEN_METADATA_PROGRAM_ID } from '_services/solana';
 import { getProvider, getConfig, WalletRecipient_2 } from '_config';
-
+import { T_ListPayers } from '../index';
 import { T_DATA_PREPARE, T_RESULT_MINT_NFT } from './types';
 
 export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_NFT | { errMess: any }> => {
@@ -24,12 +24,6 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
             errMess: 'baseAccount Not found',
         };
     }
-
-    // console.log('data: ', data);
-
-    // return {
-    //     errMess: 'baseAccount Not found',
-    // };
 
     const program = programApp();
     const provider = getProvider(getConfig());
@@ -81,6 +75,14 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
                 .rpc());
         console.log('mint nft tx: ', tx);
         LocalStorageServices.setItem(LocalStorageKey().tx_mint_nft, tx);
+
+        const getListPayers = LocalStorageServices.getItemJson(LocalStorageKey().accountsReceiveNft);
+        getListPayers.some((i: T_ListPayers) => {
+            if (i.pubkeyPayer === idPubkey) {
+                i.status = 1;
+            }
+        });
+        LocalStorageServices.setItemJson(LocalStorageKey().accountsReceiveNft, getListPayers);
 
         return {
             tx,
