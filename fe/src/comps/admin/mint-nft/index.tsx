@@ -1,20 +1,6 @@
-import { useEffect, useState, useMemo, useCallback, ChangeEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import getConfig from 'next/config';
-import * as anchor from '@project-serum/anchor';
-import { web3, Wallet, Program, BN, AnchorProvider } from '@project-serum/anchor';
-import { Commitment, PublicKey, Transaction, ConfirmOptions } from '@solana/web3.js';
-
-import {
-    TOKEN_PROGRAM_ID,
-    createAssociatedTokenAccountInstruction,
-    getAssociatedTokenAddress,
-    createInitializeMintInstruction,
-    MINT_SIZE,
-} from '@solana/spl-token';
-
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-
+import { useState, ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -29,22 +15,10 @@ import TextField from '@mui/material/TextField';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 
-import idl from '_config/idl.json';
 import { updloadImgToIpfs, updloaMetadataToIpfs } from '_utils/solana';
-import ENV, { Conn, SOLANA_PROTOCOLS, getProgram } from '_config';
 import { appToastActions } from '_commComp/toast/slice';
 import { FIELDS } from '_commComp/toast/types';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
-
-import {
-    getKeypairDemo,
-    programApp,
-    providerApp,
-    getMetadata,
-    getMasterEdition,
-    TOKEN_METADATA_PROGRAM_ID,
-    programID,
-} from '_services/solana';
 
 import SendNftSchema, { ENUM_FIELDS, T_HOOKS_FOMR_NFT_SEND } from './validateSendNft';
 import SliceMintNft from './slice';
@@ -67,7 +41,6 @@ const useStyles = makeStyles({
 const MintNftComp = () => {
     const dispatch = useDispatch();
     const useClasses = useStyles();
-    // const { connection } = useConnection();
     const wallet = useWallet();
     const { actions } = SliceMintNft();
 
@@ -147,69 +120,6 @@ const MintNftComp = () => {
         };
         // Call mint nft
         dispatch(actions.mintNftCall(dataSend));
-
-        // const program = programApp();
-        // const provider = providerApp();
-
-        // const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
-        // const mintKey = anchor.web3.Keypair.generate();
-
-        // if (provider?.wallet) {
-        //     const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, provider.wallet.publicKey);
-
-        //     const mint_tx = new anchor.web3.Transaction().add(
-        //         anchor.web3.SystemProgram.createAccount({
-        //             fromPubkey: provider.wallet.publicKey,
-        //             newAccountPubkey: mintKey.publicKey,
-        //             space: MINT_SIZE,
-        //             programId: TOKEN_PROGRAM_ID,
-        //             lamports,
-        //         }),
-        //         createInitializeMintInstruction(mintKey.publicKey, 0, provider.wallet.publicKey, provider.wallet.publicKey),
-        //         createAssociatedTokenAccountInstruction(
-        //             provider.wallet.publicKey,
-        //             nftTokenAccount,
-        //             provider.wallet.publicKey,
-        //             mintKey.publicKey,
-        //         ),
-        //     );
-        //     let blockhashObj = await connection.getLatestBlockhash();
-        //     // console.log("blockhashObj", blockhashObj);
-        //     mint_tx.recentBlockhash = blockhashObj.blockhash;
-
-        //     try {
-        //         const signature = await wallet.sendTransaction(mint_tx, connection, {
-        //             signers: [mintKey],
-        //         });
-        //         await connection.confirmTransaction(signature, 'confirmed');
-        //     } catch {
-        //         return false;
-        //     }
-        //     const metadataAddress = await getMetadata(mintKey.publicKey);
-        //     const masterEdition = await getMasterEdition(mintKey.publicKey);
-
-        //     try {
-        //         const sign = await program.methods
-        //             .mintNft(mintKey.publicKey, data[ENUM_FIELDS.name], 'symb', uploadedMetatdataUrl)
-        //             .accounts({
-        //                 mintAuthority: provider.wallet.publicKey,
-        //                 mint: mintKey.publicKey,
-        //                 tokenAccount: nftTokenAccount,
-        //                 tokenProgram: TOKEN_PROGRAM_ID,
-        //                 metadata: metadataAddress,
-        //                 tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
-        //                 payer: provider.wallet.publicKey,
-        //                 systemProgram: anchor.web3.SystemProgram.programId,
-        //                 rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-        //                 masterEdition: masterEdition,
-        //             })
-        //             .rpc();
-        //         console.log('Mint Success!', sign);
-        //         return true;
-        //     } catch {
-        //         return false;
-        //     }
-        // }
     };
 
     const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
