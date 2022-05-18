@@ -13,15 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
-import {
-    PubkeyRecipient,
-    PaymentStatus,
-    requiredConfirmations,
-    Confirmations,
-    DEVNET_DUMMY_MINT,
-    blockExplorer,
-    transactionExplorer,
-} from '_config';
+import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT, transactionExplorer } from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
 import { unitPay as unitPayConst } from 'comps/01-home/products/const';
@@ -40,7 +32,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
     const [status, setStatus] = useState<PaymentStatus>(PaymentStatus.Pending);
     const [confirmations, setConfirmations] = useState<Confirmations>(0);
     const [qrCodeValid, setQrCodeValid] = useState<boolean>(false);
-    const [blockPay, setBlockPay] = useState<string | null>(null);
+    const [pubkeyPayer, setPubkeyPayer] = useState<PublicKey | null>(null);
 
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
@@ -159,18 +151,22 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                             commitment: 'confirmed',
                         },
                     ));
-                // if (validateTransferResult) {
-                //     console.log('validateTransferResult: ', validateTransferResult);
-                //     const { accountKeys } = validateTransferResult.transaction.message;
-                //     console.log('accountKeys 0: ', accountKeys[0].toString());
-                //     console.log('accountKeys 1: ', accountKeys[1].toString());
-                //     console.log('accountKeys 2: ', accountKeys[2].toString());
-                //     console.log('accountKeys 3: ', accountKeys[3].toString());
-                //     console.log('accountKeys 4: ', accountKeys[4].toString());
-                // }
 
                 if (!changed) {
-                    // console.log('status: ', status);
+                    // if (validateTransferResult) {
+                    //     console.log('validateTransferResult: ', validateTransferResult);
+                    //     const { accountKeys } = validateTransferResult.transaction.message;
+                    //     console.log('accountKeys 0: ', accountKeys[0].toString());
+                    //     console.log('accountKeys 1: ', accountKeys[1].toString());
+                    //     console.log('accountKeys 2: ', accountKeys[2].toString());
+                    //     console.log('accountKeys 3: ', accountKeys[3].toString());
+                    //     console.log('accountKeys 4: ', accountKeys[4].toString());
+                    // }
+
+                    if (validateTransferResult) {
+                        const { accountKeys } = validateTransferResult.transaction.message;
+                        accountKeys[0] && setPubkeyPayer(accountKeys[0]);
+                    }
                     setStatus(PaymentStatus.Valid);
                 }
             } catch (err: any) {
@@ -220,7 +216,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                         // console.log('slot: ', status.slot);
                         clearInterval(interval);
                         setStatus(PaymentStatus.Finalized);
-                        setBlockPay(status.slot.toString());
 
                         changed = true;
                         LocalStorageServices.removeManyItems([
@@ -272,21 +267,6 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                 }),
             );
         }
-
-        // if (blockPay && status === PaymentStatus.Finalized) {
-        //     const hrefLink = blockPay && blockExplorer(blockPay);
-        //     dispatch(
-        //         appToastActions.toastOpen({
-        //             [FIELDS.typeAlert]: 'success',
-        //             [FIELDS.mess]: 'Pay product success! ',
-        //             [FIELDS.linkRef]: {
-        //                 mess: `Block at ${blockPay}`,
-        //                 link: hrefLink,
-        //                 target: '_blank',
-        //             },
-        //         }),
-        //     );
-        // }
 
         setSignature(undefined);
     };
