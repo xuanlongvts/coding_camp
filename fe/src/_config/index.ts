@@ -79,7 +79,7 @@ export const Conn = (envParams?: string, protocol?: SOLANA_PROTOCOLS, optsParam:
 
 export const AirDropAccount = async (pubkey: PublicKey, envParams = ENV): Promise<any> => {
     try {
-        const airdropAdminAcc = await Conn(envParams).requestAirdrop(pubkey, LAMPORTS_PER_SOL);
+        const airdropAdminAcc = await Conn(envParams).requestAirdrop(pubkey, LAMPORTS_PER_SOL * 2);
         return await Conn().confirmTransaction(airdropAdminAcc);
     } catch (err) {
         return err;

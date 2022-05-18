@@ -13,11 +13,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import QRCode from '_commComp/solana/qr_code';
 import Progress from '_commComp/solana/progress';
-import { PubkeyRecipient, PaymentStatus, requiredConfirmations, Confirmations, DEVNET_DUMMY_MINT, blockExplorer } from '_config';
+import {
+    PubkeyRecipient,
+    PaymentStatus,
+    requiredConfirmations,
+    Confirmations,
+    DEVNET_DUMMY_MINT,
+    blockExplorer,
+    transactionExplorer,
+} from '_config';
 import { LocalStorageServices } from '_utils/localStorage';
 import { ENUM_FIELDS } from '_validate';
 import { unitPay as unitPayConst } from 'comps/01-home/products/const';
 import { appToastActions } from '_commComp/toast/slice';
+import { FIELDS } from '_commComp/toast/types';
 
 import FrmGenegrate from './frmGenegrate';
 import { I_DiglogBox } from './const';
@@ -128,13 +137,13 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                 const getUnitPay = LocalStorageServices.getItemJson(ENUM_FIELDS.unitPay);
                 const getMemo = LocalStorageServices.getItemJson(ENUM_FIELDS.memo) || undefined;
 
-                console.log('getUnitPay: ', getUnitPay);
                 let isSplToken = undefined;
                 if (getUnitPay === unitPayConst.usdc) {
                     isSplToken = DEVNET_DUMMY_MINT;
                 }
 
-                reference &&
+                const validateTransferResult =
+                    reference &&
                     PubkeyRecipient() &&
                     (await validateTransfer(
                         connection,
@@ -150,6 +159,15 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                             commitment: 'confirmed',
                         },
                     ));
+                // if (validateTransferResult) {
+                //     console.log('validateTransferResult: ', validateTransferResult);
+                //     const { accountKeys } = validateTransferResult.transaction.message;
+                //     console.log('accountKeys 0: ', accountKeys[0].toString());
+                //     console.log('accountKeys 1: ', accountKeys[1].toString());
+                //     console.log('accountKeys 2: ', accountKeys[2].toString());
+                //     console.log('accountKeys 3: ', accountKeys[3].toString());
+                //     console.log('accountKeys 4: ', accountKeys[4].toString());
+                // }
 
                 if (!changed) {
                     // console.log('status: ', status);
@@ -236,24 +254,41 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
         setReference(null);
         setQrCodeValid(false);
         setStatus(PaymentStatus.Pending);
-        setSignature(undefined);
         setConfirmations(0);
 
         handleClose();
 
-        if (blockPay && status === PaymentStatus.Finalized) {
-            const hrefLink = blockPay && blockExplorer(blockPay);
+        if (signature && status === PaymentStatus.Finalized) {
+            const hrefLink = signature && transactionExplorer(signature);
             dispatch(
                 appToastActions.toastOpen({
-                    mess: 'Pay product success! ',
-                    linkRef: {
-                        mess: `Block at ${blockPay}`,
+                    [FIELDS.typeAlert]: 'success',
+                    [FIELDS.mess]: 'Pay product success! ',
+                    [FIELDS.linkRef]: {
+                        mess: `Signature Link`,
                         link: hrefLink,
                         target: '_blank',
                     },
                 }),
             );
         }
+
+        // if (blockPay && status === PaymentStatus.Finalized) {
+        //     const hrefLink = blockPay && blockExplorer(blockPay);
+        //     dispatch(
+        //         appToastActions.toastOpen({
+        //             [FIELDS.typeAlert]: 'success',
+        //             [FIELDS.mess]: 'Pay product success! ',
+        //             [FIELDS.linkRef]: {
+        //                 mess: `Block at ${blockPay}`,
+        //                 link: hrefLink,
+        //                 target: '_blank',
+        //             },
+        //         }),
+        //     );
+        // }
+
+        setSignature(undefined);
     };
     // ---- End this pop
 
