@@ -3,6 +3,7 @@ export const KEY_DATA_PREPARE = 'dataPrepare';
 export const KEY_DATA_MINTED = 'dataMinted';
 
 export type T_DATA_PREPARE = {
+    idPubkey: string;
     name: string;
     symbol: string;
     metadataUrl: string;

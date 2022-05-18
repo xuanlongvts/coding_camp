@@ -32,7 +32,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
     const [status, setStatus] = useState<PaymentStatus>(PaymentStatus.Pending);
     const [confirmations, setConfirmations] = useState<Confirmations>(0);
     const [qrCodeValid, setQrCodeValid] = useState<boolean>(false);
-    const [pubkeyPayer, setPubkeyPayer] = useState<PublicKey | null>(null);
+    const [pubkeyPayer, setPubkeyPayer] = useState<string | null>(null);
 
     const progress = useMemo(() => confirmations / requiredConfirmations, [confirmations]);
 
@@ -165,7 +165,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
 
                     if (validateTransferResult) {
                         const { accountKeys } = validateTransferResult.transaction.message;
-                        accountKeys[0] && setPubkeyPayer(accountKeys[0]);
+                        accountKeys[0] && setPubkeyPayer(accountKeys[0].toString());
                     }
                     setStatus(PaymentStatus.Valid);
                 }

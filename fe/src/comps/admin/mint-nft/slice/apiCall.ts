@@ -17,7 +17,7 @@ import { T_DATA_PREPARE, T_RESULT_MINT_NFT } from './types';
 export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_NFT | { errMess: any }> => {
     const baseAccount = getKeypairDemo();
 
-    const { connection, wallet, name, symbol, metadataUrl } = data;
+    const { connection, wallet, idPubkey, name, symbol, metadataUrl } = data;
 
     if (!baseAccount) {
         return {
@@ -25,15 +25,21 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
         };
     }
 
+    // console.log('data: ', data);
+
+    // return {
+    //     errMess: 'baseAccount Not found',
+    // };
+
     const program = programApp();
     const provider = getProvider(getConfig());
     try {
+        const isAnotherAcc = true;
+        const accReceiveNft = isAnotherAcc ? new web3.PublicKey(WalletRecipient_2) : provider.wallet.publicKey;
+
         const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
         const mintKey = web3.Keypair.generate();
         const nftTokenAccount = await getAssociatedTokenAddress(mintKey.publicKey, provider.wallet.publicKey);
-
-        const isAnotherAcc = false;
-        const accReceiveNft = isAnotherAcc ? new web3.PublicKey(WalletRecipient_2) : provider.wallet.publicKey;
 
         const mint_tx = new web3.Transaction().add(
             web3.SystemProgram.createAccount({

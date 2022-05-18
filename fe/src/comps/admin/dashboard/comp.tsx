@@ -17,7 +17,10 @@ import useCommSlice, { commonActions } from '_redux/slice';
 
 import AddProduct from '../product-actions/add';
 import UpdateProduct from '../product-actions/update';
-import MintNftComp from '../mint-nft/index';
+
+import MintNftComp from '../mint-nft';
+import MintAndSendNftComp from '../mint-nft/mintSendNft';
+
 import SettingComp from '../setting';
 
 import ProductsManagment from './products';
@@ -54,8 +57,9 @@ type T_ProductActions = {
     productAdd?: boolean;
     settingPage?: boolean;
     mintNftPage?: boolean;
+    mintNftToPayer?: boolean;
 };
-const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage }: T_ProductActions) => {
+const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage, mintNftToPayer }: T_ProductActions) => {
     useCommSlice();
     const [open, setOpen] = useState(true);
     const dispatch = useDispatch();
@@ -80,7 +84,10 @@ const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage }: T_Pr
     let LayoutRender = <ProductsManagment />;
     productAdd && (LayoutRender = <AddProduct />);
     productUpdate && (LayoutRender = <UpdateProduct />);
+
     mintNftPage && (LayoutRender = <MintNftComp />);
+    mintNftToPayer && (LayoutRender = <MintAndSendNftComp />);
+
     settingPage && (LayoutRender = <SettingComp />);
 
     return (
