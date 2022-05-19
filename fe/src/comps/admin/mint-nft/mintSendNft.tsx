@@ -38,6 +38,12 @@ const useStyles = makeStyles({
         top: '50%',
         transform: 'translate(-50%, -50%)',
     },
+    labelWrapImg: {
+        display: 'block',
+        width: '100%',
+        minHeight: '100%',
+        cursor: 'pointer',
+    },
 });
 
 const MintNftComp = () => {
@@ -166,20 +172,22 @@ const MintNftComp = () => {
                             <span style={{ color: 'red' }}>*</span> Image
                         </Typography>
                         <Box sx={{ border: '1px dotted #ddd', position: 'relative', minHeight: 400 }}>
-                            <input
-                                accept="image/*"
-                                id="imageFileUpload"
-                                className={useClasses.input}
-                                multiple
-                                type="file"
-                                onChange={handleUploadClick}
-                            />
-                            <label htmlFor="imageFileUpload" className={useClasses.iconUpload}>
-                                <Fab component="span" aria-label="add">
-                                    <AddPhotoAlternateIcon />
-                                </Fab>
+                            <label htmlFor="imageFileUpload" className={useClasses.labelWrapImg}>
+                                <input
+                                    accept="image/*"
+                                    id="imageFileUpload"
+                                    className={useClasses.input}
+                                    multiple
+                                    type="file"
+                                    onChange={handleUploadClick}
+                                />
+                                <span className={useClasses.iconUpload}>
+                                    <Fab size="large" component="span" aria-label="add">
+                                        <AddPhotoAlternateIcon />
+                                    </Fab>
+                                </span>
+                                {selectedFile ? <img width="100%" src={selectedFile} /> : null}
                             </label>
-                            {selectedFile ? <img width="100%" src={selectedFile} /> : null}
                         </Box>
                     </CardContent>
                     <CardContent sx={{ flex: 1, mt: 1 }}>

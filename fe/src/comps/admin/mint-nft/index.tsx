@@ -14,6 +14,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SendIcon from '@mui/icons-material/Send';
 import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
 
 import ENV, { AirDropAccount, ENUM_envName, getBalance } from '_config';
 import LinkRouters from '_routers';
@@ -72,7 +73,7 @@ const MintNftsToAccounts = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Number</TableCell>
-                                        <TableCell align="left">Payer</TableCell>
+                                        <TableCell align="left">Buyer</TableCell>
                                         <TableCell align="left">Label</TableCell>
                                         <TableCell align="left">Amount</TableCell>
                                         <TableCell align="left">Message</TableCell>
@@ -103,7 +104,9 @@ const MintNftsToAccounts = () => {
                                                     {item.status ? (
                                                         <Alert>Received</Alert>
                                                     ) : (
-                                                        <SendIcon onClick={handleSend(item.pubkeyPayer)} sx={{ cursor: 'pointer' }} />
+                                                        <Fab size="small" aria-label="send">
+                                                            <SendIcon onClick={handleSend(item.pubkeyPayer)} />
+                                                        </Fab>
                                                     )}
                                                 </TableCell>
                                             </TableRow>

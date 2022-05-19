@@ -14,6 +14,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Fab from '@mui/material/Fab';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -97,12 +98,16 @@ const ProductsManagment = () => {
         <>
             {!products?.length ? (
                 <Box>
-                    <AddIcon sx={{ cursor: 'pointer' }} onClick={initProduct} />
+                    <Fab size="medium" aria-label="add" onClick={initProduct}>
+                        <AddIcon />
+                    </Fab>
                 </Box>
             ) : (
                 <>
                     <Box>
-                        <AddIcon sx={{ cursor: 'pointer', marginBottom: 2 }} onClick={handleAdd} />
+                        <Fab size="medium" aria-label="add" sx={{ cursor: 'pointer', mb: 3 }} onClick={handleAdd}>
+                            <AddIcon />
+                        </Fab>
 
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -125,11 +130,12 @@ const ProductsManagment = () => {
                                             <TableCell align="center">{item.price}</TableCell>
                                             <TableCell align="left">{item.description}</TableCell>
                                             <TableCell align="right">
-                                                <ModeEditIcon onClick={handleEdit(item.id)} sx={{ cursor: 'pointer' }} />
-                                                <DeleteForeverIcon
-                                                    onClick={handleDelete(item.id)}
-                                                    sx={{ marginLeft: 2, cursor: 'pointer' }}
-                                                />
+                                                <Fab size="small" aria-label="edit" onClick={handleEdit(item.id)}>
+                                                    <ModeEditIcon />
+                                                </Fab>
+                                                <Fab size="small" aria-label="delete" sx={{ ml: 2 }} onClick={handleDelete(item.id)}>
+                                                    <DeleteForeverIcon />
+                                                </Fab>
                                             </TableCell>
                                         </TableRow>
                                     ))}

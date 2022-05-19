@@ -14,12 +14,12 @@ export const FooterHome = () => {
             <div className="logos">
                 <Link href="https://solana.com/">
                     <a target="_blank" rel="noopener">
-                        <Image src="/imgs/sol.svg" alt="Solana" width={40} height={25} />
+                        <Image src="/imgs/sol.svg" alt="Solana" width={27} height={21} />
                     </a>
                 </Link>
                 <Link href="https://sentre.io/">
                     <a target="_blank" rel="noopener">
-                        <Image src="/imgs/logo_sentre.png" alt="Sentre" width={85} height={25} />
+                        <Image src="/imgs/logo_sentre.png" alt="Sentre" width={64} height={20} />
                     </a>
                 </Link>
                 <Link href="https://coin98.net/">
