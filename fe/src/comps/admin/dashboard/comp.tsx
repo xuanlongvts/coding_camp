@@ -68,7 +68,7 @@ const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage, mintNf
     const wallet = useWallet();
 
     useEffect(() => {
-        const getStatusDrawer = LocalStorageServices.getItemJson(LocalStorageKey().drawer) || false;
+        const getStatusDrawer = LocalStorageServices.getItemJson(LocalStorageKey().drawer) || true;
         setOpen(getStatusDrawer);
     }, []);
 

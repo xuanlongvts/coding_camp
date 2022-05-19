@@ -1,6 +1,5 @@
 import { web3 } from '@project-serum/anchor';
-import { Connection, PublicKey } from '@solana/web3.js';
-import { Program, Wallet } from '@project-serum/anchor';
+import { PublicKey } from '@solana/web3.js';
 import * as ipfsClient from 'ipfs-http-client';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
