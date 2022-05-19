@@ -60,7 +60,7 @@ const MintNftsToAccounts = () => {
         <>
             {!payers?.length ? (
                 <Box>
-                    <Typography variant="h5" gutterBottom component="div">
+                    <Typography variant="h6" gutterBottom component="div">
                         There are no payers.
                     </Typography>
                 </Box>
@@ -76,7 +76,6 @@ const MintNftsToAccounts = () => {
                                         <TableCell align="left">Label</TableCell>
                                         <TableCell align="left">Amount</TableCell>
                                         <TableCell align="left">Message</TableCell>
-                                        <TableCell align="left">Product id</TableCell>
                                         <TableCell align="center">Quantity</TableCell>
                                         <TableCell align="right" sx={{ width: 30 }}>
                                             Action
@@ -99,7 +98,6 @@ const MintNftsToAccounts = () => {
                                                     {item.amount} ({item.unitPay})
                                                 </TableCell>
                                                 <TableCell align="left">{item.message}</TableCell>
-                                                <TableCell align="left">{memoParse.id}</TableCell>
                                                 <TableCell align="center">{memoParse?.quantityProduct || 1}</TableCell>
                                                 <TableCell align="right">
                                                     {item.status ? (
