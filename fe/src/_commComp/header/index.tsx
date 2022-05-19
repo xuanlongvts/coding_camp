@@ -50,7 +50,6 @@ const Header = ({ props, menuHandle, isLogout = false }: { props?: Props; menuHa
     };
 
     useEffect(() => {
-        console.log('router: ', router.pathname);
         if (router.pathname.includes(Routers.admin)) {
             setReRouter('/');
         } else {
