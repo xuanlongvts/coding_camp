@@ -60,9 +60,9 @@ const MintNftsToAccounts = () => {
     return (
         <>
             {!payers?.length ? (
-                <Box>
+                <Box sx={{}}>
                     <Typography variant="h6" gutterBottom component="div">
-                        There are no payers.
+                        There are no products to buy.
                     </Typography>
                 </Box>
             ) : (

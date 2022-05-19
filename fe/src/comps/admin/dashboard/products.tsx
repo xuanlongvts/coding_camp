@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import AddIcon from '@mui/icons-material/Add';
@@ -49,7 +50,8 @@ const ProductsManagment = () => {
         (async () => {
             if (publicKey) {
                 const getBal = await getBalance(publicKey);
-                if (!getBal && ENUM_envName.production === ENV) {
+                const converNumber = Number(getBal) / LAMPORTS_PER_SOL;
+                if (converNumber <= 2 && ENUM_envName.production !== ENV) {
                     AirDropAccount(publicKey); // default (it depend on env)
                     ENUM_envName.local === ENV && AirDropAccount(publicKey, ENUM_envName.dev); // in case local, also airdrop to devnet
                 }
