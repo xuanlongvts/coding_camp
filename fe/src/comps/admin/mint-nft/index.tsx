@@ -110,8 +110,8 @@ const MintNftsToAccounts = () => {
                                             {item.status ? (
                                                 <Alert>Received</Alert>
                                             ) : (
-                                                <Fab size="small" aria-label="send">
-                                                    <SendIcon onClick={handleSend(item.pubkeyPayer)} />
+                                                <Fab size="small" aria-label="send" onClick={handleSend(item.pubkeyPayer)}>
+                                                    <SendIcon />
                                                 </Fab>
                                             )}
                                         </TableCell>
