@@ -62,7 +62,7 @@ const MintNftsToAccounts = () => {
             {!payers?.length ? (
                 <Box sx={{}}>
                     <Typography variant="h6" gutterBottom component="div">
-                        There are no products to buy.
+                        There is no buyer to send NFT.
                     </Typography>
                 </Box>
             ) : (

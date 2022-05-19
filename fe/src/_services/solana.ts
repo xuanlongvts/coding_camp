@@ -6,8 +6,7 @@ import { getProgram } from '_config';
 
 import idl from '_config/idl.json';
 
-export const programID = new PublicKey(idl?.metadata?.address || '3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC');
-// export const programID = new PublicKey('3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC');
+export const programID = new PublicKey('3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC');
 
 export const getKeypairDemo = (): Keypair | null => {
     let getKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);

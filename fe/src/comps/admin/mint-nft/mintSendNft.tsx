@@ -133,10 +133,10 @@ const MintNftComp = () => {
         dispatch(actions.mintNftCall(dataSend));
     };
 
-    const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleUploadClick = (event: any) => {
         if (event) {
             try {
-                const file: File = event!.target!.files[0];
+                const file: File = event?.target?.files[0];
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
 
@@ -147,8 +147,9 @@ const MintNftComp = () => {
                 const readerBuff = new FileReader();
                 readerBuff.readAsArrayBuffer(file);
                 readerBuff.onloadend = () => {
-                    if (readerBuff?.result) {
-                        const buff = Buffer.from(readerBuff!.result);
+                    const getRes = readerBuff?.result;
+                    if (getRes) {
+                        const buff = Buffer.from(getRes as any);
                         buff && setImageFileBuffer(buff);
                     }
                 };
