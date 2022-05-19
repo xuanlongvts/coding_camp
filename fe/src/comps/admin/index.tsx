@@ -136,7 +136,9 @@ const LoginPage = () => {
                         }}
                     >
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
+                            <div style={{ width: '24px', height: '24px' }}>
+                                <LockOutlinedIcon />
+                            </div>
                         </Avatar>
 
                         <Box sx={{ mt: 3, mx: 1, width: '88%' }}>

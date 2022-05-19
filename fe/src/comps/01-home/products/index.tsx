@@ -40,8 +40,6 @@ const ListProduct = ({ products, viewMode }: T_ListProduct) => {
 
     return (
         <>
-            {/* {products?.length ? <BasicMasonry products={products} handleQuickBuy={handleQuickBuy} /> : null} */}
-
             {products?.length ? ListProductsView : null}
 
             {idProductBuy ? (

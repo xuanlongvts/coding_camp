@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -40,12 +41,22 @@ type T_Menu = {
 const Header = ({ props, menuHandle, isLogout = false }: { props?: Props; menuHandle?: T_Menu; isLogout?: boolean }) => {
     const matches = useMediaQuery('(max-width:500px)');
     const router = useRouter();
+    const [reRouter, setReRouter] = useState<string>('/');
 
     const handleLogout = () => {
         deleteCookie(ListCookieStorageName().user);
         deleteCookie(ListCookieStorageName().pass);
         router.push(Routers.admin);
     };
+
+    useEffect(() => {
+        console.log('router: ', router.pathname);
+        if (router.pathname.includes(Routers.admin)) {
+            setReRouter('/');
+        } else {
+            setReRouter(Routers.admin);
+        }
+    }, []);
 
     return (
         <HideOnScroll {...props}>
@@ -65,8 +76,8 @@ const Header = ({ props, menuHandle, isLogout = false }: { props?: Props; menuHa
                         </IconButton>
                     )}
 
-                    <Link href="/">
-                        <a className="logo">
+                    <Link href={reRouter}>
+                        <a className="logo" target="_blank" rel="noopener">
                             <Image src="/imgs/SolanaPayLogo.svg" alt="Solana Pay" width={100} height={50} />
                         </a>
                     </Link>
