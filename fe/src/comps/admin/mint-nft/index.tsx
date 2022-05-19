@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import Alert from '@mui/material/Alert';
@@ -19,6 +20,11 @@ import Fab from '@mui/material/Fab';
 import ENV, { AirDropAccount, ENUM_envName, getBalance } from '_config';
 import LinkRouters from '_routers';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
+import { AutoAirdrop } from '_utils/solana';
+
+import { appToastActions } from '_commComp/toast/slice';
+import { FIELDS } from '_commComp/toast/types';
+import { transactionExplorer } from '_config';
 
 export type T_ListPayers = {
     pubkeyPayer: string;
@@ -44,11 +50,14 @@ const MintNftsToAccounts = () => {
     useEffect(() => {
         (async () => {
             if (publicKey) {
-                const getBal = await getBalance(publicKey);
-                if (!getBal && ENUM_envName.production === ENV) {
-                    AirDropAccount(publicKey); // default (it depend on env)
-                    ENUM_envName.local === ENV && AirDropAccount(publicKey, ENUM_envName.dev); // in case local, also airdrop to devnet
-                }
+                const func = () =>
+                    dispatch(
+                        appToastActions.toastOpen({
+                            [FIELDS.typeAlert]: 'success',
+                            [FIELDS.mess]: 'Auto airdrop 2 SOL to your wallet. Success!',
+                        }),
+                    );
+                await AutoAirdrop(publicKey, func);
             }
         })();
     }, [publicKey]);

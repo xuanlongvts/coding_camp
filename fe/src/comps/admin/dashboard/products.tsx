@@ -27,8 +27,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { productsInit } from '_config/tmp_data';
 import { appToastActions } from '_commComp/toast/slice';
-import ENV, { AirDropAccount, ENUM_envName, getBalance } from '_config';
 import LinkRouters from '_routers';
+import { FIELDS } from '_commComp/toast/types';
+import { AutoAirdrop } from '_utils/solana';
 
 import Slice from './slice';
 import { selectProducts } from './slice/selector';
@@ -49,12 +50,14 @@ const ProductsManagment = () => {
     useEffect(() => {
         (async () => {
             if (publicKey) {
-                const getBal = await getBalance(publicKey);
-                const converNumber = Number(getBal) / LAMPORTS_PER_SOL;
-                if (converNumber <= 2 && ENUM_envName.production !== ENV) {
-                    AirDropAccount(publicKey); // default (it depend on env)
-                    ENUM_envName.local === ENV && AirDropAccount(publicKey, ENUM_envName.dev); // in case local, also airdrop to devnet
-                }
+                const func = () =>
+                    dispatch(
+                        appToastActions.toastOpen({
+                            [FIELDS.typeAlert]: 'success',
+                            [FIELDS.mess]: 'Auto airdrop 2 SOL to your wallet. Success!',
+                        }),
+                    );
+                await AutoAirdrop(publicKey, func);
             }
         })();
     }, [publicKey]);
