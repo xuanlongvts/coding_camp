@@ -12,6 +12,7 @@ type T_LocalStorageKey = {
     tx_mint_nft: string;
     accountsReceiveNft: string;
     darkMode: string;
+    drawer: string;
 };
 const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
     return {
@@ -26,6 +27,7 @@ const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
         tx_mint_nft: `${detectEnv}_tx_mint_nft`,
         accountsReceiveNft: `${detectEnv}_accountsReceiveNft`,
         darkMode: `${detectEnv}_darkMode`,
+        drawer: `${detectEnv}_drawer`,
     };
 };
 

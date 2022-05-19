@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import Header from '_commComp/header';
 import Footer from '_commComp/footer';
 import useCommSlice, { commonActions } from '_redux/slice';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
 import AddProduct from '../product-actions/add';
 import UpdateProduct from '../product-actions/update';
@@ -61,10 +62,15 @@ type T_ProductActions = {
 };
 const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage, mintNftToPayer }: T_ProductActions) => {
     useCommSlice();
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState<boolean>(true);
     const dispatch = useDispatch();
     const { connection } = useConnection();
     const wallet = useWallet();
+
+    useEffect(() => {
+        const getStatusDrawer = LocalStorageServices.getItemJson(LocalStorageKey().drawer) || false;
+        setOpen(getStatusDrawer);
+    }, []);
 
     useEffect(() => {
         dispatch(
@@ -78,6 +84,7 @@ const Dashboard = ({ productUpdate, productAdd, settingPage, mintNftPage, mintNf
     }, [connection, wallet]);
 
     const toggleDrawer = () => {
+        LocalStorageServices.setItemJson(LocalStorageKey().drawer, !open);
         setOpen(!open);
     };
 

@@ -78,7 +78,7 @@ const MintNftsToAccounts = () => {
                                         <TableCell align="left">Amount</TableCell>
                                         <TableCell align="left">Message</TableCell>
                                         <TableCell align="center">Quantity</TableCell>
-                                        <TableCell align="right" sx={{ width: 30 }}>
+                                        <TableCell align="center" sx={{ width: 30 }}>
                                             Action
                                         </TableCell>
                                     </TableRow>
@@ -100,7 +100,7 @@ const MintNftsToAccounts = () => {
                                                 </TableCell>
                                                 <TableCell align="left">{item.message}</TableCell>
                                                 <TableCell align="center">{memoParse?.quantityProduct || 1}</TableCell>
-                                                <TableCell align="right">
+                                                <TableCell align="center">
                                                     {item.status ? (
                                                         <Alert>Received</Alert>
                                                     ) : (
