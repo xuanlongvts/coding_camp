@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { T_PRODUCT } from './type';
+import { T_PRODUCT, T_PRODUCT_SHOW } from './type';
 import { unitPay, changeRate } from './const';
 
 const Item = styled(Card)(({ theme }) => ({
@@ -17,13 +17,13 @@ const Item = styled(Card)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const BasicMasonry = ({ products, handleQuickBuy }: { products: T_PRODUCT[]; handleQuickBuy: (unit: string, id: string) => void }) => {
+const BasicMasonry = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
     if (!products.length) {
         return null;
     }
 
     return (
-        <Container sx={{ py: 4 }} maxWidth="lg">
+        <Container sx={{ py: 3 }} maxWidth="lg">
             <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={{ xs: 2, sm: 3, md: 4 }}>
                 {products.map((item: T_PRODUCT, _key: number) => {
                     const priceUsdc = changeRate(Number(item.price), unitPay.usdc);

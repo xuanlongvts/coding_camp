@@ -68,63 +68,59 @@ const MintNftsToAccounts = () => {
     return (
         <>
             {!payers?.length ? (
-                <Box sx={{}}>
+                <Box>
                     <Typography variant="h6" gutterBottom component="div">
                         There is no buyer to send NFT.
                     </Typography>
                 </Box>
             ) : (
-                <>
-                    <Box>
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Number</TableCell>
-                                        <TableCell align="left">Buyer</TableCell>
-                                        <TableCell align="left">Label</TableCell>
-                                        <TableCell align="left">Amount</TableCell>
-                                        <TableCell align="left">Message</TableCell>
-                                        <TableCell align="center">Quantity</TableCell>
-                                        <TableCell align="center" sx={{ width: 30 }}>
-                                            Action
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Number</TableCell>
+                                <TableCell align="left">Buyer</TableCell>
+                                <TableCell align="left">Label</TableCell>
+                                <TableCell align="left">Amount</TableCell>
+                                <TableCell align="left">Message</TableCell>
+                                <TableCell align="center">Quantity</TableCell>
+                                <TableCell align="center" sx={{ width: 30 }}>
+                                    Action
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {payers.map((item: T_ListPayers, k: number) => {
+                                const memoParse = JSON.parse(decodeURI(item.memo));
+                                const pubPayerSlim = item.pubkeyPayer.slice(0, 4) + '....' + item.pubkeyPayer.slice(-4);
+
+                                return (
+                                    <TableRow key={k} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell component="th" scope="row">
+                                            {++k}
+                                        </TableCell>
+                                        <TableCell align="left">{pubPayerSlim}</TableCell>
+                                        <TableCell align="left">{item.label}</TableCell>
+                                        <TableCell align="left">
+                                            {item.amount} ({item.unitPay})
+                                        </TableCell>
+                                        <TableCell align="left">{item.message}</TableCell>
+                                        <TableCell align="center">{memoParse?.quantityProduct || 1}</TableCell>
+                                        <TableCell align="center">
+                                            {item.status ? (
+                                                <Alert>Received</Alert>
+                                            ) : (
+                                                <Fab size="small" aria-label="send">
+                                                    <SendIcon onClick={handleSend(item.pubkeyPayer)} />
+                                                </Fab>
+                                            )}
                                         </TableCell>
                                     </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {payers.map((item: T_ListPayers, k: number) => {
-                                        const memoParse = JSON.parse(decodeURI(item.memo));
-                                        const pubPayerSlim = item.pubkeyPayer.slice(0, 4) + '....' + item.pubkeyPayer.slice(-4);
-
-                                        return (
-                                            <TableRow key={k} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                <TableCell component="th" scope="row">
-                                                    {++k}
-                                                </TableCell>
-                                                <TableCell align="left">{pubPayerSlim}</TableCell>
-                                                <TableCell align="left">{item.label}</TableCell>
-                                                <TableCell align="left">
-                                                    {item.amount} ({item.unitPay})
-                                                </TableCell>
-                                                <TableCell align="left">{item.message}</TableCell>
-                                                <TableCell align="center">{memoParse?.quantityProduct || 1}</TableCell>
-                                                <TableCell align="center">
-                                                    {item.status ? (
-                                                        <Alert>Received</Alert>
-                                                    ) : (
-                                                        <Fab size="small" aria-label="send">
-                                                            <SendIcon onClick={handleSend(item.pubkeyPayer)} />
-                                                        </Fab>
-                                                    )}
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Box>
-                </>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             )}
         </>
     );

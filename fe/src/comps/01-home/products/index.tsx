@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import BasicMasonry from './masory';
+import ListNormal from './list';
+
 import { unitPay as unitPayConst } from './const';
 import DialogBox from './dialog';
 import { T_PRODUCT } from './type';
@@ -25,7 +27,9 @@ const ListProduct = ({ products }: { products: T_PRODUCT[] }) => {
 
     return (
         <>
-            {products?.length ? <BasicMasonry products={products} handleQuickBuy={handleQuickBuy} /> : null}
+            {/* {products?.length ? <BasicMasonry products={products} handleQuickBuy={handleQuickBuy} /> : null} */}
+
+            {products?.length ? <ListNormal products={products} handleQuickBuy={handleQuickBuy} /> : null}
 
             {idProductBuy ? (
                 <DialogBox open={open} products={products} unit={unitPay} idProductBuy={idProductBuy} handleClose={handleClose} />

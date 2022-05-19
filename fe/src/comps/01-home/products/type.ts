@@ -22,3 +22,8 @@ export type T_PRODUCT = {
     tips?: T_CustomerTips[];
     owner: PublicKey;
 };
+
+export type T_PRODUCT_SHOW = {
+    products: T_PRODUCT[];
+    handleQuickBuy: (unit: string, id: string) => void;
+};
