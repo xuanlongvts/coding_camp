@@ -24,7 +24,7 @@ const BasicMasonry = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
 
     return (
         <Container sx={{ py: 3 }} maxWidth="lg">
-            <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={{ xs: 2, sm: 3, md: 4 }}>
+            <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={{ xs: 1, sm: 2, md: 3 }}>
                 {products.map((item: T_PRODUCT, _key: number) => {
                     const priceUsdc = changeRate(Number(item.price), unitPay.usdc);
                     return (

@@ -38,7 +38,7 @@ type T_Menu = {
     toggleDrawer: () => void;
 };
 const Header = ({ props, menuHandle, isLogout = false }: { props?: Props; menuHandle?: T_Menu; isLogout?: boolean }) => {
-    const matches = useMediaQuery('(max-width:450px)');
+    const matches = useMediaQuery('(max-width:500px)');
     const router = useRouter();
 
     const handleLogout = () => {
