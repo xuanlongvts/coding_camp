@@ -5,7 +5,7 @@ use anchor_spl::token::{MintTo, Token};
 use mpl_token_metadata::instruction::{create_master_edition_v3, create_metadata_accounts_v2};
 use mpl_token_metadata::state::Creator;
 
-declare_id!("3t8JWHNXK9Sp7ZWPtBYD8xomhuLgzCmg1hVmLMsqzXyC");
+declare_id!("H9oDX6GtArhgvDaH3Mh7Dkox2bC81tqUvp9GxxE2fLYc");
 
 #[program]
 pub mod sc_luxury_brand {
@@ -201,7 +201,7 @@ pub struct Products {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = signer, space = 5000)]
+    #[account(init, payer = signer, space = 10000)]
     pub base_account: Account<'info, Products>,
 
     #[account(mut)]

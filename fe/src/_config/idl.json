@@ -308,5 +308,8 @@
             "name": "MasterEditinNftMintFailed",
             "msg": "Master edition nft mint failed!"
         }
-    ]
+    ],
+    "metadata": {
+        "address": "H9oDX6GtArhgvDaH3Mh7Dkox2bC81tqUvp9GxxE2fLYc"
+    }
 }

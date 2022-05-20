@@ -57,8 +57,8 @@ const LoginPage = () => {
 
             const getDate = Date.now() + 1000 * 60 * 60 * 24 * 30 * 3; // 3 months
 
-            setCookie(ListCookieStorageName().user, Base64.encode(username), getDate);
-            setCookie(ListCookieStorageName().pass, Base64.encode(password), getDate);
+            setCookie(ListCookieStorageName().user, Base64.encode(username.trim()), getDate);
+            setCookie(ListCookieStorageName().pass, Base64.encode(password.trim()), getDate);
 
             const neweKey = web3.Keypair.generate();
             const getCookiesKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);

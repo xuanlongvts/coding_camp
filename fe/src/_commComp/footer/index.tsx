@@ -10,7 +10,7 @@ export default Footer;
 export const FooterHome = () => {
     return (
         <footer id="footerFull">
-            <div className="author">&copy; xuanlongvts - 05/2022</div>
+            <div className="author">&copy; xuanlongvts</div>
             <div className="logos">
                 <Link href="https://solana.com/">
                     <a target="_blank" rel="noopener">

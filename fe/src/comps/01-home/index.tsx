@@ -31,7 +31,7 @@ const HomeComp = () => {
 
     return (
         <>
-            {!matches ? (
+            {!matches && products?.length ? (
                 <div style={{ position: 'absolute', right: 20, top: 80, cursor: 'pointer' }} onClick={handleViewMode}>
                     {viewMode === 'Grid' ? (
                         <GridOnIcon sx={{ width: 24, height: 24 }} />

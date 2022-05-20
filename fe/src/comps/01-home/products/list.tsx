@@ -16,7 +16,7 @@ const ListPro = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
     }
 
     return (
-        <Container sx={{ py: 3 }} maxWidth="lg">
+        <Container sx={{ pt: 3, pb: 6 }} maxWidth="lg">
             <Grid container spacing={3}>
                 {products.length &&
                     products.map((item: T_PRODUCT, _key: number) => {

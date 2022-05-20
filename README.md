@@ -20,3 +20,7 @@
 1. [programs.devnet]
 
 2. cluster = "devnet"
+
+# Error
+
+1. RangeError: encoding overruns Buffer (over limit byte in contract)

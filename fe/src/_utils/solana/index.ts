@@ -64,7 +64,7 @@ export const mintNft = async (): Promise<string | null> => {
     return null;
 };
 
-export const AutoAirdrop = async (publicKey: PublicKey, func: () => void) => {
+export const AutoAirdrop = async (publicKey: PublicKey, func?: () => void) => {
     const getBal = await getBalance(publicKey);
     const converNumber = Number(getBal) / LAMPORTS_PER_SOL;
     if (converNumber < 2 && ENUM_envName.production !== ENV) {
@@ -73,7 +73,7 @@ export const AutoAirdrop = async (publicKey: PublicKey, func: () => void) => {
 
         const getErr = getResult.value.err;
         if (!getErr) {
-            func();
+            func && func();
         }
     }
 };

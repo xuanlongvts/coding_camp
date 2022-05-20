@@ -24,7 +24,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
-import { productsInit } from '_config/tmp_data';
+// import { productsInit } from '_config/tmp_data';
+import { productsInit } from '_data';
+
 import { appToastActions } from '_commComp/toast/slice';
 import LinkRouters from '_routers';
 import { FIELDS } from '_commComp/toast/types';

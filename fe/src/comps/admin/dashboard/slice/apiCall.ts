@@ -4,6 +4,7 @@ import { web3 } from '@project-serum/anchor';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { getKeypairDemo, programApp } from '_services/solana';
 import { getProvider, getConfig } from '_config';
+import { AutoAirdrop } from '_utils/solana';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import kp from '_keys/keypair.json';
@@ -57,6 +58,7 @@ export const productsCallApi = async (): Promise<any> => {
             errMess: 'baseAccount Not found',
         };
     }
+    // baseAccount && (await AutoAirdrop(baseAccount?.publicKey));
 
     const program = programApp();
 
