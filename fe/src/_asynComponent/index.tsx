@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, ComponentType, ComponentProps, ReactNode, useState, useTransition } from 'react';
 import { useRouter } from 'next/router';
 import NoSsr from '@mui/material/NoSsr';
+import { Base64 } from 'js-base64';
 
 import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 import { adminHardcode } from 'comps/admin/const';
@@ -34,8 +35,10 @@ const AsyncCompWrap = <T extends Promise<any>, U extends ComponentType<any>>(
             });
             const getUser = getCookie(ListCookieStorageName().user);
             const getPass = getCookie(ListCookieStorageName().pass);
-            if (getUser !== adminHardcode.user || getPass !== adminHardcode.pass) {
-                router.push(Routers.admin);
+            if (getUser && getPass) {
+                if (Base64.decode(getUser) !== adminHardcode.user || Base64.decode(getPass) !== adminHardcode.pass) {
+                    router.push(Routers.admin);
+                }
             }
         }, []);
 

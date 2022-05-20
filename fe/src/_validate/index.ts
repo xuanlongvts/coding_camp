@@ -5,7 +5,7 @@ const msgRequired = (fieldName: string) => `${fieldName} is required.`;
 export const stringRequiredSchema = (fieldName: string) => Yup.string().required(msgRequired(fieldName));
 
 const minLength = 3;
-const maxLength = 5;
+const maxLength = 8;
 export const passwordField = Yup.string()
     .min(minLength, `Password minimum ${minLength} characters`)
     .max(maxLength, `Password maximum ${maxLength} characters`)

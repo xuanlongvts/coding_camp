@@ -16,6 +16,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { web3 } from '@project-serum/anchor';
+import { Base64 } from 'js-base64';
 
 import LinkRouters from '_routers';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
@@ -56,8 +57,8 @@ const LoginPage = () => {
 
             const getDate = Date.now() + 1000 * 60 * 60 * 24 * 30 * 3; // 3 months
 
-            setCookie(ListCookieStorageName().user, username, getDate);
-            setCookie(ListCookieStorageName().pass, password, getDate);
+            setCookie(ListCookieStorageName().user, Base64.encode(username), getDate);
+            setCookie(ListCookieStorageName().pass, Base64.encode(password), getDate);
 
             const neweKey = web3.Keypair.generate();
             const getCookiesKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);
