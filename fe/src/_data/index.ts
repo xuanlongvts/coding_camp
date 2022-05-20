@@ -1,7 +1,6 @@
 import * as anchor from '@project-serum/anchor';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
-import { getKeypairDemo } from '_services/solana';
 import { WalletRecipient_1 } from '_config';
 
 const ownerPubkey = new anchor.web3.PublicKey(WalletRecipient_1);
@@ -80,6 +79,22 @@ export const productsAddMore: T_PRODUCT[] = [
         price: 3,
         description:
             'Two sizes. Two industry-leading displays.The 11-inch display gives you an immersive and portable experience. And the 12.9-inch XDR display is a stunning and expansive way to view HDR content.',
+        tips: [],
+        owner: ownerPubkey,
+    },
+];
+
+export const addOneProductDataArr: T_PRODUCT[] = [
+    {
+        id: 'abc',
+        title: 'Iphone 15',
+        imgs: {
+            links: [
+                'https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g',
+            ],
+        },
+        price: 3,
+        description: 'Iphone 15 will release at 2024',
         tips: [],
         owner: ownerPubkey,
     },

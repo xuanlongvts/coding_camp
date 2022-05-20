@@ -70,12 +70,20 @@ function* productAddOneCallSaga() {
     if (result && result.errMess) {
         yield put(appLoadingActions.loadingClose());
         yield put(productsActions.productsCallFailed(result.errMess));
+
+        yield put(
+            appToastActions.toastOpen({
+                [FIELDS.typeAlert]: 'error',
+                [FIELDS.mess]: 'Add one product failed!',
+            }),
+        );
     } else {
         const arrProducts: T_PRODUCT[] = result?.listProducts;
         yield put(productsActions.productsCallSuccess(arrProducts));
 
         const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.addOneProduct);
         yield put(productsActions.productsAddOneProductCallSuccess(getTx));
+        yield put(productsActions.productAddOneCallSuccess());
 
         const hrefLink = transactionExplorer(getTx);
         yield put(

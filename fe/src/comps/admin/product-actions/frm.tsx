@@ -1,5 +1,6 @@
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { nanoid } from 'nanoid';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -15,6 +16,7 @@ import { T_PRODUCT } from 'comps/01-home/products/type';
 import { appToastActions } from '_commComp/toast/slice';
 
 import SliceProduct from 'comps/admin/dashboard/slice';
+import { selectProductAddSuccess } from 'comps/admin/dashboard/slice/selector';
 
 import ProductSchema from './validateProduct';
 
@@ -38,16 +40,27 @@ const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { publicKey } = useWallet();
+    const statusAddOneProduct = useSelector(selectProductAddSuccess);
 
     const {
         register,
         handleSubmit,
         watch,
+        resetField,
         formState: { errors },
     } = useForm<T_HOOK_FORM>({
         mode: 'onBlur',
         resolver: yupResolver(ProductSchema),
     });
+
+    useEffect(() => {
+        if (statusAddOneProduct) {
+            resetField('title');
+            resetField('imgs');
+            resetField('price');
+            resetField('description');
+        }
+    }, [statusAddOneProduct]);
 
     const onSubmitForm = async (data: T_HOOK_FORM) => {
         if (!publicKey) {

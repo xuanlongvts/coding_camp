@@ -11,6 +11,7 @@ import {
     KEY_TX_LISTS,
     KEY_PRODUCT_ADD_UPDATE_ONE,
     KEY_PRODUCT_DELETE_ONE,
+    KEY_PRODUCT_ADD_ONE_SUCCESS,
 } from './types';
 
 const selectProduct = (state: RootState) => state[NSP_PRODUCTS] || initialState;
@@ -22,3 +23,4 @@ export const selectTx = createSelector([selectProduct], (i: T_DATA_PRODUCT) => i
 
 export const selectProductAddOrUpdate = createSelector([selectProduct], (i: T_DATA_PRODUCT) => i[KEY_PRODUCT_ADD_UPDATE_ONE]);
 export const selectProductDelete = createSelector([selectProduct], (i: T_DATA_PRODUCT) => i[KEY_PRODUCT_DELETE_ONE]);
+export const selectProductAddSuccess = createSelector([selectProduct], (i: T_DATA_PRODUCT) => i[KEY_PRODUCT_ADD_ONE_SUCCESS]);

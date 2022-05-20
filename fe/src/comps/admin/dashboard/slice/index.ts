@@ -25,6 +25,7 @@ export const initialState: TYPES_KEYS.T_DATA_PRODUCT = {
     [TYPES_KEYS.KEY_PRODUCT_INIT]: null,
     [TYPES_KEYS.KEY_DATA_PRODUCT]: [],
     [TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE]: null,
+    [TYPES_KEYS.KEY_PRODUCT_ADD_ONE_SUCCESS]: false,
     [TYPES_KEYS.KEY_PRODUCT_DELETE_ONE]: null,
     [TYPES_KEYS.KEY_TX_LISTS]: {
         txInit: getTxInit,
@@ -58,7 +59,11 @@ const slice = createSlice({
             // console.log('productsCall');
         },
         productAddOneCall(state, action: PayloadAction<T_PRODUCT>) {
+            state[TYPES_KEYS.KEY_PRODUCT_ADD_ONE_SUCCESS] = false;
             state[TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE] = action.payload;
+        },
+        productAddOneCallSuccess(state) {
+            state[TYPES_KEYS.KEY_PRODUCT_ADD_ONE_SUCCESS] = true;
         },
         productUpdateOneCall(state, action: PayloadAction<T_PRODUCT>) {
             state[TYPES_KEYS.KEY_PRODUCT_ADD_UPDATE_ONE] = action.payload;
