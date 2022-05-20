@@ -6,6 +6,6 @@ export enum EnumAccountInfor {
 }
 
 export const adminHardcode = {
-    user: 'admin',
-    pass: '12345@_',
+    user: 'YWRtaW4=',
+    pass: 'MTIzNDVAXw==',
 };

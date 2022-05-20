@@ -49,7 +49,7 @@ const LoginPage = () => {
     const onSubmitForm = async (data: T_HOOKS_FOMR) => {
         const { username, password } = data;
 
-        if (username.toLowerCase() !== adminHardcode.user || password.toLowerCase() !== adminHardcode.pass) {
+        if (Base64.encode(username.trim()) !== adminHardcode.user || Base64.encode(password.trim()) !== adminHardcode.pass) {
             setErrorMess('Wrong username or password');
         } else {
             setErrorMess(undefined);

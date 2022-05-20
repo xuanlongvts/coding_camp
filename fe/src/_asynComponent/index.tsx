@@ -35,8 +35,10 @@ const AsyncCompWrap = <T extends Promise<any>, U extends ComponentType<any>>(
             });
             const getUser = getCookie(ListCookieStorageName().user);
             const getPass = getCookie(ListCookieStorageName().pass);
-            if (getUser && getPass) {
-                if (Base64.decode(getUser) !== adminHardcode.user || Base64.decode(getPass) !== adminHardcode.pass) {
+            if (!getUser || !getPass) {
+                router.push(Routers.admin);
+            } else if (getUser && getPass) {
+                if (getUser !== adminHardcode.user || getPass !== adminHardcode.pass) {
                     router.push(Routers.admin);
                 }
             }
