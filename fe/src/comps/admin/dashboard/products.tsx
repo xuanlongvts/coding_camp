@@ -123,7 +123,9 @@ const ProductsManagment = () => {
                                         <TableCell align="left">Title</TableCell>
                                         <TableCell align="center">Price</TableCell>
                                         <TableCell align="left">Description</TableCell>
-                                        <TableCell align="right">Actions</TableCell>
+                                        <TableCell align="right" sx={{ width: 150 }}>
+                                            Actions
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

@@ -2,10 +2,9 @@ import * as anchor from '@project-serum/anchor';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import { getKeypairDemo } from '_services/solana';
+import { WalletRecipient_1 } from '_config';
 
-const baseAcc = anchor.web3.Keypair.generate();
-
-const ownerPubkey = (getKeypairDemo() && getKeypairDemo()?.publicKey) || baseAcc.publicKey;
+const ownerPubkey = new anchor.web3.PublicKey(WalletRecipient_1);
 
 export const productsInit: T_PRODUCT[] = [
     {
@@ -43,42 +42,45 @@ export const productsInit: T_PRODUCT[] = [
         tips: [],
         owner: ownerPubkey,
     },
-    // {
-    //     id: 'ijk',
-    //     title: 'Mac Pro',
-    //     imgs: {
-    //         links: [
-    //             'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mac-pro-rack-2021-gallery2?wid=4000&hei=2544&fmt=jpeg&qlt=90&.v=1626378548000',
-    //         ],
-    //     },
-    //     price: 4,
-    //     description: '3.5GHz 8‑core Intel Xeon W processor, Turbo Boost up to 4.0GHz 32GB (4x8GB) of DDR4 ECC memory',
-    //     tips: [],
-    //     owner: ownerPubkey,
-    // },
-    // {
-    //     id: 'lmn',
-    //     title: 'Iphone 13 Pro',
-    //     imgs: {
-    //         links: ['https://www.apple.com/v/iphone-13-pro/f/images/overview/design/water_resistant__ddhg6jxs53yq_large_2x.jpg'],
-    //     },
-    //     price: 3,
-    //     description: 'A dramatically more powerful camera system. A display so responsive, every interaction feels new again.',
-    //     tips: [],
-    //     owner: ownerPubkey,
-    // },
-    // {
-    //     id: 'ikl',
-    //     title: 'iPad Pro',
-    //     imgs: {
-    //         links: [
-    //             'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202104?wid=1090&hei=1100&fmt=jpeg&qlt=90&.v=1617067380000',
-    //         ],
-    //     },
-    //     price: 3,
-    //     description:
-    //         'Two sizes. Two industry-leading displays.The 11-inch display gives you an immersive and portable experience. And the 12.9-inch XDR display is a stunning and expansive way to view HDR content.',
-    //     tips: [],
-    //     owner: ownerPubkey,
-    // },
+];
+
+export const productsAddMore: T_PRODUCT[] = [
+    {
+        id: 'ijk',
+        title: 'Mac Pro',
+        imgs: {
+            links: [
+                'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mac-pro-rack-2021-gallery2?wid=4000&hei=2544&fmt=jpeg&qlt=90&.v=1626378548000',
+            ],
+        },
+        price: 4,
+        description: '3.5GHz 8‑core Intel Xeon W processor, Turbo Boost up to 4.0GHz 32GB (4x8GB) of DDR4 ECC memory',
+        tips: [],
+        owner: ownerPubkey,
+    },
+    {
+        id: 'lmn',
+        title: 'Iphone 13 Pro',
+        imgs: {
+            links: ['https://www.apple.com/v/iphone-13-pro/f/images/overview/design/water_resistant__ddhg6jxs53yq_large_2x.jpg'],
+        },
+        price: 3,
+        description: 'A dramatically more powerful camera system. A display so responsive, every interaction feels new again.',
+        tips: [],
+        owner: ownerPubkey,
+    },
+    {
+        id: 'ikl',
+        title: 'iPad Pro',
+        imgs: {
+            links: [
+                'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-12-11-select-202104?wid=1090&hei=1100&fmt=jpeg&qlt=90&.v=1617067380000',
+            ],
+        },
+        price: 3,
+        description:
+            'Two sizes. Two industry-leading displays.The 11-inch display gives you an immersive and portable experience. And the 12.9-inch XDR display is a stunning and expansive way to view HDR content.',
+        tips: [],
+        owner: ownerPubkey,
+    },
 ];

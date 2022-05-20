@@ -24,7 +24,13 @@ const ListPro = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
                         return (
                             <Grid item key={_key} xs={12} sm={6} md={4}>
                                 <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                                    <CardMedia component="img" height="350" image={item.imgs.links[0]} alt={item.title} />
+                                    <CardMedia
+                                        component="img"
+                                        sx={{ objectFit: 'contain' }}
+                                        height="350"
+                                        image={item.imgs.links[0]}
+                                        alt={item.title}
+                                    />
                                     <CardContent sx={{ flexGrow: 1 }}>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             {item.title}
