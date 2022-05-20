@@ -11,7 +11,7 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { PhantomWalletAdapter, SlopeWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 
 import '_styles/_index.scss';
@@ -59,7 +59,7 @@ const App = (props: T_APP) => {
     // You can also provide a custom RPC endpoint
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-    const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter({ network })], [network]);
+    const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
     // --------------------- Wallet End
 
     useEffect(() => {

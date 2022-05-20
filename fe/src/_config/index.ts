@@ -139,7 +139,8 @@ export const WalletRecipient_1 = 'BYaqcY4KvRkcjXTK8REEyWvs5FVajjdTRcoADAqVSULT';
 export const WalletRecipient_2 = 'FR7pzZogRmdcwZ3ZcCpjFCeQA7fEB6ndQpfgvJewyj8i';
 
 export const PubkeyRecipient = () => {
-    const getWalletRecipient = isWindow ? Number(LocalStorageServices.getItemJson(LocalStorageKey().WalletReceive)) : 1;
+    const getWalletRecipient = LocalStorageServices.getItemJson(LocalStorageKey().WalletReceive) || 1;
+    console.log('getWalletRecipient', getWalletRecipient);
     const determineWallet = getWalletRecipient === 1 ? WalletRecipient_1 : WalletRecipient_2;
     return new PublicKey(determineWallet);
 }; // transform to Pubkey
