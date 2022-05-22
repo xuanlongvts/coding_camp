@@ -3,6 +3,7 @@ import ENV from '_config';
 type T_LocalStorageKey = {
     ProgressStatus: string;
     WalletReceive: string;
+    ExchangeRate: string;
     tx_lists: {
         initProduct: string;
         addOneProduct: string;
@@ -18,6 +19,7 @@ const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
     return {
         ProgressStatus: `${detectEnv}_ProgressStatus`,
         WalletReceive: `${detectEnv}_WalletReceive`,
+        ExchangeRate: `${detectEnv}_ExchangeRate`,
         tx_lists: {
             initProduct: `${detectEnv}_initProduct`,
             addOneProduct: `${detectEnv}_addOneProduct`,

@@ -21,6 +21,13 @@ function* productInitSaga() {
     if (result && result.errMess) {
         yield put(appLoadingActions.loadingClose());
         yield put(productsActions.productsCallFailed(result.errMess));
+
+        yield put(
+            appToastActions.toastOpen({
+                [FIELDS.typeAlert]: 'error',
+                [FIELDS.mess]: 'Initial product failed!',
+            }),
+        );
     } else {
         const arrProducts: T_PRODUCT[] = result?.listProducts;
         yield put(productsActions.productsCallSuccess(arrProducts));
@@ -74,7 +81,7 @@ function* productAddOneCallSaga() {
         yield put(
             appToastActions.toastOpen({
                 [FIELDS.typeAlert]: 'error',
-                [FIELDS.mess]: 'Add one product failed!',
+                [FIELDS.mess]: 'Add product failed!',
             }),
         );
     } else {
@@ -89,7 +96,7 @@ function* productAddOneCallSaga() {
         yield put(
             appToastActions.toastOpen({
                 [FIELDS.typeAlert]: 'success',
-                [FIELDS.mess]: 'Add one product success!',
+                [FIELDS.mess]: 'Add product success!',
                 [FIELDS.linkRef]: {
                     mess: 'Transaction Link',
                     link: hrefLink,
@@ -110,6 +117,13 @@ function* productUpdateOneCallSaga() {
 
     if (result && result.errMess) {
         yield put(productsActions.productsCallFailed(result.errMess));
+
+        yield put(
+            appToastActions.toastOpen({
+                [FIELDS.typeAlert]: 'error',
+                [FIELDS.mess]: 'Update product failed!',
+            }),
+        );
     } else {
         const arrProducts: T_PRODUCT[] = result?.listProducts;
         yield put(productsActions.productsCallSuccess(arrProducts));
@@ -121,7 +135,7 @@ function* productUpdateOneCallSaga() {
         yield put(
             appToastActions.toastOpen({
                 [FIELDS.typeAlert]: 'success',
-                [FIELDS.mess]: 'Update one product success!',
+                [FIELDS.mess]: 'Update product success!',
                 [FIELDS.linkRef]: {
                     mess: 'Transaction Link',
                     link: hrefLink,
@@ -143,6 +157,13 @@ function* productDeleteOneCallSaga() {
     if (result && result.errMess) {
         yield put(appLoadingActions.loadingClose());
         yield put(productsActions.productsCallFailed(result.errMess));
+
+        yield put(
+            appToastActions.toastOpen({
+                [FIELDS.typeAlert]: 'error',
+                [FIELDS.mess]: 'Delete one product failed!',
+            }),
+        );
     } else {
         const arrProducts: T_PRODUCT[] = result?.listProducts;
         yield put(productsActions.productsCallSuccess(arrProducts));
