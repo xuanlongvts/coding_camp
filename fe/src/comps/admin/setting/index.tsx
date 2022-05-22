@@ -11,12 +11,37 @@ import Slider from '@mui/material/Slider';
 
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
+const valRateDefault = 50;
+const valMax = 200;
+const marks = [
+    {
+        value: valRateDefault,
+        label: '50',
+    },
+    {
+        value: 100,
+        label: '100',
+    },
+    {
+        value: 150,
+        label: '150',
+    },
+    {
+        value: valMax,
+        label: '200',
+    },
+];
+
 const Setting = () => {
     const [value, setValue] = useState<number>(1);
+    const [valRate, setValRate] = useState<number | null>(null);
 
     useEffect(() => {
         const getWalletRecipient = Number(LocalStorageServices.getItemJson(LocalStorageKey().WalletReceive)) || 1;
         setValue(getWalletRecipient);
+
+        const hardRate = LocalStorageServices.getItemJson(LocalStorageKey().ExchangeRate) || valRateDefault;
+        setValRate(hardRate);
     }, []);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -25,10 +50,13 @@ const Setting = () => {
         LocalStorageServices.setItemJson(LocalStorageKey().WalletReceive, getVal);
     };
 
-    const valuetext = debounce((value: number): string => {
-        LocalStorageServices.setItemJson(LocalStorageKey().ExchangeRate, value);
+    const valuetext = (value: number): string => {
+        debounce(() => {
+            LocalStorageServices.setItemJson(LocalStorageKey().ExchangeRate, value);
+        }, 1000)();
+
         return `Value : ${value}`;
-    }, 1000);
+    };
 
     return (
         <Box>
@@ -47,20 +75,21 @@ const Setting = () => {
                 </RadioGroup>
             </FormControl>
 
-            <Box sx={{ width: 300, pt: 7 }}>
-                <FormLabel>Exchange rate SOL to USDC</FormLabel>
-                <Slider
-                    sx={{ pt: 5 }}
-                    aria-label="Temperature"
-                    defaultValue={60}
-                    getAriaValueText={valuetext}
-                    valueLabelDisplay="auto"
-                    step={10}
-                    marks
-                    min={50}
-                    max={200}
-                />
-            </Box>
+            {valRate ? (
+                <Box sx={{ width: 300, pt: 7 }}>
+                    <FormLabel sx={{ display: 'block', pb: 2 }}>Exchange rate SOL to USDC</FormLabel>
+                    <Slider
+                        aria-label="Exchange rate"
+                        defaultValue={valRate}
+                        getAriaValueText={valuetext}
+                        valueLabelDisplay="auto"
+                        step={10}
+                        marks={marks}
+                        min={valRateDefault}
+                        max={valMax}
+                    />
+                </Box>
+            ) : null}
         </Box>
     );
 };
