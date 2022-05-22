@@ -4263,6 +4263,11 @@ react-dom@18.1.0:
     loose-envify "^1.1.0"
     scheduler "^0.22.0"
 
+react-google-slides@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-google-slides/-/react-google-slides-3.1.1.tgz#4d6e633790c2bf5fa406909a6020cf93c46b2722"
+  integrity sha512-JfANQkg4HfHSKqaBEqKhug2A1xA0SYOLvTesa01zd4zqM+XnJhkC7mstfXFHxiOWyP941eGQDFR/eFKhZ8gY7Q==
+
 react-hook-form@^7.31.1:
   version "7.31.1"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.31.1.tgz#16c357dd366bc226172e6acbb5a1672873bbfb28"

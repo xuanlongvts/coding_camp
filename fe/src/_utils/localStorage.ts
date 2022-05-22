@@ -14,12 +14,14 @@ type T_LocalStorageKey = {
     accountsReceiveNft: string;
     darkMode: string;
     drawer: string;
+    presentControls: string;
 };
 const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
     return {
         ProgressStatus: `${detectEnv}_ProgressStatus`,
         WalletReceive: `${detectEnv}_WalletReceive`,
         ExchangeRate: `${detectEnv}_ExchangeRate`,
+        presentControls: `${detectEnv}_presentControls`,
         tx_lists: {
             initProduct: `${detectEnv}_initProduct`,
             addOneProduct: `${detectEnv}_addOneProduct`,

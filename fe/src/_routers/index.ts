@@ -1,6 +1,7 @@
 const admin = '/admin';
 
 const LinkRouters = {
+    presentation: '/presentation',
     admin: admin,
     adminDashboard: `${admin}/dashboard`,
     adminProductActions: `${admin}/product-actions`,

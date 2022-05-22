@@ -24,7 +24,7 @@ export const FooterHome = () => {
                 </Link>
                 <Link href="https://coin98.net/">
                     <a target="_blank" rel="noopener">
-                        <Image src="/imgs/logo_coin98.svg" alt="Coin 98" width={72} height={21} />
+                        <Image src="/imgs/logo_coin_98.png" alt="Coin 98" width={25} height={25} />
                     </a>
                 </Link>
                 <Link href="https://rove.to">

@@ -13,7 +13,7 @@ const Welcome = () => {
             </Grow>
             <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} {...(isOpen ? { timeout: 3000 } : {})}>
                 <div className="solana">
-                    <Link href={Routers.admin}>
+                    <Link href={Routers.presentation}>
                         <a target="_blank" rel="noopener">
                             Solana
                         </a>

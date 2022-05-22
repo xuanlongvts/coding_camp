@@ -35,6 +35,7 @@ const marks = [
 const Setting = () => {
     const [value, setValue] = useState<number>(1);
     const [valRate, setValRate] = useState<number | null>(null);
+    const [valControls, setValControls] = useState<number>(0);
 
     useEffect(() => {
         const getWalletRecipient = Number(LocalStorageServices.getItemJson(LocalStorageKey().WalletReceive)) || 1;
@@ -42,12 +43,21 @@ const Setting = () => {
 
         const hardRate = LocalStorageServices.getItemJson(LocalStorageKey().ExchangeRate) || valRateDefault;
         setValRate(hardRate);
+
+        const getValControls = LocalStorageServices.getItemJson(LocalStorageKey().presentControls) || 0;
+        setValControls(getValControls);
     }, []);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const getVal = Number((event.target as HTMLInputElement).value);
         setValue(getVal);
         LocalStorageServices.setItemJson(LocalStorageKey().WalletReceive, getVal);
+    };
+
+    const handleControlsPresentation = (event: ChangeEvent<HTMLInputElement>) => {
+        const getVal = Number((event.target as HTMLInputElement).value);
+        setValControls(getVal);
+        LocalStorageServices.setItemJson(LocalStorageKey().presentControls, getVal);
     };
 
     const valuetext = (value: number): string => {
@@ -61,14 +71,8 @@ const Setting = () => {
     return (
         <Box>
             <FormControl>
-                <FormLabel id="demo-row-radio-buttons-group-label">Wallet Recipient</FormLabel>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    value={value}
-                    onChange={handleChange}
-                >
+                <FormLabel id="wallet_receive">Wallet Recipient</FormLabel>
+                <RadioGroup row aria-labelledby="wallet_receive" name="row-radio-buttons-group" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio />} label="1 (BYaq...SULT)" />
                     &nbsp;&nbsp;
                     <FormControlLabel value={2} control={<Radio />} label="2 (FR7p...yj8i)" />
@@ -90,6 +94,21 @@ const Setting = () => {
                     />
                 </Box>
             ) : null}
+
+            <FormControl sx={{ pt: 5 }}>
+                <FormLabel id="controls_set">Controls Presentation</FormLabel>
+                <RadioGroup
+                    row
+                    aria-labelledby="controls_set"
+                    name="row-radio-buttons-group"
+                    value={valControls}
+                    onChange={handleControlsPresentation}
+                >
+                    <FormControlLabel value={0} control={<Radio />} label="False" />
+                    &nbsp;&nbsp;
+                    <FormControlLabel value={1} control={<Radio />} label="True" />
+                </RadioGroup>
+            </FormControl>
         </Box>
     );
 };
