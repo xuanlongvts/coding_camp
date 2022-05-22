@@ -35,7 +35,7 @@ const marks = [
 const Setting = () => {
     const [value, setValue] = useState<number>(1);
     const [valRate, setValRate] = useState<number | null>(null);
-    const [valControls, setValControls] = useState<number>(0);
+    const [valControls, setValControls] = useState<number>(1);
 
     useEffect(() => {
         const getWalletRecipient = Number(LocalStorageServices.getItemJson(LocalStorageKey().WalletReceive)) || 1;
@@ -44,7 +44,7 @@ const Setting = () => {
         const hardRate = LocalStorageServices.getItemJson(LocalStorageKey().ExchangeRate) || valRateDefault;
         setValRate(hardRate);
 
-        const getValControls = LocalStorageServices.getItemJson(LocalStorageKey().presentControls) || 0;
+        const getValControls = LocalStorageServices.getItemJson(LocalStorageKey().presentControls) || 1;
         setValControls(getValControls);
     }, []);
 
@@ -104,9 +104,9 @@ const Setting = () => {
                     value={valControls}
                     onChange={handleControlsPresentation}
                 >
-                    <FormControlLabel value={0} control={<Radio />} label="False" />
-                    &nbsp;&nbsp;
                     <FormControlLabel value={1} control={<Radio />} label="True" />
+                    &nbsp;&nbsp;
+                    <FormControlLabel value={0} control={<Radio />} label="False" />
                 </RadioGroup>
             </FormControl>
         </Box>
