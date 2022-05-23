@@ -15,7 +15,7 @@ const PresentationComp = () => {
         <div className="presentationPage">
             <ReactGoogleSlides
                 showControls={valControls === 1}
-                slidesLink="https://docs.google.com/presentation/d/1BFfcB5pqDUAn7e8ZIdnHlGGD01DuO9KPexdD_y0YGsg/edit#slide=id.g12dc58ed60b_0_8"
+                slidesLink="https://docs.google.com/presentation/d/1BFfcB5pqDUAn7e8ZIdnHlGGD01DuO9KPexdD_y0YGsg/edit?usp=sharing"
             />
         </div>
     );
