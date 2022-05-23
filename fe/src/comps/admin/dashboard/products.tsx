@@ -135,7 +135,7 @@ const ProductsManagment = () => {
                                                 {++k}
                                             </TableCell>
                                             <TableCell align="left">{item.title}</TableCell>
-                                            <TableCell align="center">{item.price}</TableCell>
+                                            <TableCell align="center">{item.price} sol</TableCell>
                                             <TableCell align="left">{item.description}</TableCell>
                                             <TableCell align="right">
                                                 <Fab size="small" aria-label="edit" onClick={handleEdit(item.id)}>

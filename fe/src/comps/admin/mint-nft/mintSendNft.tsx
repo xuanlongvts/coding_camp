@@ -1,5 +1,5 @@
-import { useState, ChangeEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,6 +24,7 @@ import HistoryBack from '_commComp/backHistory';
 
 import SendNftSchema, { ENUM_FIELDS, T_HOOKS_FOMR_NFT_SEND } from './validateSendNft';
 import SliceMintNft from './slice';
+import { selectMintNftSuccess } from './slice/selector';
 
 const useStyles = makeStyles({
     input: {
@@ -56,6 +57,17 @@ const MintNftComp = () => {
     const [selectedFile, setSelectedFile] = useState<any>(null);
     const [imageFileBuffer, setImageFileBuffer] = useState<any>(null);
 
+    const statusMintNft = useSelector(selectMintNftSuccess);
+
+    useEffect(() => {
+        if (statusMintNft) {
+            resetField(ENUM_FIELDS.name);
+            resetField(ENUM_FIELDS.des);
+
+            setSelectedFile(null);
+        }
+    }, [statusMintNft]);
+
     // const anchorWallet = useMemo(() => {
     //     if (!wallet || !wallet.publicKey || !wallet.signAllTransactions || !wallet.signTransaction) {
     //         return;
@@ -72,6 +84,7 @@ const MintNftComp = () => {
         register,
         handleSubmit,
         watch,
+        resetField,
         formState: { errors },
     } = useForm<T_HOOKS_FOMR_NFT_SEND>({
         mode: 'onBlur',
