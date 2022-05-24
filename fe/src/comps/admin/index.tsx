@@ -70,6 +70,10 @@ const LoginPage = () => {
         }
     };
 
+    const onError = () => {
+        console.log('onError');
+    };
+
     const disabledBtn = !!(errors.username || errors.password || !watch().username || !watch().password);
     useEffect(() => {
         if (disabledBtn && errorMess) {
@@ -142,7 +146,7 @@ const LoginPage = () => {
                             </div>
                         </Avatar>
 
-                        <Box sx={{ mt: 3, mx: 1, width: '88%' }}>
+                        <Box component="form" sx={{ mt: 3, mx: 1, width: '88%' }}>
                             <TextField
                                 required
                                 fullWidth
@@ -176,14 +180,10 @@ const LoginPage = () => {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                                 disabled={disabledBtn}
-                                onClick={handleSubmit(onSubmitForm)}
+                                onClick={handleSubmit(onSubmitForm, onError)}
                             >
                                 Login
                             </Button>
-
-                            {/* <Box sx={{ mt: 5, textAlign: 'center' }} className="hintPass">
-                                {adminHardcode.user} - {adminHardcode.pass}
-                            </Box> */}
                         </Box>
                     </Box>
                     <div className="footer-admin">
