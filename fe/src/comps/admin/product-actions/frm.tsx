@@ -54,7 +54,7 @@ const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
     });
 
     useEffect(() => {
-        if (statusAddOneProduct) {
+        if (statusAddOneProduct && type === E_TYPES.Add) {
             resetField('title');
             resetField('imgs');
             resetField('price');

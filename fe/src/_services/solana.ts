@@ -1,5 +1,6 @@
 import { PublicKey, Keypair } from '@solana/web3.js';
 import { web3 } from '@project-serum/anchor';
+import { Base64 } from 'js-base64';
 
 import { getCookie, ListCookieStorageName } from '_utils/cookieStorage';
 import { getProgram } from '_config';
@@ -11,7 +12,7 @@ export const programID = new PublicKey('H9oDX6GtArhgvDaH3Mh7Dkox2bC81tqUvp9GxxE2
 
 export const getKeypairDemo = (): Keypair | null => {
     let getKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);
-    getKeypairDemo = getKeypairDemo && JSON.parse(getKeypairDemo)._keypair.secretKey;
+    getKeypairDemo = getKeypairDemo && JSON.parse(Base64.decode(getKeypairDemo))._keypair.secretKey;
     let baseAccountDemo: Keypair | null = null;
     if (getKeypairDemo) {
         const arr = Object.values(getKeypairDemo);

@@ -62,7 +62,7 @@ const LoginPage = () => {
 
             const neweKey = web3.Keypair.generate();
             const getCookiesKeypairDemo = getCookie(ListCookieStorageName().KeyPairDemo);
-            !getCookiesKeypairDemo && setCookie(ListCookieStorageName().KeyPairDemo, JSON.stringify(neweKey), getDate);
+            !getCookiesKeypairDemo && setCookie(ListCookieStorageName().KeyPairDemo, Base64.encode(JSON.stringify(neweKey)), getDate);
 
             await new Promise(res => setTimeout(res, 1000));
 
