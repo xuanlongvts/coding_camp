@@ -6,6 +6,7 @@ type T_LocalStorageKey = {
     ExchangeRate: string;
     tx_lists: {
         initProduct: string;
+        addMultiProducts: string;
         addOneProduct: string;
         updateOneProduct: string;
         deleteOneProduct: string;
@@ -24,6 +25,7 @@ const LocalStorageKey = (detectEnv = ENV): T_LocalStorageKey => {
         presentControls: `${detectEnv}_presentControls`,
         tx_lists: {
             initProduct: `${detectEnv}_initProduct`,
+            addMultiProducts: `${detectEnv}_addMultiProducts`,
             addOneProduct: `${detectEnv}_addOneProduct`,
             updateOneProduct: `${detectEnv}_updateOneProduct`,
             deleteOneProduct: `${detectEnv}_deleteOneProduct`,

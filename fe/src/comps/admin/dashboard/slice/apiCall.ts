@@ -4,10 +4,11 @@ import { web3 } from '@project-serum/anchor';
 import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 import { getKeypairDemo, programApp } from '_services/solana';
 import { getProvider, getConfig } from '_config';
-import { AutoAirdrop } from '_utils/solana';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
 import kp from '_keys/keypair.json';
+
+import { productsAddMore } from '_data';
 
 const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
@@ -36,8 +37,17 @@ export const productsInitCallApi = async (productsInit: T_PRODUCT[]): Promise<an
             })
             .signers([baseAccount])
             .rpc();
-
         LocalStorageServices.setItem(LocalStorageKey().tx_lists.initProduct, tx);
+
+        const txAddMore = await program.methods
+            .addMultiProducts(productsAddMore)
+            .accounts({
+                baseAccount: baseAccount.publicKey,
+                signer: provider.wallet.publicKey,
+                systemProgram: web3.SystemProgram.programId,
+            })
+            .rpc();
+        LocalStorageServices.setItem(LocalStorageKey().tx_lists.addMultiProducts, txAddMore);
 
         return await productsCallApi();
     } catch (_err: any) {
@@ -58,7 +68,6 @@ export const productsCallApi = async (): Promise<any> => {
             errMess: 'baseAccount Not found',
         };
     }
-    // baseAccount && (await AutoAirdrop(baseAccount?.publicKey));
 
     const program = programApp();
 

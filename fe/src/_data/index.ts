@@ -53,7 +53,7 @@ export const productsAddMore: T_PRODUCT[] = [
             ],
         },
         price: 4,
-        description: '3.5GHz 8‑core Intel Xeon W processor, Turbo Boost up to 4.0GHz 32GB (4x8GB) of DDR4 ECC memory',
+        description: '3.5GHz 8 core Intel Xeon W processor, Turbo Boost up to 4.0GHz 32GB (4x8GB) of DDR4 ECC memory',
         tips: [],
         owner: ownerPubkey,
     },
@@ -77,8 +77,7 @@ export const productsAddMore: T_PRODUCT[] = [
             ],
         },
         price: 3,
-        description:
-            'Two sizes. Two industry-leading displays.The 11-inch display gives you an immersive and portable experience. And the 12.9-inch XDR display is a stunning and expansive way to view HDR content.',
+        description: 'Two sizes. Two industry-leading displays. The 11-inch display gives you an immersive and portable experience.',
         tips: [],
         owner: ownerPubkey,
     },

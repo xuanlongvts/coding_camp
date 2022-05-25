@@ -69,6 +69,7 @@ export const AutoAirdrop = async (publicKey: PublicKey, func?: () => void) => {
     const converNumber = Number(getBal) / LAMPORTS_PER_SOL;
     if (converNumber < 2 && ENUM_envName.production !== ENV) {
         const getResult = await AirDropAccount(publicKey); // default (it depend on env)
+
         ENUM_envName.local === ENV && (await AirDropAccount(publicKey, ENUM_envName.dev)); // in case local, also airdrop to devnet
 
         const getErr = getResult.value.err;

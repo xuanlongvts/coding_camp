@@ -97,6 +97,48 @@ export const products: T_PRODUCT[] = [
     },
 ];
 
+export const addMultiProducts: T_PRODUCT[] = [
+    {
+        id: "ikl0",
+        title: "Mouse magic",
+        imgs: {
+            links: [
+                "https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g",
+            ],
+        },
+        price: 1,
+        description: "Mouse magic will release at 2024",
+        tips: [],
+        owner: baseAcc.publicKey,
+    },
+    {
+        id: "ikl1",
+        title: "Mouse magic",
+        imgs: {
+            links: [
+                "https://media1.giphy.com/media/SeEFlR2ixjeUjqcc1N/giphy.gif?cid=ecf05e47y3etf4fir080z47cvrcqvxb1jjwy1pccfqnet9z6&rid=giphy.gif&ct=g",
+            ],
+        },
+        price: 1,
+        description: "Mouse magic will release at 2024",
+        tips: [],
+        owner: baseAcc.publicKey,
+    },
+    {
+        id: "ikl2",
+        title: "Mouse magic",
+        imgs: {
+            links: [
+                "https://media0.giphy.com/media/3o85xnHXDgKM21daPm/giphy.gif?cid=ecf05e47hysarrfjl2jx4xxbmr91qgkphkobhjn3bzr6ov27&rid=giphy.gif&ct=g",
+            ],
+        },
+        price: 1,
+        description: "Mouse magic will release at 2024",
+        tips: [],
+        owner: baseAcc.publicKey,
+    },
+];
+
 export const addOneProduct: T_PRODUCT = {
     id: "ikl", // ikl
     title: "Mouse magic",

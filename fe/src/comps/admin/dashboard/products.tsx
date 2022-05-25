@@ -15,7 +15,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Fab from '@mui/material/Fab';
-
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -24,29 +23,47 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { T_PRODUCT } from 'comps/01-home/products/type';
-// import { productsInit } from '_config/tmp_data';
 import { productsInit } from '_data';
-
+import SingleSnack, { T_SingleSnackBar } from '_commComp/singleSnack';
 import { appToastActions } from '_commComp/toast/slice';
 import LinkRouters from '_routers';
 import { FIELDS } from '_commComp/toast/types';
 import { AutoAirdrop } from '_utils/solana';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
+import { transactionExplorer } from '_config';
 
 import Slice from './slice';
-import { selectProducts } from './slice/selector';
+import { selectProducts, selectProductInit } from './slice/selector';
 
 const ProductsManagment = () => {
     const { actions } = Slice();
     const dispatch = useDispatch();
     const products = useSelector(selectProducts);
+    const productsInitSel = useSelector(selectProductInit);
     const router = useRouter();
     const { publicKey } = useWallet();
+    const [openSnack, setOpenSnack] = useState<T_SingleSnackBar | null>(null);
 
     const [idProductDelete, setIdProductDelete] = useState<string | null>(null);
 
     useEffect(() => {
         dispatch(actions.productsCall());
     }, []);
+
+    useEffect(() => {
+        const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.addMultiProducts);
+        if (getTx && productsInitSel) {
+            const hrefLink = transactionExplorer(getTx);
+
+            setOpenSnack({
+                message: 'Add muilti products success',
+                messLink: 'Transaction Link',
+                open: true,
+                typeAlert: 'success',
+                href: hrefLink,
+            });
+        }
+    }, [products]);
 
     useEffect(() => {
         (async () => {
@@ -100,6 +117,8 @@ const ProductsManagment = () => {
         setIdProductDelete(null);
     };
 
+    const ele = <a>Link</a>;
+
     return (
         <>
             {!products?.length ? (
@@ -152,6 +171,16 @@ const ProductsManagment = () => {
                         </TableContainer>
                     </Box>
                 </>
+            )}
+
+            {openSnack && (
+                <SingleSnack
+                    typeAlert={openSnack?.typeAlert}
+                    open={openSnack?.open}
+                    href={openSnack?.href}
+                    messLink={openSnack?.messLink}
+                    message={openSnack?.message}
+                />
             )}
 
             <Dialog

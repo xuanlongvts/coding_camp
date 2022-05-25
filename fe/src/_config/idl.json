@@ -34,6 +34,27 @@
             "returns": null
         },
         {
+            "name": "addMultiProducts",
+            "accounts": [
+                {
+                    "name": "baseAccount",
+                    "isMut": true,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "products",
+                    "type": {
+                        "vec": {
+                            "defined": "Product"
+                        }
+                    }
+                }
+            ],
+            "returns": null
+        },
+        {
             "name": "addOneProduct",
             "accounts": [
                 {
@@ -310,6 +331,6 @@
         }
     ],
     "metadata": {
-        "address": "H9oDX6GtArhgvDaH3Mh7Dkox2bC81tqUvp9GxxE2fLYc"
+        "address": "4XT394t9UT1VC56MzDgFN2nqdNTxLTSzZQVwCeoQkUSj"
     }
 }

@@ -5,7 +5,7 @@ use anchor_spl::token::{MintTo, Token};
 use mpl_token_metadata::instruction::{create_master_edition_v3, create_metadata_accounts_v2};
 use mpl_token_metadata::state::Creator;
 
-declare_id!("H9oDX6GtArhgvDaH3Mh7Dkox2bC81tqUvp9GxxE2fLYc");
+declare_id!("4XT394t9UT1VC56MzDgFN2nqdNTxLTSzZQVwCeoQkUSj");
 
 #[program]
 pub mod sc_luxury_brand {
@@ -15,6 +15,21 @@ pub mod sc_luxury_brand {
         let base_acc = &mut ctx.accounts.base_account;
 
         base_acc.list_products = products;
+        Ok(())
+    }
+
+    pub fn add_multi_products(ctx: Context<CrudOneProduct>, products: Vec<Product>) -> Result<()> {
+        let base_acc = &mut ctx.accounts.base_account;
+
+        for (_i, v) in base_acc.list_products.iter().enumerate() {
+            for (_ii, vv) in products.iter().enumerate() {
+                if v.id == vv.id {
+                    return Err(ErrorMess::AlreadyExistProduct.into());
+                }
+            }
+        }
+        base_acc.list_products.append(&mut products.clone());
+
         Ok(())
     }
 

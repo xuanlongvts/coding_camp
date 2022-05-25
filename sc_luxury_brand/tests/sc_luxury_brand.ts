@@ -14,6 +14,7 @@ import {
     baseAcc,
     products,
     addOneProduct,
+    addMultiProducts,
     updateOneProduct,
     deleteOneProduct,
     TOKEN_METADATA_PROGRAM_ID,
@@ -44,6 +45,8 @@ describe("sc_luxury_brand", () => {
         );
         expect(accState.listProducts?.length).to.equal(2);
 
+        console.log("length: ", accState.listProducts.length);
+
         try {
             await program.methods
                 .initialize(products)
@@ -61,6 +64,19 @@ describe("sc_luxury_brand", () => {
         }
     });
 
+    it("Add multi products!", async () => {
+        await program.methods
+            .addMultiProducts(addMultiProducts)
+            .accounts({
+                baseAccount: baseAcc.publicKey,
+            })
+            .rpc();
+        const accState = await program.account.products.fetch(
+            baseAcc.publicKey
+        );
+        expect(accState.listProducts.length).to.equal(5);
+    });
+
     it("Add one product!", async () => {
         await program.methods
             .addOneProduct(addOneProduct)
@@ -71,7 +87,7 @@ describe("sc_luxury_brand", () => {
         const accState = await program.account.products.fetch(
             baseAcc.publicKey
         );
-        expect(accState.listProducts.length).to.equal(3);
+        expect(accState.listProducts.length).to.equal(6);
 
         try {
             await program.methods
@@ -130,7 +146,7 @@ describe("sc_luxury_brand", () => {
         const accState = await program.account.products.fetch(
             baseAcc.publicKey
         );
-        expect(accState.listProducts.length).to.equal(2);
+        expect(accState.listProducts.length).to.equal(5);
         // console.log("Delete: ===> ", accState.listProducts);
 
         try {

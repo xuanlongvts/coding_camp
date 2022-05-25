@@ -1,14 +1,16 @@
 [features]
 seeds = false
 [programs.devnet]
-sc_luxury_brand = "H9oDX6GtArhgvDaH3Mh7Dkox2bC81tqUvp9GxxE2fLYc"
+# [programs.localnet]
+sc_luxury_brand = "4XT394t9UT1VC56MzDgFN2nqdNTxLTSzZQVwCeoQkUSj"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "devnet"
-wallet = "/Users/lelong/.config/solana/devnet.json"
+# cluster = "localnet"
+wallet = "/Users/lelong/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
