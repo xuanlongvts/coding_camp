@@ -50,20 +50,20 @@ const ProductsManagment = () => {
         dispatch(actions.productsCall());
     }, []);
 
-    useEffect(() => {
-        const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.addMultiProducts);
-        if (getTx && productsInitSel) {
-            const hrefLink = transactionExplorer(getTx);
+    // useEffect(() => {
+    //     const getTx = LocalStorageServices.getItem(LocalStorageKey().tx_lists.addMultiProducts);
+    //     if (getTx && productsInitSel) {
+    //         const hrefLink = transactionExplorer(getTx);
 
-            setOpenSnack({
-                message: 'Add muilti products success',
-                messLink: 'Transaction Link',
-                open: true,
-                typeAlert: 'success',
-                href: hrefLink,
-            });
-        }
-    }, [products]);
+    //         setOpenSnack({
+    //             message: 'Add muilti products success',
+    //             messLink: 'Transaction Link',
+    //             open: true,
+    //             typeAlert: 'success',
+    //             href: hrefLink,
+    //         });
+    //     }
+    // }, [products]);
 
     useEffect(() => {
         (async () => {
