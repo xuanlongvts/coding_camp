@@ -121,7 +121,6 @@ const FrmProduct = ({ type, productUpdating }: T_TypeAction) => {
                 variant="outlined"
                 id="title"
                 label="Title"
-                placeholder="abc@gmail.com"
                 type="text"
                 defaultValue={productUpdating?.title}
                 margin="normal"
