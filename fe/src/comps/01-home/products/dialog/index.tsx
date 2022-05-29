@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
-
+import { nanoid } from 'nanoid';
 import { createTransfer, findReference, FindReferenceError, validateTransfer, ValidateTransferError } from '@solana/pay';
 import { ConfirmedSignatureInfo, PublicKey, TransactionSignature } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
@@ -219,6 +219,7 @@ const DialogBox = ({ open, handleClose, products, idProductBuy, unit }: I_Diglog
                         if (pubkeyPayer) {
                             const getListPayers = LocalStorageServices.getItemJson(LocalStorageKey().accountsReceiveNft) || [];
                             const arrPayers = {
+                                id: nanoid(),
                                 pubkeyPayer,
                                 label: LocalStorageServices.getItemJson(ENUM_FIELDS.label),
                                 amount: LocalStorageServices.getItemJson(ENUM_FIELDS.amount),

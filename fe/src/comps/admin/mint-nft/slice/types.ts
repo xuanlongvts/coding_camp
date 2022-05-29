@@ -5,10 +5,11 @@ export const KEY_DATA_MINTED = 'dataMinted';
 export const KEY_MINT_NFT_SUCCESS = 'mintNftSuccess';
 
 export type T_DATA_PREPARE = {
-    idPubkey: string;
+    id: string;
     name: string;
     symbol: string;
     metadataUrl: string;
+    pubkeyPayer: string;
     wallet?: any;
     connection?: any;
 };

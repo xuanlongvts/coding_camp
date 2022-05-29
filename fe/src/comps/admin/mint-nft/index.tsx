@@ -23,9 +23,9 @@ import { AutoAirdrop } from '_utils/solana';
 
 import { appToastActions } from '_commComp/toast/slice';
 import { FIELDS } from '_commComp/toast/types';
-import { transactionExplorer } from '_config';
 
 export type T_ListPayers = {
+    id: string;
     pubkeyPayer: string;
     label: string;
     amount: string;
@@ -61,8 +61,8 @@ const MintNftsToAccounts = () => {
         })();
     }, [publicKey]);
 
-    const handleSend = (pubPayer: string) => () => {
-        router.push(`${LinkRouters.mintNft}/${pubPayer}`);
+    const handleSend = (id: string) => () => {
+        router.push(`${LinkRouters.mintNft}/${id}`);
     };
 
     return (
@@ -110,7 +110,7 @@ const MintNftsToAccounts = () => {
                                             {item.status ? (
                                                 <Alert>Received</Alert>
                                             ) : (
-                                                <Fab size="small" aria-label="send" onClick={handleSend(item.pubkeyPayer)}>
+                                                <Fab size="small" aria-label="send" onClick={handleSend(item.id)}>
                                                     <SendIcon />
                                                 </Fab>
                                             )}

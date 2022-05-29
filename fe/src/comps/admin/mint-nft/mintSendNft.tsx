@@ -21,10 +21,12 @@ import { appToastActions } from '_commComp/toast/slice';
 import { FIELDS } from '_commComp/toast/types';
 import { appLoadingActions } from '_commComp/loadingApp/slice';
 import HistoryBack from '_commComp/backHistory';
+import { LocalStorageServices, LocalStorageKey } from '_utils/localStorage';
 
 import SendNftSchema, { ENUM_FIELDS, T_HOOKS_FOMR_NFT_SEND } from './validateSendNft';
 import SliceMintNft from './slice';
 import { selectMintNftSuccess } from './slice/selector';
+import { T_ListPayers } from './index';
 
 const useStyles = makeStyles({
     input: {
@@ -136,8 +138,16 @@ const MintNftComp = () => {
         );
         dispatch(appLoadingActions.loadingClose());
 
-        const dataSend = {
-            idPubkey: router.query.id as string,
+        const idMint = router.query.id;
+        const getListPayers = LocalStorageServices.getItemJson(LocalStorageKey().accountsReceiveNft);
+        const getPayer = getListPayers.filter((i: T_ListPayers) => {
+            if (i.id === idMint) {
+                return i;
+            }
+        })[0];
+        const dataSend = getPayer && {
+            id: idMint,
+            pubkeyPayer: getPayer.pubkeyPayer,
             name: data[ENUM_FIELDS.name],
             symbol: 'symb',
             metadataUrl: uploadedMetatdataUrl,

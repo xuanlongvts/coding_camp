@@ -17,7 +17,7 @@ import { T_DATA_PREPARE, T_RESULT_MINT_NFT } from './types';
 export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_NFT | { errMess: any }> => {
     const baseAccount = getKeypairDemo();
 
-    const { connection, wallet, idPubkey, name, symbol, metadataUrl } = data;
+    const { connection, wallet, pubkeyPayer, name, symbol, metadataUrl, id } = data;
 
     if (!baseAccount) {
         return {
@@ -29,7 +29,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
     const provider = getProvider(getConfig());
     try {
         const isAnotherAcc = true;
-        const accReceiveNft = isAnotherAcc ? new web3.PublicKey(idPubkey) : provider.wallet.publicKey;
+        const accReceiveNft = isAnotherAcc ? new web3.PublicKey(pubkeyPayer) : provider.wallet.publicKey;
 
         const lamports = await program.provider.connection.getMinimumBalanceForRentExemption(MINT_SIZE);
         const mintKey = web3.Keypair.generate();
@@ -78,7 +78,7 @@ export const mintNftlApi = async (data: T_DATA_PREPARE): Promise<T_RESULT_MINT_N
 
         const getListPayers = LocalStorageServices.getItemJson(LocalStorageKey().accountsReceiveNft);
         getListPayers.some((i: T_ListPayers) => {
-            if (i.pubkeyPayer === idPubkey) {
+            if (i.id === id) {
                 i.status = 1;
             }
         });
