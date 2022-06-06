@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const Footer = () => {
-    return <footer id="footerSlim">&copy; xuanlongvts@gmail.com - 05/2022</footer>;
+    return <footer id="footerSlim">&copy; xuanlongvts@gmail.com</footer>;
 };
 
 export default Footer;
