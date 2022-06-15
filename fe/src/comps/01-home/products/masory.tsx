@@ -27,7 +27,7 @@ const BasicMasonry = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
                 {products.map((item: T_PRODUCT, _key: number) => {
                     const priceUsdc = changeRate(Number(item.price), unitPay.usdc);
                     return (
-                        <Item key={item.id}>
+                        <Item key={item.id} style={{ cursor: 'pointer' }}>
                             <CardMedia
                                 component="img"
                                 image={item.imgs.links[0]}

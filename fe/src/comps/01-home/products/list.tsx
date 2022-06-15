@@ -23,7 +23,7 @@ const ListPro = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
                         const priceUsdc = changeRate(Number(item.price), unitPay.usdc);
                         return (
                             <Grid item key={_key} xs={12} sm={6} md={4}>
-                                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
                                     <CardMedia
                                         component="img"
                                         sx={{ objectFit: 'contain' }}
