@@ -28,8 +28,13 @@ const BasicMasonry = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
                     const priceUsdc = changeRate(Number(item.price), unitPay.usdc);
                     return (
                         <Item key={item.id}>
-                            <CardMedia component="img" image={item.imgs.links[0]} alt="random" />
-                            <CardContent sx={{ flexGrow: 1 }}>
+                            <CardMedia
+                                component="img"
+                                image={item.imgs.links[0]}
+                                alt="random"
+                                onClick={() => handleQuickBuy(unitPay.sol, item.id)}
+                            />
+                            <CardContent sx={{ flexGrow: 1 }} onClick={() => handleQuickBuy(unitPay.sol, item.id)}>
                                 <Typography gutterBottom variant="h5" component="h2">
                                     {item.title}
                                 </Typography>
