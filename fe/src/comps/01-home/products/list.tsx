@@ -32,7 +32,7 @@ const ListPro = ({ products, handleQuickBuy }: T_PRODUCT_SHOW) => {
                                         alt={item.title}
                                         onClick={() => handleQuickBuy(unitPay.sol, item.id)}
                                     />
-                                    <CardContent sx={{ flexGrow: 1 }}  onClick={() => handleQuickBuy(unitPay.sol, item.id)}>
+                                    <CardContent sx={{ flexGrow: 1 }} onClick={() => handleQuickBuy(unitPay.sol, item.id)}>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             {item.title}
                                         </Typography>
